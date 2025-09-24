@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BL4 Save Tools</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Borderlands 4 - Save Tools</h1>
+  <div class="main-columns">
+    <div class="left-column">
+      <div class="section">
+        <label>Upload .sav or .yaml file: <input type="file" id="savInput"></label>
+        <br>
+        <label>
+          <span class="tooltip">
+            SteamID:
+            <span class="tooltiptext">
+              Required to decrypt/encrypt save files. It's a 17-digit number that should be part of your SaveGames path.
+            </span>
+          </span>
+          <input type="text" id="steamIdInput" placeholder="7656119...">
+        </label>
+        <br>
+        <button onclick="importFile()">Import</button>
+      </div>
+      <div class="section">
+        <h2>Modifications</h2>
+        <div class="tweak-row">
+          <button onclick="clearMapFog()">Remove Map Fog</button>
+          <span class="tweak-tooltip">
+            ?
+            <span class="tweak-tooltiptext">
+              Replace fog of war maps for all levels with 100% explored maps.
+            </span>
+          </span>
+        </div>
+        <div class="tweak-row">
+          <button onclick="discoverAllLocations()">Discover All Locations</button>
+          <span class="tweak-tooltip">
+            ?
+            <span class="tweak-tooltiptext">
+              Add all location icons to the map.
+            </span>
+          </span>
+        </div>
+        <div class="tweak-row">
+          <button onclick="unlockAllSafehouses()">Unlock All Safehouses</button>
+          <span class="tweak-tooltip">
+            ?
+            <span class="tweak-tooltiptext">
+              Complete all safehouse and silo activities, unlocking them as fast travel destinations.
+            </span>
+          </span>
+        </div>
+        <div class="tweak-row">
+          <button onclick="updateSDUPoints()">Calculate SDU Points</button>
+          <span class="tweak-tooltip">
+            ?
+            <span class="tweak-tooltiptext">
+              Update SDU token pool to match completed activities and collectibles.
+            </span>
+          </span>
+        </div>
+        <div class="tweak-row">
+          <button onclick="skipStory()">Skip Story Missions</button>
+          <span class="tweak-tooltip">
+            ?
+            <span class="tweak-tooltiptext">
+              Complete all main story missions.
+            </span>
+          </span>
+        </div>
+        <div class="tweak-row">
+          <button onclick="unlockUVHMode()">Unlock UVHM</button>
+          <span class="tweak-tooltip">
+            ?
+            <span class="tweak-tooltiptext">
+              Set flags to unlock UVH mode.
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="right-column">
+      <div class="section" id="yamlSection" style="display:none;">
+        <h2>Edit YAML (advanced)</h2>
+        <div id="editor" style="width:800px;height:500px;border:1px solid #ccc;"></div>
+        <button onclick="encryptSav()">Encrypt & Download .sav</button>
+        <button class="secondary" onclick="downloadYaml()">Download .yaml</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+  
+  <script src="./bl4web.js"></script>
+  <script src="./crypto.js"></script>
+  <script src="./values.js"></script>
+  <script src="./locations.js"></script>
+  <script src="./exploration.js"></script>
+  <script src="./missions.js"></script>
+  <script src="./sdu.js"></script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #181c20;
+  color: #f3f3f3;
+  min-height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+}
+
+.section {
+  background: #23272b;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  margin: 2rem auto;
+  padding: 1.2rem 2rem 2rem 2rem;
+  max-width: 700px;
+  width: 90%;
+}
+
+.section h2 {
+  margin-top: 0;   /* Reduce or remove top margin */
+  margin-bottom: 1em;  /* Keep some space below */
+}
+
+label {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+input[type="file"],
+input[type="text"] {
+  background: #222;
+  color: #f3f3f3;
+  border: 1px solid #444;
+  border-radius: 5px;
+  padding: 0.5em;
+  margin-top: 0.3em;
+  width: 100%;
+  max-width: 350px;
+  box-sizing: border-box;
+}
+
+button {
+  background: #2d8cf0;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.7em 1.5em;
+  margin: 0.5em 0.5em 0.5em 0;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+button:hover, button:focus {
+  background: #1a73e8;
+}
+
+button.secondary {
+  background: #444;
+  color: #fff;
+}
+button.secondary:hover, button.secondary:focus {
+  background: #666;
+}
+
+.main-columns {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+  height: calc(100vh - 4rem); /* maximize vertical space */
+}
+
+.left-column {
+  flex: 0 0 370px;
+  min-width: 320px;
+  max-width: 420px;
+}
+
+.right-column {
+  flex: 2 1 0;
+  min-width: 400px;
+  /* Remove max-width for right column */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.right-column .section {
+  flex: 1 1 0;
+  max-width: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#editor {
+  width: 100% !important;
+  flex: 1 1 0;
+  min-height: 350px;
+  height: 100% !important;
+  border: 1px solid #444;
+  border-radius: 6px;
+  margin-bottom: 1em;
+  background: #1e1e1e;
+  resize: none;
+}
+
+.tooltip {
+  position: relative;
+  cursor: help;
+  border-bottom: 1px dotted #aaa;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 260px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 0.7em;
+  position: absolute;
+  z-index: 10;
+  bottom: 125%; /* Position above */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  font-size: 0.95em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.tooltip:hover .tooltiptext,
+.tooltip:focus .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tweak-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.1em;
+  gap: 0.7em;
+}
+
+.tweak-row button {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 120px;
+  margin-right: 0.7em;
+}
+
+.tweak-tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+  color: #bbb;
+  font-size: 1.1em;
+  border-radius: 50%;
+  width: 1.5em;
+  height: 1.5em;
+  text-align: center;
+  line-height: 1.5em;
+  background: #23272b;
+  border: 1px solid #444;
+  margin-left: 0.3em;
+}
+
+.tweak-tooltip .tweak-tooltiptext {
+  visibility: hidden;
+  width: 260px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 0.7em;
+  position: absolute;
+  z-index: 10;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  font-size: 0.95em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.tweak-tooltip:hover .tweak-tooltiptext,
+.tweak-tooltip:focus .tweak-tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tweak-row:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 1100px) {
+  .main-columns {
+    flex-direction: column;
+    gap: 0;
+    height: auto;
+  }
+  .left-column, .right-column {
+    max-width: 100%;
+    height: auto;
+  }
+  #editor {
+    min-height: 200px;
+    height: 30vh !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .section {
+    max-width: 98vw;
+    padding: 1rem;
+  }
+  #editor {
+    min-height: 250px;
+    height: 35vh !important;
+  }
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.3rem;
+    margin-top: 1rem;
+  }
+  .section {
+    padding: 0.7rem;
+  }
+  button {
+    width: 100%;
+    margin: 0.5em 0 0.5em 0;
+  }
+  #editor {
+    min-height: 120px;
+    height: 25vh !important;
+  }
+}
