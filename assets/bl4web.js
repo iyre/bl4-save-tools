@@ -15,6 +15,11 @@ require(['vs/editor/editor.main'], function() {
 
 let importFilename = 'imported';
 
+function enableSections() {
+  document.getElementById('modSectionOverlay').style.display = 'none';
+  document.getElementById('yamlSectionOverlay').style.display = 'none';
+}
+
 async function importFile() {
   const file = document.getElementById('savInput').files[0];
   if (!file) { alert("Please select a file to upload."); return; }
@@ -28,18 +33,18 @@ async function importFile() {
     console.log("Loading YAML file directly into editor");
     let yamlText = new TextDecoder().decode(arrayBuffer);
     editor.setValue(yamlText);
-    document.getElementById('yamlSection').style.display = '';
+    enableSections();
     return;
   }
 
   decryptSav(arrayBuffer)
+  enableSections();
 }
 
 function downloadYaml() {
   const now = new Date();
   const timestamp = now.toISOString().replace(/[-:T]/g, '').slice(0, 14); // e.g. 20250924153012
   const exportFilename = `${importFilename}_${timestamp.slice(0, 8)}_${timestamp.slice(8)}.yaml`;
-
   const yamlText = editor.getValue();
   const blob = new Blob([yamlText], { type: "text/yaml" });
   const url = URL.createObjectURL(blob);
@@ -49,3 +54,11 @@ function downloadYaml() {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+// Restore user ID from localStorage on page load
+window.addEventListener('DOMContentLoaded', function() {
+  const previousUserId = localStorage.getItem('bl4_previous_userid');
+  if (previousUserId) {
+    document.getElementById('userIdInput').value = previousUserId;
+  }
+});

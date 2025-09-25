@@ -9,7 +9,7 @@ function unlockUVHMode() {
   }
 
   data.globals = data.globals || {};
-  data.globals.highest_unlocked_vault_hunter_level = 1;
+  data.globals.highest_unlocked_vault_hunter_level = 5;
   data.globals.vault_hunter_level = 1;
 
   // Update editor
@@ -36,7 +36,7 @@ function setStoryValues() {
   data.stats.challenge = data.stats.challenge || {};
   data.stats.challenge.mission_main_all = 18;
 
-  // Set unlockables.character_progress.entries (append if not present)
+  // Set unlockables.character_progress.entries (append if not present) - not sure what this does, but set it to be safe
   data.unlockables = data.unlockables || {};
   data.unlockables.character_progress = data.unlockables.character_progress || {};
   let entries = data.unlockables.character_progress.entries || [];

@@ -2,11 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>BL4 Save Tools</title>
+  <title>BL4 Save Editor</title>
   <link rel="stylesheet" href="./assets/style.css">
+  <link rel="icon" type="image/png" href="./assets/favicon.png">
 </head>
 <body>
-  <h1>Borderlands 4 - Save Tools</h1>
+  <h1>Borderlands 4 - Online Save Editor</h1>
+  <div class="source-link">
+    <a href="https://github.com/iyre/bl4-save-tools" target="_blank" rel="noopener">View source on GitHub</a>
+  </div>
   <div class="main-columns">
     <div class="left-column">
       <div class="section">
@@ -14,68 +18,71 @@
         <br>
         <label>
           <span class="tooltip">
-            SteamID:
+            Steam/Epic user ID:
             <span class="tooltiptext">
-              Required to decrypt/encrypt save files. It's a 17-digit number that should be part of your SaveGames path.
+              Required to decrypt/encrypt save files.<br/>Steam ID is 17 digits.<br/>Epic ID is 32 characters.
             </span>
           </span>
-          <input type="text" id="steamIdInput" placeholder="7656119...">
+          <input type="text" id="userIdInput" placeholder="7656119...">
         </label>
         <br>
         <button onclick="importFile()">Import</button>
       </div>
       <div class="section">
-        <h2>Modifications</h2>
-        <div class="tweak-row">
+        <div class="disabled-overlay" id="modSectionOverlay">
+          <div class="overlay-message">Import a file first.</div>
+        </div>
+        <h2>Quick Modifications</h2>
+        <div class="mod-row">
           <button onclick="clearMapFog()">Remove Map Fog</button>
-          <span class="tweak-tooltip">
+          <span class="mod-tooltip">
             ?
-            <span class="tweak-tooltiptext">
+            <span class="mod-tooltiptext">
               Replace fog of war maps for all levels with 100% explored maps.
             </span>
           </span>
         </div>
-        <div class="tweak-row">
+        <div class="mod-row">
           <button onclick="discoverAllLocations()">Discover All Locations</button>
-          <span class="tweak-tooltip">
+          <span class="mod-tooltip">
             ?
-            <span class="tweak-tooltiptext">
+            <span class="mod-tooltiptext">
               Add all location icons to the map.
             </span>
           </span>
         </div>
-        <div class="tweak-row">
+        <div class="mod-row">
           <button onclick="unlockAllSafehouses()">Unlock All Safehouses</button>
-          <span class="tweak-tooltip">
+          <span class="mod-tooltip">
             ?
-            <span class="tweak-tooltiptext">
+            <span class="mod-tooltiptext">
               Complete all safehouse and silo activities, unlocking them as fast travel destinations.
             </span>
           </span>
         </div>
-        <div class="tweak-row">
+        <div class="mod-row">
           <button onclick="updateSDUPoints()">Calculate SDU Points</button>
-          <span class="tweak-tooltip">
+          <span class="mod-tooltip">
             ?
-            <span class="tweak-tooltiptext">
+            <span class="mod-tooltiptext">
               Update SDU token pool to match completed activities and collectibles.
             </span>
           </span>
         </div>
-        <div class="tweak-row">
+        <div class="mod-row">
           <button onclick="skipStory()">Skip Story Missions</button>
-          <span class="tweak-tooltip">
+          <span class="mod-tooltip">
             ?
-            <span class="tweak-tooltiptext">
+            <span class="mod-tooltiptext">
               Complete all main story missions.
             </span>
           </span>
         </div>
-        <div class="tweak-row">
+        <div class="mod-row">
           <button onclick="unlockUVHMode()">Unlock UVHM</button>
-          <span class="tweak-tooltip">
+          <span class="mod-tooltip">
             ?
-            <span class="tweak-tooltiptext">
+            <span class="mod-tooltiptext">
               Set flags to unlock UVH mode.
             </span>
           </span>
@@ -83,11 +90,18 @@
       </div>
     </div>
     <div class="right-column">
-      <div class="section" id="yamlSection" style="display:none;">
-        <h2>Edit YAML (advanced)</h2>
+      <div class="section" id="yamlSection">
+        <div class="disabled-overlay" id="yamlSectionOverlay">
+          <div class="overlay-message">Import a file first.</div>
+        </div>
+        <div class="editor-header">
+          <h2>Edit YAML (advanced)</h2>
+          <div class="editor-actions">
+            <button onclick="encryptSav()">Download .sav</button>
+            <button class="secondary" onclick="downloadYaml()">Download .yaml</button>
+          </div>
+        </div>
         <div id="editor" style="width:800px;height:500px;border:1px solid #ccc;"></div>
-        <button onclick="encryptSav()">Encrypt & Download .sav</button>
-        <button class="secondary" onclick="downloadYaml()">Download .yaml</button>
       </div>
     </div>
   </div>

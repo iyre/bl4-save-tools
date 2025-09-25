@@ -1,11 +1,11 @@
 // functions for encrypting/decrypting Borderlands 4 .sav files in the browser
 
-function deriveKey(steamid) {
+function deriveKey(userID) {
   const BASE_KEY = [
     0x35,0xEC,0x33,0x77,0xF3,0x5D,0xB0,0xEA,0xBE,0x6B,0x83,0x11,0x54,0x03,0xEB,0xFB,
     0x27,0x25,0x64,0x2E,0xD5,0x49,0x06,0x29,0x05,0x78,0xBD,0x60,0xBA,0x4A,0xA7,0x87
   ];
-  let sid = BigInt(steamid.replace(/\D/g, ''));
+  let sid = BigInt(userID.replace(/\D/g, ''));
   let sid_le = [];
   for (let i = 0; i < 8; i++) {
     sid_le.push(Number(sid & 0xFFn));
@@ -52,12 +52,13 @@ function uint8ArrayToWordArray(u8arr) {
 
 // Decrypt .sav to YAML
 function decryptSav(fileArrayBuffer) {
-  const steamid = document.getElementById('steamIdInput').value.trim();
-  if (!steamid) { alert("Please enter platform user ID (Steam or Epic)."); return; }
+  const userID = document.getElementById('userIdInput').value.trim();
+  if (!userID) { alert("Please enter platform user ID (Steam or Epic)."); return; }
+  localStorage.setItem('bl4_previous_userid', userID);
   const ciph = new Uint8Array(fileArrayBuffer);
 
   // Derive key
-  const keyBytes = deriveKey(steamid);
+  const keyBytes = deriveKey(userID);
   const keyWordArray = uint8ArrayToWordArray(new Uint8Array(keyBytes));
 
   // Decrypt AES-ECB
@@ -137,8 +138,11 @@ function decryptSav(fileArrayBuffer) {
 // Encrypt YAML to .sav
 function encryptSav() {
   const file = document.getElementById('savInput').files[0];
-  const steamid = document.getElementById('steamIdInput').value.trim();
-  if (!file || !steamid) { alert("Please select a file and enter Steam/Epic ID."); return; }
+  const userID = document.getElementById('userIdInput').value.trim();
+  if (!file || !userID) { alert("Please select a file and enter Steam/Epic ID."); return; }
+
+  // Save user ID to localStorage
+  localStorage.setItem('bl4_previous_userid', userID);
 
   const yamlBytes = new TextEncoder().encode(editor.getValue());
 
@@ -175,7 +179,7 @@ function encryptSav() {
   const pt_padded = pkcs7Pad(packed);
 
   // Derive key
-  const keyBytes = deriveKey(steamid);
+  const keyBytes = deriveKey(userID);
   const keyWordArray = uint8ArrayToWordArray(new Uint8Array(keyBytes));
 
   // Encrypt AES-ECB
