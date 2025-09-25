@@ -53,7 +53,7 @@ function uint8ArrayToWordArray(u8arr) {
 // Decrypt .sav to YAML
 function decryptSav(fileArrayBuffer) {
   const steamid = document.getElementById('steamIdInput').value.trim();
-  if (!steamid) { alert("Please enter SteamID."); return; }
+  if (!steamid) { alert("Please enter platform user ID (Steam or Epic)."); return; }
   const ciph = new Uint8Array(fileArrayBuffer);
 
   // Derive key
@@ -81,23 +81,35 @@ function decryptSav(fileArrayBuffer) {
   // Unpad PKCS7
   pt = pkcs7Unpad(pt);
 
-  // Remove adler32 and uncompressed length if present
-  if (pt.length > 8 && pt[0] === 0x78) {
-    pt = pt.slice(0, -4);
+  // After unpadding, try zlib inflate with different trims
+  // Files may have 4 or 8 extra bytes at the end after padding
+  // Try each option until one works
+  let trimOptions = [4, 8];
+  let inflated = null;
+  let trimUsed = null;
+  for (let trim of trimOptions) {
+    try {
+      let candidate = pt.slice(0, pt.length - trim);
+      // Check for zlib header
+      if (candidate[0] !== 0x78) continue;
+      inflated = pako.inflate(candidate);
+      trimUsed = trim;
+      break;
+    } catch (e) {
+      // Try next trim value
+    }
   }
-  let yamlBytes;
-  try {
-    pt = new Uint8Array(pt); // force a copy
-    yamlBytes = pako.inflate(pt);
-  } catch (e) {
-    console.log(e)
-    alert("Zlib decompress failed. Wrong SteamID?");
+
+  if (!inflated) {
+    alert("Zlib decompress failed. Wrong user ID or file format?");
     return;
   }
-  if (!yamlBytes || !yamlBytes.length) {
-    alert("Decompression returned no data. Check if the SteamID is correct and the file is valid.");
-    return;
-  }
+
+  console.log(`Successfully decompressed with trim=${trimUsed}`);
+  let yamlBytes = inflated;
+
+  // console.log("DECRYPT VALIDATION (first 8):", Array.from(keyBytes.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')));
+  // console.log("DECRYPT VALIDATION (last 8):", Array.from(keyBytes.slice(-8)).map(b => b.toString(16).padStart(2, '0')));
 
   let yamlText = new TextDecoder().decode(yamlBytes);
   console.log("YAML preview:", new TextDecoder().decode(yamlBytes).slice(0, 100));
@@ -126,22 +138,15 @@ function decryptSav(fileArrayBuffer) {
 function encryptSav() {
   const file = document.getElementById('savInput').files[0];
   const steamid = document.getElementById('steamIdInput').value.trim();
-  if (!file || !steamid) { alert("Please select a file and enter SteamID."); return; }
+  if (!file || !steamid) { alert("Please select a file and enter Steam/Epic ID."); return; }
 
   const yamlBytes = new TextEncoder().encode(editor.getValue());
-
-  // console.log("YAML (first 8):", Array.from(yamlBytes.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')));
-  // console.log("YAML (last 8):", Array.from(yamlBytes.slice(-8)).map(b => b.toString(16).padStart(2, '0')));
 
   // Compress zlib
   const comp = pako.deflate(yamlBytes, { level: 9 });
 
-  // console.log("COMPRESSED (first 8):", Array.from(comp.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')));
-  // console.log("COMPRESSED (last 8):", Array.from(comp.slice(-8)).map(b => b.toString(16).padStart(2, '0')));
-
-  // Compute adler32 and uncompressed length (little-endian)
+  // Compute adler32
   function adler32(buf) {
-    // Simple JS adler32 implementation
     let a = 1, b = 0;
     for (let i = 0; i < buf.length; i++) {
       a = (a + buf[i]) % 65521;
@@ -166,20 +171,12 @@ function encryptSav() {
   packed[comp.length + 6] = (uncompressedLen >> 16) & 0xFF;
   packed[comp.length + 7] = (uncompressedLen >> 24) & 0xFF;
 
-  // console.log("PACKED (first 8):", Array.from(packed.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')));
-  // console.log("PACKED (last 8):", Array.from(packed.slice(-8)).map(b => b.toString(16).padStart(2, '0')));
-
   // PKCS7 pad
   const pt_padded = pkcs7Pad(packed);
-
-  // console.log("PADDED (first 8):", Array.from(pt_padded.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')));
-  // console.log("PADDED (last 8):", Array.from(pt_padded.slice(-8)).map(b => b.toString(16).padStart(2, '0')));
 
   // Derive key
   const keyBytes = deriveKey(steamid);
   const keyWordArray = uint8ArrayToWordArray(new Uint8Array(keyBytes));
-
-  // console.log("KEY (first 8):", Array.from(keyBytes.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')));
 
   // Encrypt AES-ECB
   const ptWordArray = CryptoJS.lib.WordArray.create(pt_padded);
@@ -199,8 +196,8 @@ function encryptSav() {
     ], i * 4);
   }
 
-  // console.log("ENCRYPTED (first 8):", Array.from(encBytes.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')));
-  // console.log("ENCRYPRED (last 8):", Array.from(encBytes.slice(-8)).map(b => b.toString(16).padStart(2, '0')));
+  // console.log("ENCRYPT VALIDATION (first 8):", Array.from(keyBytes.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')));
+  // console.log("ENCRYPT VALIDATION (last 8):", Array.from(keyBytes.slice(-8)).map(b => b.toString(16).padStart(2, '0')));
 
   const now = new Date();
   const timestamp = now.toISOString().replace(/[-:T]/g, '').slice(0, 14); // e.g. 20250924153012
