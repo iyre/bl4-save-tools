@@ -3,8 +3,8 @@ _GearBox has historically shown a positive attitude toward the Borderlands moddi
 
 These are my personal findings through observation and experimentation while developing this tool. I'm not an expert.
 
-- [Encryption](Encryption.md)
-- [Exploration data](Exploration.md)
+- [Encryption](encryption.md)
+- [Exploration data](exploration.md)
 
 ## Files
 Windows: `%USERPROFILE%\Documents\My Games\Borderlands 4\Saved\SaveGames\<STEAM_ID>\Profiles\client\`

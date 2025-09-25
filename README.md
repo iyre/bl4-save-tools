@@ -73,4 +73,3 @@ These run JavaScript functions which apply specific edits to save files quickly 
 ## Acknowledgements
 - Decryption functionality is based on https://github.com/glacierpiece/borderlands-4-save-utility
 - This project was made possible through much coaching by LLM tools. I'm an amateur programmer.
-- 
