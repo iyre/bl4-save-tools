@@ -1,0 +1,46 @@
+# LLM Context Helper for Borderlands 4 Online Save Editor
+# Last updated: 2025-09-25
+
+## Project Overview
+This is a web-based tool for decrypting, editing, and re-encrypting Borderlands 4 (PC) save files. It allows users to upload their `.sav` or `.yaml` files, make changes (either manually or via quick modifications), and download the updated save for use in-game.
+
+## Key Features
+- Decrypt and encrypt Borderlands 4 save files using AES-256-ECB with a key derived from the user's Steam or Epic ID.
+- Convert between binary `.sav` files and human-readable YAML.
+- Apply quick modifications such as removing map fog, unlocking locations, safehouses, SDU points, skipping story missions, and unlocking UVHM.
+- All operations are performed client-side in the browser; no files are uploaded to a server.
+
+## User Workflow
+1. User selects a `.sav` or `.yaml` file.
+2. User enters their Steam or Epic ID (required for encryption/decryption).
+3. The tool decrypts the save and displays the YAML in an editor.
+4. User can edit YAML directly or use quick modification buttons.
+5. User downloads the modified save as `.sav` or `.yaml`.
+
+## Technical Details
+- Encryption uses AES-256-ECB. The key is a static 32-byte base key, with the first 8 bytes XOR'd with the user's Steam/Epic ID.
+- Save data is compressed with zlib and a checksum is appended.
+- PKCS7 padding is applied before encryption.
+- Decryption reverses these steps.
+
+## File Locations
+- Windows saves: `%USERPROFILE%\Documents\My Games\Borderlands 4\Saved\SaveGames\<steam_id>\Profiles\client\`
+- `1.sav`, `2.sav`, etc. are character saves; `profile.sav` is global state.
+
+## Common User Questions
+- How do I find my Steam/Epic ID?
+- Why do I need my platform ID to decrypt/encrypt saves?
+- How do I back up my saves?
+- What do the quick modification buttons do?
+- How do I remove fog of war or unlock all locations?
+
+## Constraints
+- Never upload user files to a server.
+- Always recommend backing up original saves before making changes.
+- Only support Borderlands 4 PC save files.
+
+## References
+- Based on https://github.com/glacierpiece/borderlands-4-save-utility
+- See project README and docs for more details.
+
+# End of context
