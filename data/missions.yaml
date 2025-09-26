@@ -1,0 +1,847 @@
+missionset_main_beach:
+  status: completed
+  missions:
+    mission_main_beach:
+      status: completed
+      final:
+        melee_the_door_0_endstate: completed
+        reach_village_endstate: completed
+        use_glide_to_reach_exit_endstate: completed
+        destroy_bolt_1_endstate: completed
+        destroy_bolt_3_endstate: deactivated
+        destroy_bolt_2_endstate: deactivated
+        activate__cl4ptps_safehouse_endstate: completed
+missionset_main_city1:
+  status: completed
+  missions:
+    mission_main_city1:
+      status: completed
+      final:
+        talktolilith_endstate: completed
+        entercity_visible_endstate: deactivated
+        inv_enter_the_city_bc5_endstate: completed
+missionset_main_city1_b:
+  status: completed
+  missions:
+    mission_main_city1_b:
+      status: completed
+missionset_main_city2:
+  status: completed
+  missions:
+    mission_main_city2:
+      status: completed
+      final:
+        hack_progress_pt1_endstate: completed
+        openascensionchamber_endstate: completed
+missionset_main_city3:
+  status: completed
+  missions:
+    mission_main_city3:
+      status: completed
+      final:
+        killtimekeeper_endstate: completed
+        killtimekeeper_guardian_endstate: completed
+missionset_main_cityepilogue:
+  status: completed
+  missions:
+    mission_main_cityepilogue:
+      status: completed
+      final:
+        inv_openportal_endstate: completed
+        phasedimensionentered_1st: true
+        defeat_arjay_endstate: completed
+        take_object_endstate: completed
+        returntomoxxisbar_endstate: completed
+missionset_main_elpis:
+  status: completed
+  missions:
+    mission_main_elpis:
+      status: completed
+      final:
+        generatorlight_4: true
+        generatorlight_3: true
+        generatorlight_2: true
+        generatorlight_1: true
+        generatorlight_5: true
+        generatorlight_6: true
+        generatorlight_7: true
+        generatorlight_8: true
+        escortavatoarch_endstate: completed
+        findlilith_endstate: completed
+        clearenemies_pregenerator_endstate: completed
+        inv_interactwithelevator_endstate: completed
+        takeelevator_fixed_endstate: completed
+missionset_main_grasslands1:
+  status: completed
+  missions:
+    mission_main_grasslands1:
+      status: completed
+      final:
+        meet_nudge_endstate: completed
+        kill_order_soldiers_endstate: completed
+        commander_holo_tracker_endstate: completed
+        talk_with_conway_endstate: completed
+        scan_vehicle_endstate: completed
+        get_close_to_contra_2_endstate: completed
+        get_close_to_contra_1_endstate: completed
+        get_close_to_contra_4_endstate: completed
+        get_close_to_contra_3_endstate: completed
+        reach_the_lieutenant_endstate: completed
+        return_to_outbounder_hq_endstate: completed
+missionset_main_grasslands2a:
+  status: completed
+  missions:
+    mission_main_grasslands2:
+      ui_flags: 1
+      status: completed
+      final:
+        find_zadra_1_endstate: completed
+        kill_the_gunship_endstate: completed
+        invis_fast_complete_generator_endstate: completed
+        wait_for_zadra_endstate: completed
+        enter_slide_quick_complete_endstate: completed
+        find_zadra_endstate: completed
+        holder_for_timekeeper_vo_finish_endstate: completed
+        kill_roof_intro_guys_endstate: completed
+        kill_synth_reinforcements_invis_tracker_endstate: deactivated
+        combat_composit_obj_endstate: deactivated
+missionset_main_grasslands2b:
+  status: completed
+  missions:
+    mission_main_grasslands2b:
+      status: completed
+      final:
+        invisunderairship_endstate: completed
+        kill_factory_boss_endstate: completed
+        removedebris_endstate: completed
+        evacuateship_endstate: completed
+        gettohq_endstate: completed
+missionset_main_grasslands3:
+  status: completed
+  missions:
+    mission_main_grasslands3:
+      status: completed
+      final:
+        enterfortress_endstate: completed
+        gettosaftey_endstate: completed
+        kill_commander_endstate: completed
+        opengate_endstate: completed
+        salvagelocusts_endstate: completed
+        advancetofortress_endstate: completed
+        findairshiphangar_endstate: completed
+        bosswaypoint03_endstate: completed
+        enter_commander_arena_endstate: completed
+missionset_main_mountains1:
+  status: completed
+  missions:
+    mission_main_mountains1:
+      ui_flags: 1
+      status: completed
+missionset_main_mountains2a:
+  status: completed
+  missions:
+    mission_main_mountains2:
+      status: completed
+missionset_main_mountains2b:
+  status: completed
+  missions:
+    mission_main_mountains2b:
+      status: completed
+      final:
+        obj_findawayin_endstate: completed
+        obj_overarching_findphase_endstate: completed
+missionset_main_mountains3:
+  status: completed
+  missions:
+    mission_main_mountains3:
+      status: completed
+      final:
+        obj_destroydoorlocks_endstate: completed
+        invis_obj_waypointforwayback_endstate: completed
+        obj_killcommander_endstate: completed
+        obj_lootcommandersbolt_endstate: completed
+missionset_main_postgame:
+  status: completed
+  cursorposition: 3
+  missions:
+    micro_uvh_blackmarkettutorial:
+      status: completed
+    micro_uvh_firmwaretransfertutorial:
+      status: completed
+      exit: Micro_UVH_FirmwareTransferTutorial_SHA_Exit
+    micro_uvh_trait:
+      status: completed
+      final:
+        talktolilith_endstate: completed
+    micro_uvh_trueboss:
+      status: completed
+      exit: Exit
+missionset_main_prisonprologue:
+  status: completed
+  missions:
+    mission_main_prisonprologue:
+      status: completed
+      final:
+        possessionscene_endstate: completed
+        obj_followarjay_walkntalk_endstate: completed
+        obj_firstswim_endstate: completed
+        inv_gettocrouch_endstate: completed
+        inv_afterprisonexit_endstate: completed
+        inv_beforeprisonexit_endstate: completed
+        inv_firstdropdown_endstate: completed
+missionset_main_searchforlilith:
+  status: completed
+  missions:
+    mission_main_searchforlilith:
+      status: completed
+      final:
+        sfl_activate_space_elevator_endstate: completed
+        sfl_talk_to_amara_endstate: completed
+missionset_main_shatteredlands1:
+  status: completed
+  cursorposition: 1
+  missions:
+    mission_main_shatteredlands1:
+      ui_flags: 1
+      status: completed
+    mission_main_shatteredlands1b:
+      ui_flags: 1
+      status: completed
+      final:
+        meet_zane_endstate: completed
+        head_to_the_electi_council_chamber_0_endstate: completed
+missionset_main_shatteredlands2:
+  status: completed
+  missions:
+    mission_main_shatteredlands2:
+      status: completed
+      exit: Exit
+      final:
+        melee_generator_endstate: completed
+        activate_core_chamber_systems_endstate: completed
+        find_a_power_core_endstate: completed
+        repair_leaders_chamber_critical_systems_endstate: completed
+        restore_flowing_water_to_carcadia_endstate: completed
+        findquent_endstate: completed
+        ppppoutpost2_echo_endstate: completed
+        ppppoutpost1_echo_endstate: completed
+        invisechocollection_endstate: completed
+        kill_badass_security_jones_endstate: completed
+        kill_reinforcements_endstate: completed
+        pull_the_device_endstate: completed
+        destroy_the_fuel_endstate: deactivated
+        save_quent_endstate: completed
+missionset_main_shatteredlands3:
+  status: completed
+  missions:
+    mission_main_shatteredlands3:
+      status: completed
+      final:
+        killrip_fortfrontbadass_endstate: completed
+        gotoramp_endstate: completed
+        shootbomb_endstate: completed
+        rampillar_endstate: completed
+        turnonramp_endstate: completed
+        enterfortress_endstate: completed
+        killboss_endstate: completed
+missionset_micro_citya:
+  missions:
+    mission_micro_blackmarket:
+      status: completed
+    mission_micro_catnapping:
+      status: completed
+    mission_micro_huntedpart1:
+      status: completed
+    mission_micro_huntedpart2:
+      status: completed
+    mission_micro_huntedpart3:
+      status: completed
+    mission_micro_joeandsue:
+      status: completed
+missionset_micro_cityb:
+  status: completed
+  missions:
+    mission_micro_resistance:
+      status: completed
+missionset_micro_grasslandsa:
+  status: completed
+  missions:
+    micro_grasslands_abductioninjunction:
+      status: completed
+    micro_grasslands_abductioninjunctionending:
+      status: completed
+    mission_micro_rainbowegg:
+      status: completed
+    mission_micro_whackathresher:
+      status: completed
+      final:
+        ground_pound_thresher_1_fast_complete_endstate: completed
+missionset_micro_grasslandsb:
+  missions:
+    micro_grasslands_carriedaway01:
+      status: completed
+    micro_grasslands_carriedaway02:
+      status: completed
+    micro_grasslands_carriedaway03:
+      status: completed
+    micro_grasslands_hydroplantpowerup:
+      ui_flags: 1
+      status: completed
+      final:
+        flipswitch4_endstate: completed
+    micro_grasslands_hydroplantpowerup2:
+      status: completed
+    micro_grasslands_splicersplits:
+      status: completed
+    micro_grasslands_splicersplits2:
+      status: completed
+      final:
+        invisfollowleggies_endstate: completed
+    micro_grasslands_splicersplits3:
+      status: completed
+      final:
+        searchforlegs03_endstate: completed
+    mission_micro_heistrecruits_demo:
+      status: completed
+    mission_micro_heistrecruits_tech:
+      status: completed
+missionset_micro_grasslandsc:
+  status: completed
+  missions:
+    micro_grasslands_extremebopit:
+      status: completed
+    micro_grasslands_extremebopit2:
+      status: completed
+    micro_grasslands_extremebopit3:
+      status: completed
+    micro_grasslands_gottagofast:
+      status: completed
+    micro_grasslands_underconstruction:
+      status: completed
+missionset_micro_grasslandse:
+  status: completed
+  missions:
+    micro_grasslands_faction01intro:
+      status: completed
+    micro_grasslands_faction02outro:
+      status: completed
+    micro_grasslands_faction03intro:
+      status: completed
+    mission_micro_powercoreplinko:
+      status: completed
+      final:
+        got_a_bad_prize_endstate: deactivated
+        toss_in_the_powercore_endstate: completed
+missionset_micro_mountainsa:
+  missions:
+    micro_augerscout:
+      status: completed
+    micro_blackmarketbolts:
+      status: completed
+    micro_boltfuneralrites:
+      ui_flags: 1
+      status: completed
+    micro_mountains_whoneedsinstructions:
+      status: completed
+      final:
+        killrohkia_endstate: completed
+        killalan: completed
+    micro_mountains_youarethelifecoachpt1:
+      status: completed
+      final:
+        donetalkingwsbats: completed
+        embodynegativity: completed
+        killwayward_endstate: completed
+        killrippers_endstate: completed
+    micro_nevermeetyourheroes:
+      ui_flags: 1
+      status: completed
+    mission_micro_backmccrackypt1:
+      status: completed
+missionset_micro_mountainsb:
+  status: completed
+  missions:
+    micro_orderup:
+      ui_flags: 1
+      status: completed
+missionset_micro_mountainsd:
+  status: completed
+  missions:
+    mission_micro_mountainsfaction4intro:
+      status: completed
+missionset_micro_mountainse:
+  status: completed
+  missions:
+    mission_micro_theentertainment:
+      status: completed
+    mission_micro_thesupply:
+      status: completed
+missionset_micro_shatteredlandsa:
+  status: completed
+  missions:
+    micro_shattered_htbripperpbj:
+      status: completed
+      final:
+        finishgivingj: completed
+    micro_shattered_siblingrivalry:
+      status: completed
+    micro_shattered_vgdave:
+      status: completed
+      exit: Exit_1
+    micro_shattered_william:
+      status: completed
+      exit: Exit
+    mission_micro_andwelcometothejam:
+      status: completed
+    vendingmicro1_zink:
+      status: completed
+      exit: Exit
+missionset_micro_shatteredlandsb:
+  status: completed
+  missions:
+    micro_shattered_ep_agri:
+      status: completed
+    micro_shattered_ep_mole:
+      status: completed
+      final:
+        placedevices_endstate: completed
+        activatedevices_endstate: completed
+    micro_shattered_hof1:
+      status: completed
+missionset_micro_shatteredlandsd:
+  status: completed
+  missions:
+    micro_shattered_brokenships:
+      status: completed
+    micro_shattered_ripplesandrituals:
+      status: completed
+missionset_side_citya:
+  status: completed
+  missions:
+    event_side_noescaperoom:
+      status: completed
+    event_side_thepriceoffreedompart1:
+      status: completed
+    mission_city_side_overwritingawrong:
+      status: completed
+    mission_side_belowthesurface:
+      status: completed
+    mission_side_city_aaaforeffort:
+      status: completed
+      final:
+        ordonitebatteryfactoryisactive: true
+        screenactivationstep3: true
+        screenactivationstep2: true
+    mission_side_city_waterthechances:
+      status: completed
+    mission_side_noescaperoom:
+      status: completed
+      final:
+        managernumsuccesses: 5
+    mission_side_seedsofrevolutionpart1:
+      status: completed
+    mission_side_thepriceoffreedompart1:
+      status: completed
+    mission_side_thepriceoffreedompart2:
+      status: completed
+    mission_side_thepriceoffreedompart3:
+      status: completed
+missionset_side_cityb:
+  status: completed
+  missions:
+    mission_side_oldraymondpart1:
+      status: completed
+    mission_side_oldraymondpart2:
+      status: completed
+    mission_side_onegassyissue:
+      status: completed
+    mission_side_seedsofrevolutionpart2:
+      status: completed
+    mission_side_whatlurksbeneath:
+      status: completed
+missionset_side_grasslandsa:
+  status: completed
+  cursorposition: 1
+  missions:
+    grasslands_side_claptrapofpandora:
+      status: completed
+      final:
+        retrieve_the_portrait_endstate: completed
+        reach_the_bunker__endstate: completed
+        destroy_the_toilet_endstate: completed
+    grasslands_side_claptrapofpandora_invis_postmission:
+      status: completed
+    grasslands_side_claptrapofpandora_invis_respawn:
+      status: completed
+    grasslands_side_murdermystery:
+      status: completed
+      final:
+        enter_the_bunker_endstate: deactivated
+        kill_the_ice_cream_man_endstate: deactivated
+        listen_to_final_radio_endstate: completed
+    grasslands_side_murdermystery_beckon:
+      status: completed
+    grasslands_side_salvagerippertunnelsintro:
+      status: completed
+    mission_side_lifespurpose:
+      ui_flags: 1
+      status: completed
+      final:
+        find_guide_endstate: completed
+        start_launch_sequence_endstate: completed
+        dumb_rando_encoutners_endstate: completed
+    mission_side_thecure:
+      status: completed
+    mission_side_thecureintro:
+      status: completed
+    mission_side_thresherrancher:
+      status: completed
+      final:
+        subdue_quick_complete_endstate: completed
+    mission_side_thresherrancherintro:
+      status: completed
+    side_grasslands_salvagerippertunnels:
+      status: completed
+      final:
+        invisderekhacks_endstate: completed
+    side_grasslands_sumofhisparts:
+      status: completed
+missionset_side_grasslandsb:
+  status: completed
+  missions:
+    mission_side_heist:
+      ui_flags: 1
+      status: completed
+      final:
+        take_a_walk_with_shim_endstate: completed
+        empty_holder_to_fail_relay_obj_endstate: deactivated
+        single_pickup_for_a_dumb_pickup_endstate: completed
+        turn_off_power_relays_endstate: deactivated
+    side_grasslands_lighthousekeeper:
+      status: completed
+missionset_side_grasslandse:
+  status: completed
+  cursorposition: 2
+  missions:
+    grasslands_survivalists01:
+      status: completed
+      final:
+        talktoscout_endstate: completed
+        activatewarpdrive_endstate: completed
+    grasslands_survivalists02:
+      status: completed
+    grasslands_survivalists03:
+      status: completed
+missionset_side_mountainsa:
+  status: completed
+  missions:
+    grasslands_side_rocketmonsters:
+      status: completed
+      final:
+        bombsquaddead_final: completed
+        killjake_final1: completed
+        killjose_final2: deactivated
+        killjake_final2: deactivated
+        killjosey_final1: completed
+    mission_side_flatkairoser:
+      status: completed
+    mission_side_lifecoach:
+      status: completed
+      final:
+        takemoodrock: completed
+    mission_side_mountainsfaction1:
+      status: completed
+    mission_side_mountainsfaction2:
+      status: completed
+    mission_side_mountainsfaction3:
+      status: completed
+    mission_side_mountainsfaction4:
+      status: completed
+    mission_side_obstaclecourse_grapple:
+      status: completed
+    mission_side_obstaclecourseglide:
+      status: completed
+missionset_side_mountainsb:
+  status: completed
+  missions:
+    mission_side_madscientist:
+      ui_flags: 1
+      status: completed
+missionset_side_mountainsc:
+  status: completed
+  missions:
+    mission_side_theweirdwayhome:
+      status: completed
+      final:
+        morilastwait: completed
+        exitportal2: completed
+        userift_endstate: completed
+missionset_side_mountainsd:
+  missions:
+    mission_side_planetaryescape:
+      status: completed
+      final:
+        punch_wrapup_endstate: deactivated
+        break_open_machine_3_endstate: completed
+        break_open_machine_2_endstate: completed
+        break_open_machine_1_endstate: completed
+        fix_conmans_machine_endstate: completed
+        quick_enter_rift_complete_endstate: completed
+        enter_the_rift_endstate: completed
+    mission_side_planetaryescape_intro2:
+      status: completed
+missionset_side_postgame:
+  status: completed
+  cursorposition: 1
+  missions:
+    mission_micro_zanzibart:
+      status: completed
+missionset_side_shatteredlandsa:
+  status: completed
+  missions:
+    mission_side_agreatdisturbance:
+      status: completed
+      final:
+        reroute_power_flow_endstate: completed
+        search_for_a_keycard_endstate: completed
+        reroute_power_to_console_endstate: completed
+        use_keycard_endstate: completed
+    mission_side_castingcall:
+      status: completed
+    mission_side_castingcall_kickoff:
+      status: completed
+    mission_side_clapgen:
+      status: completed
+    mission_side_vending:
+      status: completed
+      exit: Exit
+      final:
+        talkstreamsstart_endstate: completed
+        buyback_inputcode_endstate: completed
+        combat_inputcode_endstate: completed
+missionset_side_shatteredlandsb:
+  missions:
+    mission_side_electifactionmission1:
+      status: completed
+      final:
+        findcrates_endstate: completed
+        opencrates_endstate: completed
+        leavecratearea: completed
+        reachseabase: completed
+        foundboomsticks: completed
+        placedbombsship2: completed
+        placedbombsship3: completed
+        placedbombsship1: completed
+        killmeatmeat_endstate: completed
+missionset_side_shatteredlandsc:
+  status: completed
+  missions:
+    mission_side_electifactionmission2:
+      status: completed
+      final:
+        echobadasskilled: completed
+        explore_cave_waypoiont_endstate: completed
+        shootmolenodept4_endstate: completed
+missionset_side_shatteredlandsd:
+  status: completed
+  missions:
+    mission_side_electifactionmission3:
+      status: completed
+      final:
+        invsbreadcrumb_endstate: completed
+        tomolebreadcrumb_endstate: completed
+missionset_vault_grasslands:
+  status: completed
+  missions:
+    mission_side_grasslandsvault:
+      status: completed
+      final:
+        lootvaultpower_endstate: completed
+        defeatinceptus_endstate: completed
+missionset_vault_mountains:
+  status: completed
+  missions:
+    mission_side_vault_glide:
+      status: completed
+      final:
+        bossfight_endstate: completed
+missionset_vault_shatteredlands:
+  status: completed
+  missions:
+    mission_side_resonatorvault:
+      status: completed
+      final:
+        defeatshatteredlandsvaultguardian_endstate: completed
+missionset_zoneactivity_crawler:
+  missions:
+    zoneactivity_grasslands_crawler1:
+      status: completed
+    zoneactivity_grasslands_crawler2:
+      status: completed
+    zoneactivity_grasslands_crawler3:
+      status: completed
+    zoneactivity_grasslands_crawler4:
+      status: completed
+    zoneactivity_mountains_crawler1:
+      status: completed
+    zoneactivity_mountains_crawler2:
+      status: completed
+    zoneactivity_mountains_crawler3:
+      status: completed
+    zoneactivity_mountains_crawler4:
+      status: completed
+    zoneactivity_shatteredlands_crawler1:
+      status: completed
+    zoneactivity_shatteredlands_crawler2:
+      status: completed
+    zoneactivity_shatteredlands_crawler3:
+      status: completed
+missionset_zoneactivity_drillsite:
+  missions:
+    zoneactivity_grasslands_drillsite1:
+      status: completed
+    zoneactivity_grasslands_drillsite2:
+      status: completed
+    zoneactivity_mountains_drillsite1:
+      status: completed
+    zoneactivity_mountains_drillsite2:
+      status: completed
+    zoneactivity_shatteredlands_drillsite1:
+      status: completed
+    zoneactivity_shatteredlands_drillsite2:
+      status: completed
+missionset_zoneactivity_mine:
+  missions:
+    zoneactivity_city_mine1:
+      status: completed
+      final:
+        find_the_entrance_to_the_mine_endstate: completed
+    zoneactivity_grasslands_mine1:
+      status: completed
+      final:
+        find_the_entrance_to_the_mine_endstate: completed
+    zoneactivity_grasslands_mine2:
+      status: completed
+      final:
+        find_the_entrance_to_the_mine_endstate: completed
+    zoneactivity_mountains_mine1:
+      status: completed
+      final:
+        find_the_entrance_to_the_mine_endstate: completed
+    zoneactivity_mountains_mine2:
+      status: completed
+      final:
+        find_the_entrance_to_the_mine_endstate: completed
+    zoneactivity_shatteredlands_mine1:
+      status: completed
+      final:
+        find_the_entrance_to_the_mine_endstate: completed
+    zoneactivity_shatteredlands_mine2:
+      status: completed
+      final:
+        find_the_entrance_to_the_mine_endstate: completed
+missionset_zoneactivity_orderbunker:
+  missions:
+    zoneactivity_city_orderbunker1:
+      status: completed
+      final:
+        open_the_door_endstate: completed
+    zoneactivity_grasslands_orderbunker1:
+      status: completed
+      final:
+        open_the_door_endstate: completed
+    zoneactivity_grasslands_orderbunker2:
+      status: completed
+      final:
+        open_the_door_endstate: completed
+    zoneactivity_mountains_orderbunker1:
+      status: completed
+      final:
+        open_the_door_endstate: completed
+    zoneactivity_mountains_orderbunker2:
+      status: completed
+      final:
+        open_the_door_endstate: completed
+    zoneactivity_shatteredlands_orderbunker1:
+      status: completed
+      final:
+        open_the_door_endstate: completed
+missionset_zoneactivity_safehouse:
+  missions:
+    zoneactivity_city_safehouse1:
+      status: completed
+      final:
+        fact_lightson: true
+    zoneactivity_city_safehouse2:
+      status: completed
+      final:
+        fact_lightson: true
+    zoneactivity_city_safehouse3:
+      status: completed
+      final:
+        fact_lightson: true
+    zoneactivity_grasslands_safehouse2:
+      status: completed
+      final:
+        fact_lightson: true
+    zoneactivity_grasslands_safehouse3:
+      status: completed
+      final:
+        fact_lightson: true
+    zoneactivity_grasslands_safehouse4:
+      status: completed
+      final:
+        fact_lightson: true
+    zoneactivity_grasslands_safehousemain:
+      status: completed
+      final:
+        fact_lightson: true
+        find_the_datapad_endstate: completed
+        claim_the_command_console_endstate: completed
+    zoneactivity_mountains_safehouse1:
+      status: completed
+      final:
+        fact_lightson: true
+    zoneactivity_mountains_safehouse2:
+      status: completed
+      final:
+        claim_the_command_console_endstate: completed
+        fact_lightson: true
+    zoneactivity_mountains_safehouse3:
+      status: completed
+      final:
+        fact_lightson: true
+    zoneactivity_mountains_safehouse4:
+      status: completed
+      final:
+        fact_lightson: true
+    zoneactivity_shatteredlands_safehouse1:
+      status: completed
+    zoneactivity_shatteredlands_safehouse2:
+      status: completed
+      final:
+        fact_lightson: true
+    zoneactivity_shatteredlands_safehouse3:
+      status: completed
+      final:
+        fact_lightson: true
+missionset_zoneactivity_silo:
+  missions:
+    zoneactivity_grasslands_silo1:
+      status: completed
+    zoneactivity_grasslands_silo2:
+      status: completed
+    zoneactivity_grasslands_silo3:
+      status: completed
+    zoneactivity_mountains_silo1:
+      status: completed
+    zoneactivity_mountains_silo2:
+      status: completed
+    zoneactivity_mountains_silo3:
+      status: completed
+    zoneactivity_shatteredlands_silo1:
+      status: completed
+    zoneactivity_shatteredlands_silo2:
+      status: completed
+    zoneactivity_shatteredlands_silo3:
+      status: completed
