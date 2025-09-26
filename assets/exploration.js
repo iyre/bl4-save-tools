@@ -86,20 +86,25 @@ function visitAllWorlds(data) {
   gbx.metrics.hasseenregionlist.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 }
 
+function loadLocations() {
+  const compressed = Uint8Array.from(atob(LOCATIONS_COMPRESSED), c => c.charCodeAt(0));
+  const decompressed = pako.inflate(compressed, { to: 'string' });
+  return decompressed.split(',');
+}
+
 function addDiscoveredLocations(data, locationSubstrings) {
-  // Confirm locations were loaded
-  if (!Array.isArray(DISCOVERED_LOCATIONS) || DISCOVERED_LOCATIONS.length === 0) {
+  const allLocations = loadLocations();
+  if (!Array.isArray(allLocations) || allLocations.length === 0) {
     alert("Discovered locations data not loaded!");
     return;
   }
   data.gbx_discovery_pg = data.gbx_discovery_pg || {};
 
-  // Read and split existing dlblob. Not sure what :1: vs :2: means, but :2: seems most "complete".
   let existingBlob = data.gbx_discovery_pg['dlblob'] || '';
   let existingEntries = existingBlob.split(/:\d:/);
   let allEntries = new Set(existingEntries);
 
-  for (const line of DISCOVERED_LOCATIONS) {
+  for (const line of allLocations) {
     for (const substr of locationSubstrings) {
       if (line.includes(substr)) {
         allEntries.add(line);
