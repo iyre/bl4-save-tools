@@ -13,7 +13,7 @@
   </div>
   <div class="main-columns">
     <div class="left-column">
-      <div class="section">
+      <div class="section  input-section">
         <label>Upload .sav or .yaml file: <input type="file" id="savInput"></label>
         <br>
         <label>
@@ -28,7 +28,7 @@
         <br>
         <button onclick="importFile()">Import</button>
       </div>
-      <div class="section">
+      <div class="section mod-section">
         <div class="disabled-overlay" id="modSectionOverlay">
           <div class="overlay-message">Import a file first.</div>
         </div>
@@ -52,11 +52,38 @@
           </span>
         </div>
         <div class="mod-row">
-          <button onclick="unlockAllSafehouses()">Unlock All Safehouses</button>
+          <button onclick="completeAllSafehouseMissions()">Unlock All Safehouses</button>
           <span class="mod-tooltip">
             ?
             <span class="mod-tooltiptext">
               Complete all safehouse and silo activities, unlocking them as fast travel destinations.
+            </span>
+          </span>
+        </div>
+        <div class="mod-row">
+          <button onclick="completeAllCollectibles()">Unlock All Collectibles</button>
+          <span class="mod-tooltip">
+            ?
+            <span class="mod-tooltiptext">
+              Complete all collectibles such as echo logs, propaganda towers, and vault keys.
+            </span>
+          </span>
+        </div>
+        <div class="mod-row">
+          <button onclick="completeAllStoryMissions()">Skip Story Missions</button>
+          <span class="mod-tooltip">
+            ?
+            <span class="mod-tooltiptext">
+              Complete all main story missions.
+            </span>
+          </span>
+        </div>
+        <div class="mod-row">
+          <button onclick="completeAllMissions()">Skip All Missions</button>
+          <span class="mod-tooltip">
+            ?
+            <span class="mod-tooltiptext">
+              Complete all main and side missions.
             </span>
           </span>
         </div>
@@ -66,15 +93,6 @@
             ?
             <span class="mod-tooltiptext">
               Update SDU token pool to match completed activities and collectibles.
-            </span>
-          </span>
-        </div>
-        <div class="mod-row">
-          <button onclick="skipStory()">Skip Story Missions</button>
-          <span class="mod-tooltip">
-            ?
-            <span class="mod-tooltiptext">
-              Complete all main story missions.
             </span>
           </span>
         </div>
@@ -112,8 +130,8 @@
   
   <script src="./assets/bl4web.js"></script>
   <script src="./assets/crypto.js"></script>
+  <script src="./assets/blobs.js"></script>
   <script src="./assets/values.js"></script>
-  <script src="./assets/locations.js"></script>
   <script src="./assets/exploration.js"></script>
   <script src="./assets/missions.js"></script>
   <script src="./assets/sdu.js"></script>
