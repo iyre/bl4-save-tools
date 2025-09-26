@@ -5,7 +5,7 @@ Location icons (points of interest) on the map are revealed when you get close e
 
 Discovered locations are stored in the save file YAML under `gbx_discovery_pg` > `dlblob`
 - List of location IDs, e.g. `DLMD_World_P_IO_LostCapsule_DecryptStation_UAID_089204DCF7EF54FE01_1960602211:2:`
-- Location IDs are stored end-to-end in a **long** uncompressed string (string can exceed 50k characters, i.e. 50 KB).
+- Location IDs are stored end-to-end in a **long** uncompressed string (can exceed 50k characters, i.e. 50 KB).
 - IDs are always followed by either `:1:` or `:2:` which serve as separators (meaning unknown).
 
 Most POIs don't have easily distinguishable names. For example, all activities have the same prefix, `DLMD_World_P_PoAActor_UAID`, but specific activities (e.g. safehouses) aren't differentiated.
