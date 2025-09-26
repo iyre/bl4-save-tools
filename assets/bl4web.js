@@ -9,7 +9,6 @@ require(['vs/editor/editor.main'], function() {
     language: 'yaml',
     theme: 'vs-dark',
     automaticLayout: true,
-    minimap: { enabled: false }
   });
 });
 
