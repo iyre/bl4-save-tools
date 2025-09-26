@@ -11,8 +11,10 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Remove map fog
   - Discover all locations
   - Unlock all safehouses
-  - Re-calculate SDU points
+  - Unlock all collectibles
   - Skip story missions
+  - Skip all missions
+  - Re-calculate SDU points
   - Unlock UVH mode
 
 ## Usage
@@ -44,18 +46,22 @@ These run JavaScript functions which apply specific edits to save files quickly 
   - Sets fog of war overlay for every map to 100% discovered - [technical details](docs/exploration.md)
 - Discover all locations
   - Makes all point of interest (POI) markers visible on your map.
-  - Adds a (reasonably complete) predefined list of locations to your existing list of discovered locations.
 - Unlock all safehouses
   - Unlocks fast travel to all safehouses and silos
   - Completes all missions (activities) that unlock safehouses and silos (run SDU point re-calcualtion afterward)
   - This does not add POI markers.
+- Unlock all collectibles
+  - Marks all collectibles as found. ECHO logs, capsules, etc.
+  - This does not add POI markers.
+- Skip story missions
+  - Completes all missions related to the main story. Doesn't modify any other missions.
+  - Functionally equivalent to starting a new save with the in-game story skip option. (Does not unlock that option)
+- Skip all missions
+  - Completes all missions including the main story, vaults, and activities like drill sites.
 - Re-calculate SDU points
   - Re-calculates available SDU points based on completed activities and found collectibles, updating the value in your save.
   - Will reset SDU purchases if total is lower than the sum of spent points (points are refunded)
   - Recommended after modifying activities (e.g. safehouses) or collectibles, which increment this total only when completed in-game.
-- Skip story missions
-  - Completes all missions related to the main story. Doesn't modify any other missions.
-  - Functionally equivalent to starting a new save with the in-game story skip option. (Does not unlock that option)
 - Unlock Ultimate Vault Hunter Mode
   - Sets values in the save to unlock UVHM 1-5. You can select any difficulty in-game.
   - Loading a save with this & story completion will enable starting at level 30 (flag is automatically added to `profile.sav`)
