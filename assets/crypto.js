@@ -1,18 +1,38 @@
 // functions for encrypting/decrypting Borderlands 4 .sav files in the browser
 
+function utf16leBytes(str) {
+  const bytes = [];
+  for (let i = 0; i < str.length; i++) {
+    const code = str.charCodeAt(i);
+    bytes.push(code & 0xFF, (code >> 8) & 0xFF);
+  }
+  return bytes;
+}
+
 function deriveKey(userID) {
   const BASE_KEY = [
     0x35,0xEC,0x33,0x77,0xF3,0x5D,0xB0,0xEA,0xBE,0x6B,0x83,0x11,0x54,0x03,0xEB,0xFB,
     0x27,0x25,0x64,0x2E,0xD5,0x49,0x06,0x29,0x05,0x78,0xBD,0x60,0xBA,0x4A,0xA7,0x87
   ];
-  let sid = BigInt(userID.replace(/\D/g, ''));
-  let sid_le = [];
-  for (let i = 0; i < 8; i++) {
-    sid_le.push(Number(sid & 0xFFn));
-    sid >>= 8n;
-  }
   let k = BASE_KEY.slice();
-  for (let i = 0; i < 8; i++) k[i] ^= sid_le[i];
+
+  let uid_bytes;
+  if (/^\d{17,}$/.test(userID)) {
+    // Steam ID: treat as 8-byte little-endian
+    let sid = BigInt(userID);
+    uid_bytes = [];
+    for (let i = 0; i < 8; i++) {
+      uid_bytes.push(Number(sid & 0xFFn));
+      sid >>= 8n;
+    }
+  } else {
+    // Epic ID: UTF-16LE bytes
+    uid_bytes = utf16leBytes(userID);
+  }
+
+  for (let i = 0; i < Math.min(k.length, uid_bytes.length); i++) {
+    k[i] ^= uid_bytes[i];
+  }
   return k;
 }
 
