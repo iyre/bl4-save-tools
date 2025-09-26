@@ -101,7 +101,7 @@ function addDiscoveredLocations(data, locationSubstrings) {
   data.gbx_discovery_pg = data.gbx_discovery_pg || {};
 
   let existingBlob = data.gbx_discovery_pg['dlblob'] || '';
-  let existingEntries = existingBlob.split(/:\d:/);
+  let existingEntries = existingBlob.split(/:\d:/).filter(Boolean);
   let allEntries = new Set(existingEntries);
 
   for (const line of allLocations) {
