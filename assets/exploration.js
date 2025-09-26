@@ -13,7 +13,7 @@ function clearMapFog() {
     'Intro_P', 'World_P', 'Vault_Grasslands_P', 'Fortress_Grasslands_P',
     'Vault_ShatteredLands_P', 'Fortress_Shatteredlands_P',
     'Vault_Mountains_P', 'Fortress_Mountains_P',
-    'ElpisElevator_P', 'Elpis_P'
+    'ElpisElevator_P', 'Elpis_P', 'UpperCity_P'
   ];
   const commonFields = {
     foddimensionx: 128,
