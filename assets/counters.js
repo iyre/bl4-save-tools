@@ -1,3 +1,5 @@
+// Functions for manipulating counter-type data
+
 function loadCollectibles() {
   const compressed = Uint8Array.from(atob(COLLECTIBLES_COMPRESSED), c => c.charCodeAt(0));
   const yamlBytes = pako.inflate(compressed);
@@ -49,7 +51,7 @@ function completeAllCollectibles() {
   // Update the editor with the new YAML
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  alert("Collectibles applied!");
+  showPresetNotification();
 }
 
 function unlockUVHMode() {
@@ -69,7 +71,7 @@ function unlockUVHMode() {
   // Update editor
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  alert("UVH Mode Unlocked!");
+  showPresetNotification();
 }
 
 function setStoryValues() {
@@ -102,5 +104,5 @@ function setStoryValues() {
   // Update editor
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  alert("Story skip values set!");
+  showPresetNotification();
 }

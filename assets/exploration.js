@@ -1,3 +1,5 @@
+// Functions for manipulating exploration & discovery data
+
 function clearMapFog() {
   const yamlText = editor.getValue();
   let data;
@@ -44,7 +46,7 @@ function clearMapFog() {
   // Update editor
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  alert("Map fog cleared!");
+  showPresetNotification();
 }
 
 // not sure what these control, but they're related to map discovery
@@ -131,5 +133,5 @@ function discoverAllLocations() {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  alert("Locations discovered!");
+  showPresetNotification();
 }

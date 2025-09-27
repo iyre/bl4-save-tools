@@ -1,3 +1,5 @@
+// Functions for calculating/updating SDU token total based on progression state
+
 function updateSDUPoints() {
   const ACTIVITY_POINTS = 40;
   const ACTIVITIES = [
@@ -63,5 +65,5 @@ function updateSDUPoints() {
   // Update editor with new YAML
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  alert("Echo Token Points updated to " + total + "!");
+  showPresetNotification();
 }

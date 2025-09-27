@@ -1,3 +1,22 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: row;
+  min-height: 0;
+}
+
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0;
@@ -10,7 +29,7 @@ body {
 h1 {
   text-align: center;
   margin: 0;
-  padding: 1rem;
+  padding: 0.5rem;
   font-size: 2.2rem;
   letter-spacing: 1px;
 }
@@ -43,7 +62,9 @@ input[type="text"] {
   border-radius: 5px;
   padding: 0.5em;
   margin-top: 0.3em;
+  display: block;
   width: 100%;
+  height: 2.3rem;
   max-width: 350px;
   box-sizing: border-box;
 }
@@ -59,20 +80,23 @@ button {
   transition: background 0.2s;
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
-
 button:hover {
-  background: #1a73e8;
+  background: #106adf;
 }
 
 button.secondary {
   background: #444;
-  color: #fff;
 }
 button.secondary:hover, button.secondary:focus {
   background: #666;
 }
 
-.main-columns {
+.preset-row button {
+  font-size: 0.95rem;
+  padding: 0.4em;
+}
+
+.main-content {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -86,20 +110,20 @@ button.secondary:hover, button.secondary:focus {
   box-sizing: border-box;
 }
 
-.left-column,
-.right-column {
+.controls-group,
+.editor-group {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.left-column {
+.controls-group {
   flex: 0 0 370px;
   min-width: 320px;
   max-width: 420px;
 }
 
-.right-column {
+.editor-group {
   flex: 2 1 0;
   min-width: 400px;
   display: flex;
@@ -107,15 +131,14 @@ button.secondary:hover, button.secondary:focus {
   height: 100%;
 }
 
-.right-column .section {
-  flex: 1 1 0;
+.editor-group .section {
   max-width: none;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.input-section, .mod-section {
+.input-section, .preset-section {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
@@ -133,13 +156,12 @@ button.secondary:hover, button.secondary:focus {
 
 #editor {
   width: 100% !important;
-  flex: 1 1 0;
-  min-height: 350px;
   height: 100% !important;
+  min-height: 350px;
+  flex: 1 1 0;
   border: 1px solid #444;
   border-radius: 5px;
   background: #1e1e1e;
-  resize: none;
 }
 
 .tooltip {
@@ -148,89 +170,71 @@ button.secondary:hover, button.secondary:focus {
   border-bottom: 1px dotted #aaa;
 }
 
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 260px;
-  background-color: #333;
-  color: #fff;
-  text-align: left;
-  border-radius: 6px;
-  padding: 0.7em;
-  position: absolute;
-  z-index: 10;
-  bottom: 125%; /* Position above */
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.2s;
-  font-size: 0.95em;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-}
-
-.tooltip:hover .tooltiptext,
-.tooltip:focus .tooltiptext {
-  visibility: visible;
-  opacity: 1;
-}
-
-.mod-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.mod-row button {
-  flex: 1 1 0;
-  width: auto;
-  min-width: 120px;
-}
-
-.mod-tooltip {
+.preset-tooltip {
   position: relative;
   display: inline-block;
   cursor: help;
-  color: #bbb;
+  color: #8ec6f7;
   font-size: 1.1em;
   border-radius: 50%;
   width: 1.5em;
   height: 1.5em;
   text-align: center;
   line-height: 1.5em;
-  background: #23272b;
-  border: 1px solid #444;
+  background: #181c20;
+  border: 1px solid #2d8cf0;
   margin-left: 0.3em;
 }
 
-.mod-tooltip .mod-tooltiptext {
+.tooltiptext {
   visibility: hidden;
   width: 260px;
-  background-color: #333;
+  background-color: #252525;
   color: #fff;
   text-align: left;
   border-radius: 6px;
   padding: 0.7em;
   position: absolute;
-  z-index: 10;
-  bottom: 125%;
-  left: 50%;
-  transform: translateX(-50%);
+  z-index: 20;
+  left: 105%;
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
   opacity: 0;
   transition: opacity 0.2s;
-  font-size: 0.95em;
+  font-size: 0.95rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  max-width: 90vw;
+  box-sizing: border-box;
+  white-space: normal;
+  word-break: break-word;
 }
 
-.mod-tooltip:hover .mod-tooltiptext,
-.mod-tooltip:focus .mod-tooltiptext {
+.tooltip:hover .tooltiptext,
+.tooltip:focus .tooltiptext,
+.preset-tooltip:hover .tooltiptext,
+.preset-tooltip:focus .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+
+.preset-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.preset-row button {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 4em;
 }
 
 .disabled-overlay {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(24, 28, 32, 0.7);
-  z-index: 20;
+  z-index: 10;
   pointer-events: all;
   display: block;
 }
@@ -255,18 +259,21 @@ button.secondary:hover, button.secondary:focus {
 .editor-header h2 {
   margin: 0;
 }
+.editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7em;
+  align-items: center;
+}
+
 .editor-actions button {
-  margin-left:0.5em;
+  margin: 0;
+  min-width: 110px;
 }
 
 .source-link {
   text-align: center;
-  margin-top: -0.6rem;
-  margin-bottom: 0;
-  font-size: 0.98em;
   opacity: 0.7;
-  position: relative;
-  z-index: 2;
 }
 .source-link a {
   color: #8ec6f7;
@@ -279,45 +286,88 @@ button.secondary:hover, button.secondary:focus {
   opacity: 1;
 }
 
+.preset-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+.preset-notification {
+  display: flex;
+  gap: 0.7em;
+  align-items: right;
+  background: #23272b;
+  color: #8ec6f7;
+  border: 1px solid #2d8cf0;
+  border-radius: 5px;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  right: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  text-align: center;
+  z-index: 30;
+}
+.preset-notification.show {
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+@keyframes flash-notification {
+  0% { background: #23272b; }
+  20% { background: #2d8cf0; color: #fff; }
+  100% { background: #23272b; }
+}
+
+.preset-notification.flash {
+  animation: flash-notification 0.4s;
+}
+
 @media (max-width: 1100px) {
-  .main-columns {
-    flex-direction: column;
-    height: auto;
-  }
-  .left-column, .right-column {
-    max-width: 100%;
-    height: auto;
-  }
-  #editor {
-    min-height: 200px;
-  }
-}
-
-@media (max-width: 900px) {
-  .section {
-    max-width: 98vw;
-    padding: 1rem;
-  }
-  #editor {
-    min-height: 250px;
-    height: 35vh !important;
-  }
-}
-
-@media (max-width: 600px) {
   h1 {
     font-size: 1.3rem;
-    margin-top: 1rem;
+  }
+  h2 {
+    font-size: 1.1rem;
   }
   .section {
     padding: 0.7rem;
   }
-  button {
-    width: 100%;
-    margin: 0.5em 0 0.5em 0;
+  .main-content {
+    flex-direction: column;
+    overflow-x: hidden;
   }
-  #editor {
-    min-height: 120px;
-    height: 25vh !important;
+  .controls-group, .editor-group {
+    max-width: 100%;
+    width: 100%;
+  }
+  button {
+    font-size: 0.95rem;
+    padding: 0.4em;
+  }
+  /* Move preset tooltips to the left to keep them in the viewport */
+  .preset-tooltip .tooltiptext {
+    left: auto;
+    right: 105%;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+  }
+  .preset-notification {
+    font-size: 0.8rem;
+  }
+}
+
+/* Make controls group a row at middle widths */
+@media (max-width: 1100px) and (min-width: 651px) {
+  .controls-group {
+    flex-direction: row;
+  }
+  .input-section,
+  .preset-section {
+    flex: 1 1 0;
+    max-width: 50%;
   }
 }

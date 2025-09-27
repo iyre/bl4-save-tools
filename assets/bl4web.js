@@ -1,4 +1,4 @@
-// bl4web.js
+// Functions for handling UI setup and interaction
 
 // Initialize Monaco Editor
 require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs' }});
@@ -15,12 +15,12 @@ require(['vs/editor/editor.main'], function() {
 let importFilename = 'imported';
 
 function enableSections() {
-  document.getElementById('modSectionOverlay').style.display = 'none';
-  document.getElementById('yamlSectionOverlay').style.display = 'none';
+  document.getElementById('presetSectionOverlay').style.display = 'none';
+  document.getElementById('editorSectionOverlay').style.display = 'none';
 }
 
 async function importFile() {
-  const file = document.getElementById('savInput').files[0];
+  const file = document.getElementById('fileInput').files[0];
   if (!file) { alert("Please select a file to upload."); return; }
   const arrayBuffer = await file.arrayBuffer();
 
@@ -36,7 +36,7 @@ async function importFile() {
     return;
   }
 
-  decryptSav(arrayBuffer)
+  decryptSav(arrayBuffer);
   enableSections();
 }
 
@@ -52,6 +52,33 @@ function downloadYaml() {
   a.download = exportFilename;
   a.click();
   URL.revokeObjectURL(url);
+}
+
+let presetNotificationTimeout = null;
+
+function showPresetNotification(msg, duration = 2000) {
+  const el = document.getElementById('presetNotification');
+  if (!el) return;
+  el.textContent = 'Success';
+  el.style.display = 'block';
+  el.classList.add('show');
+
+  // Trigger flash animation
+  el.classList.remove('flash'); // Remove if already present to restart animation
+  // Force reflow to restart animation
+  void el.offsetWidth;
+  el.classList.add('flash');
+
+  // Clear any previous timeout
+  if (presetNotificationTimeout) {
+    clearTimeout(presetNotificationTimeout);
+  }
+
+  presetNotificationTimeout = setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(() => { el.style.display = 'none'; }, 300);
+    presetNotificationTimeout = null;
+  }, duration);
 }
 
 // Restore user ID from localStorage on page load

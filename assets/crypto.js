@@ -1,4 +1,4 @@
-// functions for encrypting/decrypting Borderlands 4 .sav files in the browser
+// Functions for handling encryption and compression of .sav files
 
 function utf16leBytes(str) {
   const bytes = [];
@@ -41,7 +41,7 @@ function pkcs7Unpad(buf) {
   // Check that all pad bytes are the same
   for (let i = 1; i <= pad; i++) {
     if (buf[buf.length - i] !== pad) {
-      // Padding is invalid, return original buffer (like Python fallback)
+      // Padding is invalid, return original buffer
       console.warn("PKCS7 unpad failed, returning padded data");
       return buf;
     }
@@ -77,11 +77,9 @@ function decryptSav(fileArrayBuffer) {
   localStorage.setItem('bl4_previous_userid', userID);
   const ciph = new Uint8Array(fileArrayBuffer);
 
-  // Derive key
   const keyBytes = deriveKey(userID);
   const keyWordArray = uint8ArrayToWordArray(new Uint8Array(keyBytes));
 
-  // Decrypt AES-ECB
   const ciphWordArray = uint8ArrayToWordArray(ciph);
   const decrypted = CryptoJS.AES.decrypt(
     { ciphertext: ciphWordArray },
@@ -138,7 +136,6 @@ function decryptSav(fileArrayBuffer) {
 
   // Remove !tags and any other unknown tags after a colon
   yamlText = yamlText.replace(/:\s*!tags/g, ':');
-  // Optionally, generalize: yamlText = yamlText.replace(/:\s*!\w+/g, ':');
   let data;
   try {
     data = jsyaml.load(yamlText);
@@ -149,15 +146,12 @@ function decryptSav(fileArrayBuffer) {
 
   // Dump back to YAML to normalize indentation and formatting
   let normalizedYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
-
-  // Set editor content to YAML text
   editor.setValue(normalizedYaml);
-  document.getElementById('yamlSection').style.display = '';
 }
 
 // Encrypt YAML to .sav
 function encryptSav() {
-  const file = document.getElementById('savInput').files[0];
+  const file = document.getElementById('fileInput').files[0];
   const userID = document.getElementById('userIdInput').value.trim();
   if (!file || !userID) { alert("Please select a file and enter Steam/Epic ID."); return; }
 

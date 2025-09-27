@@ -11,10 +11,11 @@
   <div class="source-link">
     <a href="https://github.com/iyre/bl4-save-tools" target="_blank" rel="noopener">View source on GitHub</a>
   </div>
-  <div class="main-columns">
-    <div class="left-column">
-      <div class="section  input-section">
-        <label>Upload .sav or .yaml file: <input type="file" id="savInput"></label>
+  <div class="main-content">
+    <div class="controls-group">
+      <div class="section input-section">
+        <h2>Upload Save</h2>
+        <label>Select .sav or .yaml file: <input type="file" id="fileInput"></label>
         <br>
         <label>
           <span class="tooltip">
@@ -28,92 +29,95 @@
         <br>
         <button onclick="importFile()">Import</button>
       </div>
-      <div class="section mod-section">
-        <div class="disabled-overlay" id="modSectionOverlay">
+      <div class="section preset-section">
+        <div class="disabled-overlay" id="presetSectionOverlay">
           <div class="overlay-message">Import a file first.</div>
         </div>
-        <h2>Quick Modifications</h2>
-        <div class="mod-row">
-          <button onclick="clearMapFog()">Remove Map Fog</button>
-          <span class="mod-tooltip">
+        <div class="preset-header">
+          <h2>Apply Presets</h2>
+          <div class="preset-notification" id="presetNotification" style="display:none;"></div>
+        </div>
+        <div class="preset-row">
+          <button class="secondary" onclick="clearMapFog()">Remove Map Fog</button>
+          <span class="preset-tooltip">
             ?
-            <span class="mod-tooltiptext">
+            <span class="tooltiptext">
               Replace fog of war maps for all levels with 100% explored maps.
             </span>
           </span>
         </div>
-        <div class="mod-row">
-          <button onclick="discoverAllLocations()">Discover All Locations</button>
-          <span class="mod-tooltip">
+        <div class="preset-row">
+          <button class="secondary" onclick="discoverAllLocations()">Discover All Locations</button>
+          <span class="preset-tooltip">
             ?
-            <span class="mod-tooltiptext">
+            <span class="tooltiptext">
               Add all location icons to the map.
             </span>
           </span>
         </div>
-        <div class="mod-row">
-          <button onclick="completeAllSafehouseMissions()">Unlock All Safehouses</button>
-          <span class="mod-tooltip">
+        <div class="preset-row">
+          <button class="secondary" onclick="completeAllSafehouseMissions()">Unlock All Safehouses</button>
+          <span class="preset-tooltip">
             ?
-            <span class="mod-tooltiptext">
+            <span class="tooltiptext">
               Complete all safehouse and silo activities, unlocking them as fast travel destinations.
             </span>
           </span>
         </div>
-        <div class="mod-row">
-          <button onclick="completeAllCollectibles()">Unlock All Collectibles</button>
-          <span class="mod-tooltip">
+        <div class="preset-row">
+          <button class="secondary" onclick="completeAllCollectibles()">Unlock All Collectibles</button>
+          <span class="preset-tooltip">
             ?
-            <span class="mod-tooltiptext">
+            <span class="tooltiptext">
               Complete all collectibles such as echo logs, propaganda towers, and vault keys.
             </span>
           </span>
         </div>
-        <div class="mod-row">
-          <button onclick="completeAllStoryMissions()">Skip Story Missions</button>
-          <span class="mod-tooltip">
+        <div class="preset-row">
+          <button class="secondary" onclick="completeAllStoryMissions()">Skip Story Missions</button>
+          <span class="preset-tooltip">
             ?
-            <span class="mod-tooltiptext">
+            <span class="tooltiptext">
               Complete all main story missions.
             </span>
           </span>
         </div>
-        <div class="mod-row">
-          <button onclick="completeAllMissions()">Skip All Missions</button>
-          <span class="mod-tooltip">
+        <div class="preset-row">
+          <button class="secondary" onclick="completeAllMissions()">Skip All Missions</button>
+          <span class="preset-tooltip">
             ?
-            <span class="mod-tooltiptext">
+            <span class="tooltiptext">
               Complete all main and side missions.
             </span>
           </span>
         </div>
-        <div class="mod-row">
-          <button onclick="updateSDUPoints()">Calculate SDU Points</button>
-          <span class="mod-tooltip">
+        <div class="preset-row">
+          <button class="secondary" onclick="updateSDUPoints()">Calculate SDU Points</button>
+          <span class="preset-tooltip">
             ?
-            <span class="mod-tooltiptext">
+            <span class="tooltiptext">
               Update SDU token pool to match completed activities and collectibles.
             </span>
           </span>
         </div>
-        <div class="mod-row">
-          <button onclick="unlockUVHMode()">Unlock UVHM</button>
-          <span class="mod-tooltip">
+        <div class="preset-row">
+          <button class="secondary" onclick="unlockUVHMode()">Unlock UVHM</button>
+          <span class="preset-tooltip">
             ?
-            <span class="mod-tooltiptext">
+            <span class="tooltiptext">
               Set flags to unlock UVH mode.
             </span>
           </span>
         </div>
       </div>
     </div>
-    <div class="right-column">
-      <div class="section" id="yamlSection">
-        <div class="disabled-overlay" id="yamlSectionOverlay">
+    <div class="editor-group">
+      <div class="section editor-section">
+        <div class="disabled-overlay" id="editorSectionOverlay">
           <div class="overlay-message">Import a file first.</div>
         </div>
         <div class="editor-header">
-          <h2>Edit YAML (advanced)</h2>
+          <h2>Edit YAML (Advanced)</h2>
           <div class="editor-actions">
             <button onclick="encryptSav()">Download .sav</button>
             <button class="secondary" onclick="downloadYaml()">Download .yaml</button>
@@ -131,7 +135,7 @@
   <script src="./assets/bl4web.js"></script>
   <script src="./assets/crypto.js"></script>
   <script src="./assets/blobs.js"></script>
-  <script src="./assets/values.js"></script>
+  <script src="./assets/counters.js"></script>
   <script src="./assets/exploration.js"></script>
   <script src="./assets/missions.js"></script>
   <script src="./assets/sdu.js"></script>

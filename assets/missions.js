@@ -1,3 +1,5 @@
+// Functions for manipulating mission data
+
 // Map of friendly mission type names to missionset key prefixes
 const MISSION_PREFIXES = {
   all:       'missionset_',
@@ -60,16 +62,16 @@ function mergeMissionsetsOfType(type) {
 
 function completeAllMissions() {
   mergeMissionsetsOfType('all');
-  alert("All missions completed!");
+  showPresetNotification();
 }
 
 function completeAllStoryMissions() {
   mergeMissionsetsOfType('story');
-  alert("Story missions completed!");
+  showPresetNotification();
 }
 
 function completeAllSafehouseMissions() {
   mergeMissionsetsOfType('safehouse');
   mergeMissionsetsOfType('silo');
-  alert("Safehouse missions completed!");
+  showPresetNotification();
 }
