@@ -3,19 +3,23 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
 
 ## [Online Editor](https://iyre.github.io/bl4-save-tools/)
 
+
 ## Features
 - Decrypt `.sav` file to human-readable YAML
 - Export as re-encrypted `.sav` file or YAML
 - Manually edit save YAML within the web page
-- Apply pre-configured modifications
+- Apply preset modifications
   - Remove map fog
   - Discover all locations
   - Unlock all safehouses
   - Unlock all collectibles
   - Skip story missions
   - Skip all missions
-  - Re-calculate SDU points
-  - Unlock UVH mode
+  - Calculate SDU points
+  - Unlock UVHM
+
+I don't plan to implement any sort of item editing.
+
 
 ## Usage
 1. Open the online editor linked above or clone the repo and open `index.html` in any web browser.
@@ -27,48 +31,61 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
 4. Click **Import** - This will decrypt the save and place the YAML text in the integrated editor.
 5. **Export your original save as a backup.** Keep these timestamped files in case something goes wrong.
 6. Edit your save as desired - refer to [docs](docs/README.md) for basic info about the structure
-   - Use "Quick Modifications" to automatically apply common changes that are relatively safe & reliable. These are applied in the editor immediately when clicked. No undo button for now.
+   - Apply presets to automatically make common changes that are relatively safe & reliable. These are applied in the editor immediately when clicked. No undo button for now.
 7. Download as `.sav`
 8. Rename or delete your original save and replace it with the new one, removing the timestamp.
    - Recommended to keep a copy of the new save with the timestamp as a backup (in addition to the pre-edit backup).
 
-You can safely replace saves while the game is running as long as a different character is selected.\
-Modifying a save for a loaded character wont work as the save is in memory at that point and will overwrite the file on disk.\
-Don't attempt to modify `profile.sav` while the game is running.
+**Notes:**
+- Consider disabling cloud backups for the game to prevent save files from being reverted in some situations.
+- You can safely replace saves while the game is running as long as a different character is selected.
+- Modifying a save for a loaded character wont work as the save is in memory at that point and will overwrite the file on disk.
+- Don't attempt to modify `profile.sav` while the game is running for the above reason.
 
 [Details/findings about save files](docs/README.md)
 
-## Quick Modifications
-These run JavaScript functions which apply specific edits to save files quickly and consistently.
 
-- Remove map fog
-  - Fully reveals the in-game map terrain (does not include POI markers)
-  - Sets fog of war overlay for every map to 100% discovered - [technical details](docs/exploration.md)
-- Discover all locations
-  - Makes all point of interest (POI) markers visible on your map.
-- Unlock all safehouses
-  - Unlocks fast travel to all safehouses and silos
-  - Completes all missions (activities) that unlock safehouses and silos (run SDU point re-calcualtion afterward)
-  - This does not add POI markers.
-- Unlock all collectibles
-  - Marks all collectibles as found. ECHO logs, capsules, etc.
-  - This does not add POI markers.
-- Skip story missions
+## Preset Details
+These run JavaScript functions which apply pre-configured edits to save files quickly and consistently.
+
+- You can apply as many presets as you want.
+- They update the YAML text you see in the editor.
+- They're intended to be modular, so you may need to run a few to get the desired effect.
+  - Example: "Unlock all collectibles" will technically just "collect" them. You'd also need to apply "Discover all locations" to have them shown on your map. 
+
+---
+- **Remove map fog**
+  - Fully reveals the in-game map terrain by setting fog of war overlay for every map to 100% discovered. [Technical details](docs/exploration.md)
+  - Does not add PoI markers. See "Discover all locations".
+- **Discover all locations**
+  - Reveals all point of interest (PoI) markers on your map.
+- **Unlock all safehouses**
+  - Unlocks fast travel to all safehouses and silos by completing related mission (activities).
+  - Does not add PoI markers. See "Discover all locations".
+  - Does not add SDU points. See "Calculate SDU points".
+- **Unlock all collectibles**
+  - Marks all* collectibles as found. ECHO logs, capsules, etc. (bobble heads aren't included)
+  - Does not currently trigger related unlocks such as the ECHO skin. Work around by manually removing one collectible from your save and finding it in-game to trigger the status check.
+  - Does not add PoI markers. See "Discover all locations".
+  - Does not add SDU points. See "Calculate SDU points".
+- **Skip story missions**
   - Completes all missions related to the main story. Doesn't modify any other missions.
   - Functionally equivalent to starting a new save with the in-game story skip option. (Does not unlock that option)
-- Skip all missions
+  - Does not currently enable the Specialization system. [More info & workaround](docs/README.md#global-unlocks)
+- **Skip all missions**
   - Completes all missions including the main story, vaults, and activities like drill sites.
-- Re-calculate SDU points
-  - Re-calculates available SDU points based on completed activities and found collectibles, updating the value in your save.
-  - Will reset SDU purchases if total is lower than the sum of spent points (points are refunded)
-  - Recommended after modifying activities (e.g. safehouses) or collectibles, which increment this total only when completed in-game.
-- Unlock Ultimate Vault Hunter Mode
+  - Does not add SDU points. See "Calculate SDU points".
+- **Calculate SDU points**
+  - Re-calculates total SDU points based on completed activities and collectibles in the YAML editor and sets the new point total.
+  - If the total is lower than the sum of spent points, purshased upgrades will be reset when the save is loaded in-game.
+  - Recommended to run after modifying activities (e.g. safehouses) or collectibles, which increment this total only when completed in-game.
+- **Unlock UVHM** (Ultimate Vault Hunter Mode, i.e. post-game)
   - Sets values in the save to unlock UVHM 1-5. You can select any difficulty in-game.
-  - Loading a save with this & story completion will enable starting at level 30 (flag is automatically added to `profile.sav`)
-  - Doesn't complete any missions, so you could theoretically play the story from level 1 in UVHM difficulty
+  - Loading a save with this & story completion will enable starting at level 30 (flag is automatically added to `profile.sav`).
+  - Doesn't complete any missions, so you could theoretically play the story from level 1 in UVHM difficulty which isn't otherwise possible.
+
 
 ## Where Are My Saves?
-
 **Windows:**
 - Navigate to `%USERPROFILE%\Documents\My Games\Borderlands 4\Saved\SaveGames\`
   - Steam version will have a sub-folder with a 17-digit name - this is your steam ID which you'll need to encrypt/decrypt save files.
@@ -76,6 +93,8 @@ These run JavaScript functions which apply specific edits to save files quickly 
 - `1.sav`, `2.sav`, etc. files represent characters (import these with the editor)
 - `profile.sav` contains global state such as black market inventory and bank contents. (the editor also works with this file)
 
+
 ## Acknowledgements
-- Decryption functionality is based on https://github.com/glacierpiece/borderlands-4-save-utility
+- Decryption functionality largely based on https://github.com/glacierpiece/borderlands-4-save-utility
+- Epic ID key derivation based on https://github.com/mi5hmash/Borderlands4SaveDataResigner
 - This project was made possible through much coaching by LLM tools. I'm an amateur programmer.
