@@ -12,7 +12,7 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Discover all locations
   - Unlock all safehouses
   - Unlock all collectibles
-  - Unlock all rewards
+  - Unlock all hover drives
   - Skip story missions
   - Skip all missions
   - Unlock UVHM
