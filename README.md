@@ -3,7 +3,6 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
 
 ## [Online Editor](https://iyre.github.io/bl4-save-tools/)
 
-
 ## Features
 - Decrypt `.sav` file to human-readable YAML
 - Export as re-encrypted `.sav` file or YAML
@@ -15,11 +14,9 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Unlock all collectibles
   - Skip story missions
   - Skip all missions
-  - Calculate SDU points
   - Unlock UVHM
 
 I don't plan to implement any sort of item editing.
-
 
 ## Usage
 1. Open the online editor linked above or clone the repo and open `index.html` in any web browser.
@@ -42,9 +39,6 @@ I don't plan to implement any sort of item editing.
 - Modifying a save for a loaded character wont work as the save is in memory at that point and will overwrite the file on disk.
 - Don't attempt to modify `profile.sav` while the game is running for the above reason.
 
-[Details/findings about save files](docs/README.md)
-
-
 ## Preset Details
 These run JavaScript functions which apply pre-configured edits to save files quickly and consistently.
 
@@ -61,29 +55,23 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Reveals all point of interest (PoI) markers on your map.
 - **Unlock all safehouses**
   - Unlocks fast travel to all safehouses and silos by completing related mission (activities).
+  - Re-calculates SDU points, applying the new total if it's higher.
   - Does not add PoI markers. See "Discover all locations".
-  - Does not add SDU points. See "Calculate SDU points".
 - **Unlock all collectibles**
   - Marks all* collectibles as found. ECHO logs, capsules, etc. (bobble heads aren't included)
-  - Does not currently trigger related unlocks such as the ECHO skin. Work around by manually removing one collectible from your save and finding it in-game to trigger the status check.
+  - Re-calculates SDU points, applying the new total if it's higher.
   - Does not add PoI markers. See "Discover all locations".
-  - Does not add SDU points. See "Calculate SDU points".
 - **Skip story missions**
   - Completes all missions related to the main story. Doesn't modify any other missions.
   - Functionally equivalent to starting a new save with the in-game story skip option. (Does not unlock that option)
-  - Does not currently enable the Specialization system. [More info & workaround](docs/README.md#global-unlocks)
+  - Does not currently enable the Specialization system. [More info & workaround](docs/global-unlocks.md)
 - **Skip all missions**
   - Completes all missions including the main story, vaults, and activities like drill sites.
-  - Does not add SDU points. See "Calculate SDU points".
-- **Calculate SDU points**
-  - Re-calculates total SDU points based on completed activities and collectibles in the YAML editor and sets the new point total.
-  - If the total is lower than the sum of spent points, purshased upgrades will be reset when the save is loaded in-game.
-  - Recommended to run after modifying activities (e.g. safehouses) or collectibles, which increment this total only when completed in-game.
+  - Re-calculates SDU points, applying the new total if it's higher.
 - **Unlock UVHM** (Ultimate Vault Hunter Mode, i.e. post-game)
   - Sets values in the save to unlock UVHM 1-5. You can select any difficulty in-game.
   - Loading a save with this & story completion will enable starting at level 30 (flag is automatically added to `profile.sav`).
   - Doesn't complete any missions, so you could theoretically play the story from level 1 in UVHM difficulty which isn't otherwise possible.
-
 
 ## Where Are My Saves?
 **Windows:**
@@ -92,7 +80,6 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Navigate deeper like `.\<steam_id>\Profiles\client\`
 - `1.sav`, `2.sav`, etc. files represent characters (import these with the editor)
 - `profile.sav` contains global state such as black market inventory and bank contents. (the editor also works with this file)
-
 
 ## Acknowledgements
 - Decryption functionality largely based on https://github.com/glacierpiece/borderlands-4-save-utility
