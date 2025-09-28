@@ -33,6 +33,17 @@ def extract_missionsets(data):
 def extract_collectibles(data):
     return data.get('stats', {}).get('openworld', {}).get('collectibles', {})
 
+def sort_dict(obj):
+    if isinstance(obj, dict):
+        return {k: sort_dict(obj[k]) for k in sorted(obj)}
+    elif isinstance(obj, list):
+        try:
+            return sorted(sort_dict(x) for x in obj)
+        except TypeError:
+            return [sort_dict(x) for x in obj]
+    else:
+        return obj
+
 def write_yaml_and_compressed(obj, output_yaml, compressed_txt):
     with open(output_yaml, 'w', encoding='utf-8') as f:
         yaml.safe_dump(obj, f, allow_unicode=True, sort_keys=False)
@@ -45,30 +56,26 @@ def write_yaml_and_compressed(obj, output_yaml, compressed_txt):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Extract missionsets and/or collectibles from a YAML save file.")
-    parser.add_argument('--inputyaml', required=True, help='Input YAML file')
-    parser.add_argument('--missions-outputyaml', help='Output YAML file for missionsets')
-    parser.add_argument('--missions-compressed', help='Output compressed base64 file for missionsets')
-    parser.add_argument('--collectibles-outputyaml', help='Output YAML file for collectibles')
-    parser.add_argument('--collectibles-compressed', help='Output compressed base64 file for collectibles')
-    parser.add_argument('--extract', choices=['missions', 'collectibles', 'both'], default='both',
-                        help='What to extract: missions, collectibles, or both (default: both)')
+    parser.add_argument('-i', '--input', required=True, help='Input YAML file')
+    parser.add_argument('-m', '--missions-out', help='Output YAML file for missionsets')
+    parser.add_argument('-mc', '--missions-comp', help='Output compressed base64 file for missionsets')
+    parser.add_argument('-c', '--collectibles-out', help='Output YAML file for collectibles')
+    parser.add_argument('-cc', '--collectibles-comp', help='Output compressed base64 file for collectibles')
     args = parser.parse_args()
 
-    with open(args.inputyaml, 'r', encoding='utf-8') as f:
+    with open(args.input, 'r', encoding='utf-8') as f:
         data = yaml.safe_load(f)
 
-    if args.extract in ('missions', 'both'):
-        if not args.missions_outputyaml:
-            print("Error: --missions-outputyaml is required for missions extraction.", file=sys.stderr)
-            sys.exit(1)
+    if not args.missions_out and not args.collectibles_out:
+        print("Error: At least one of --missions-out or --collectibles-out must be specified.", file=sys.stderr)
+        sys.exit(1)
+
+    if args.missions_out:
         missionsets = extract_missionsets(data)
-        write_yaml_and_compressed(missionsets, args.missions_outputyaml, args.missions_compressed)
+        write_yaml_and_compressed(missionsets, args.missions_out, args.missions_comp)
         print(f"Extracted {len(missionsets)} missionsets.")
 
-    if args.extract in ('collectibles', 'both'):
-        if not args.collectibles_outputyaml:
-            print("Error: --collectibles-outputyaml is required for collectibles extraction.", file=sys.stderr)
-            sys.exit(1)
-        collectibles = extract_collectibles(data)
-        write_yaml_and_compressed(collectibles, args.collectibles_outputyaml, args.collectibles_compressed)
-        print(f"Extracted {len(collectibles)} collectibles.")
+    if args.collectibles_out:
+        collectibles = sort_dict(extract_collectibles(data))
+        write_yaml_and_compressed(collectibles, args.collectibles_out, args.collectibles_comp)
+        print(f"Extracted {len(collectibles)} collectible categories.")
