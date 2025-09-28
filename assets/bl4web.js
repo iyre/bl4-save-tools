@@ -30,14 +30,35 @@ async function importFile() {
   const ext = file.name.split('.').pop().toLowerCase();
   if (ext == 'yaml' || ext == 'yml') {
     console.log("Loading YAML file directly into editor");
-    let yamlText = new TextDecoder().decode(arrayBuffer);
-    editor.setValue(yamlText);
-    enableSections();
+    yamlText = normalizeYaml(arrayBuffer);
+  } else {
+    yamlText = decryptSav(arrayBuffer);
+  }
+  editor.setValue(yamlText);
+  enableSections();
+}
+
+function normalizeYaml(yamlBytes) {
+  if (yamlBytes instanceof ArrayBuffer) {
+    yamlBytes = new Uint8Array(yamlBytes);
+  }
+  let yamlText = new TextDecoder().decode(yamlBytes);
+  console.log("YAML preview:", yamlText.slice(0, 100));
+  console.log("YAML length:", yamlBytes.length);
+
+  // Remove !tags which jsyaml can't handle. These don't seem to be needed.
+  yamlText = yamlText.replace(/:\s*!tags/g, ':');
+  let data;
+  try {
+    data = jsyaml.load(yamlText);
+  } catch (e) {
+    alert("Failed to parse YAML after tag removal: " + e);
     return;
   }
 
-  decryptSav(arrayBuffer);
-  enableSections();
+  // Dump back to YAML to normalize indentation and formatting
+  let normalizedYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
+  return normalizedYaml;
 }
 
 function downloadYaml() {
@@ -59,7 +80,7 @@ let presetNotificationTimeout = null;
 function showPresetNotification(msg, duration = 2000) {
   const el = document.getElementById('presetNotification');
   if (!el) return;
-  el.textContent = 'Success';
+  el.textContent = 'Done';
   el.style.display = 'block';
   el.classList.add('show');
 

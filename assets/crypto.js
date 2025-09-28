@@ -71,7 +71,7 @@ function uint8ArrayToWordArray(u8arr) {
 }
 
 // Decrypt .sav to YAML
-function decryptSav(fileArrayBuffer) {
+function decryptSav(fileArrayBuffer, normalize=true) {
   const userID = document.getElementById('userIdInput').value.trim();
   if (!userID) { alert("Please enter platform user ID (Steam or Epic)."); return; }
   localStorage.setItem('bl4_previous_userid', userID);
@@ -127,26 +127,13 @@ function decryptSav(fileArrayBuffer) {
   console.log(`Successfully decompressed with trim=${trimUsed}`);
   let yamlBytes = inflated;
 
-  // console.log("DECRYPT VALIDATION (first 8):", Array.from(keyBytes.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')));
-  // console.log("DECRYPT VALIDATION (last 8):", Array.from(keyBytes.slice(-8)).map(b => b.toString(16).padStart(2, '0')));
+  // console.log("DECRYPT VALIDATION (first 8):", Array.from(yamlBytes.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')));
+  // console.log("DECRYPT VALIDATION (last 8):", Array.from(yamlBytes.slice(-8)).map(b => b.toString(16).padStart(2, '0')));
 
-  let yamlText = new TextDecoder().decode(yamlBytes);
-  console.log("YAML preview:", new TextDecoder().decode(yamlBytes).slice(0, 100));
-  console.log("YAML length:", yamlBytes.length);
-
-  // Remove !tags and any other unknown tags after a colon
-  yamlText = yamlText.replace(/:\s*!tags/g, ':');
-  let data;
-  try {
-    data = jsyaml.load(yamlText);
-  } catch (e) {
-    alert("Failed to parse YAML after tag removal: " + e);
-    return;
+  if (normalize) {
+    return normalizeYaml(yamlBytes);
   }
-
-  // Dump back to YAML to normalize indentation and formatting
-  let normalizedYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
-  editor.setValue(normalizedYaml);
+  return new TextDecoder().decode(yamlBytes);
 }
 
 // Encrypt YAML to .sav
