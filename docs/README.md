@@ -6,7 +6,7 @@ These are my personal findings through observation and experimentation while dev
 - [Encryption & Compression](encryption.md)
 - [Challenges & Rewards](challenges.md)
 - [Exploration data](exploration.md)
-- [Global Unlocks](global-unlocks.md)
+- [Global Unlockables](unlockables.md) - Most challenge rewards are unlocked globally (i.e. for all characters).
 
 ## Files
 Windows: `%USERPROFILE%\Documents\My Games\Borderlands 4\Saved\SaveGames\<STEAM_ID>\Profiles\client\`
@@ -65,7 +65,7 @@ Sub-regions are referred to generically as `RegionA`, `RegionB`, etc.
 - `unlockables` > `unlockable_hoverdrives` > `entries` - List of unlocked hoverdrives
 
 ## Profile Data
-Contains state that is shared between characters such as bank contents (item serials), Maurice inventory, and whether you've completed the story before (unlocking lvl 30 start).
+Contains state that is shared between characters such as bank contents (item serials), Maurice inventory, challenge rewards, and which stages of the game have been completed.
 
 **`profile.sav`**
 - Preferences/settings configured in the start menu
@@ -73,7 +73,7 @@ Contains state that is shared between characters such as bank contents (item ser
   - `shared`
     - `inventory` > `items` > `bank` - Banked item serials
     - `blackmarket_items` - Current black market items
-  - `unlockables` - [Global Unlocks](global-unlocks.md)
+  - `unlockables` - [Global Unlocks](unlockables.md)
     - `shared_progress` > `entries` - Story milestones that allow skipping parts of the game on new characters
       - `shared_progress.vault_hunter_level` - UVH mode unlocked
       - `shared_progress.prologue_completed` - Prologue completed (enables skipping the prologue)

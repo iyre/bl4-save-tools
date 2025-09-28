@@ -12,6 +12,7 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Discover all locations
   - Unlock all safehouses
   - Unlock all collectibles
+  - Unlock all rewards
   - Skip story missions
   - Skip all missions
   - Unlock UVHM
@@ -61,10 +62,13 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Marks all* collectibles as found. ECHO logs, capsules, etc. (bobble heads aren't included)
   - Re-calculates SDU points, applying the new total if it's higher.
   - Does not add PoI markers. See "Discover all locations".
+- **Unlock all hover drives**
+  - Unlocks all hover drive tiers and manufacturers.
+  - Does not complete the associated kill count challenges. [More info](docs/challenges.md)
 - **Skip story missions**
   - Completes all missions related to the main story. Doesn't modify any other missions.
   - Functionally equivalent to starting a new save with the in-game story skip option. (Does not unlock that option)
-  - Does not currently enable the Specialization system. [More info & workaround](docs/global-unlocks.md)
+  - Does not currently enable the Specialization system. [More info & workaround](docs/unlockables.md)
 - **Skip all missions**
   - Completes all missions including the main story, vaults, and activities like drill sites.
   - Re-calculates SDU points, applying the new total if it's higher.
@@ -84,4 +88,5 @@ These run JavaScript functions which apply pre-configured edits to save files qu
 ## Acknowledgements
 - Decryption functionality largely based on https://github.com/glacierpiece/borderlands-4-save-utility
 - Epic ID key derivation based on https://github.com/mi5hmash/Borderlands4SaveDataResigner
+- Examples of 100% saves from Bytelocker ([Nexus Mods page](https://www.nexusmods.com/borderlands4/mods/84))
 - This project was made possible through much coaching by LLM tools. I'm an amateur programmer.

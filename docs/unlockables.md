@@ -1,5 +1,7 @@
-# Global Unlocks (All Characters)
-There are a few important unlocks stored in `profile.sav` under the `unlockables` key. These make certain features and shortcuts available to all of your character saves.
+# Global Unlockables (All Characters)
+Game completion flags and cosmetic unlocks are stored in `profile.sav` under the `unlockables` key. They apply to all character saves.
+
+[Extracted unlockables data](../unlockables.yaml)
 
 Example of the `unlockables` > `shared_progress` key in a profile save. (irrelevant keys omitted)
 ```yaml
@@ -30,8 +32,8 @@ Completing the story and starting the post-game phase normally (i.e. not through
 I'm not sure yet how to trigger this flag to be added automatically when a character save is loaded. Work around by manually adding it to the list, similar to the example under "Global Unlocks".
 
 
-## Customizations
-These unlock cosmetics, such as those rewarded from certain challenges, for all characters. Not every unlock is global.
+## Cosmetics
+These unlock cosmetics, such as those rewarded from challenges or story milestones, for all characters. Most unlocks are global, with the exception of [hover drives](challenges.md), which are per-character.
 
 `domains` > `local` > `unlockables`
 - `unlockable_darksiren`

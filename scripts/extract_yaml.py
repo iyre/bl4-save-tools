@@ -33,12 +33,16 @@ def extract_missionsets(data):
 def extract_collectibles(data):
     return data.get('stats', {}).get('openworld', {}).get('collectibles', {})
 
+def extract_global_unlockables(data):
+    return data.get('domains', {}).get('local', {}).get('unlockables', {})
+
 def sort_dict(obj):
     if isinstance(obj, dict):
-        return {k: sort_dict(obj[k]) for k in sorted(obj)}
+        # Sort keys case-insensitively
+        return {k: sort_dict(obj[k]) for k in sorted(obj, key=lambda x: x.lower())}
     elif isinstance(obj, list):
         try:
-            return sorted(sort_dict(x) for x in obj)
+            return sorted((sort_dict(x) for x in obj), key=lambda x: str(x).lower())
         except TypeError:
             return [sort_dict(x) for x in obj]
     else:
@@ -61,14 +65,16 @@ if __name__ == "__main__":
     parser.add_argument('-mc', '--missions-comp', help='Output compressed base64 file for missionsets')
     parser.add_argument('-c', '--collectibles-out', help='Output YAML file for collectibles')
     parser.add_argument('-cc', '--collectibles-comp', help='Output compressed base64 file for collectibles')
+    parser.add_argument('-u', '--unlockables-out', help='Output YAML file for unlockables. (profile.sav)')
+    parser.add_argument('-uc', '--unlockables-comp', help='Output compressed base64 file for unlockables')
     args = parser.parse_args()
+
+    if not args.missions_out and not args.collectibles_out and not args.unlockables_out:
+        print("Error: At least one of --missions-out or --collectibles-out or --unlockables-out must be specified.", file=sys.stderr)
+        sys.exit(1)
 
     with open(args.input, 'r', encoding='utf-8') as f:
         data = yaml.safe_load(f)
-
-    if not args.missions_out and not args.collectibles_out:
-        print("Error: At least one of --missions-out or --collectibles-out must be specified.", file=sys.stderr)
-        sys.exit(1)
 
     if args.missions_out:
         missionsets = extract_missionsets(data)
@@ -79,3 +85,8 @@ if __name__ == "__main__":
         collectibles = sort_dict(extract_collectibles(data))
         write_yaml_and_compressed(collectibles, args.collectibles_out, args.collectibles_comp)
         print(f"Extracted {len(collectibles)} collectible categories.")
+
+    if args.unlockables_out:
+        unlockables = sort_dict(extract_global_unlockables(data))
+        write_yaml_and_compressed(unlockables, args.unlockables_out, args.unlockables_comp)
+        print(f"Extracted {len(unlockables)} unlockables categories.")
