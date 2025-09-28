@@ -51,6 +51,7 @@ function completeAllCollectibles() {
   // Update the editor with the new YAML
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
+  updateSDUPoints();
   showPresetNotification();
 }
 

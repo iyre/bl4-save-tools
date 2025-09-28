@@ -57,13 +57,17 @@ function updateSDUPoints() {
     }
   }
 
-  // Write value to progression.point_pools.echotokenprogresspoints
+  // Write value to progression.point_pools.echotokenprogresspoints only if higher
   if (!data.progression) data.progression = {};
   if (!data.progression.point_pools) data.progression.point_pools = {};
-  data.progression.point_pools.echotokenprogresspoints = total;
+  const oldValue = data.progression.point_pools.echotokenprogresspoints || 0;
+  if (total <= oldValue) {
+    console.log(`Not updating echotokenprogresspoints: current ${oldValue} > calculated ${total}`);
+    return;
+  }
 
-  // Update editor with new YAML
+  data.progression.point_pools.echotokenprogresspoints = total;
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  showPresetNotification();
+  console.log(`Updated echotokenprogresspoints: ${oldValue} -> ${total}`);
 }

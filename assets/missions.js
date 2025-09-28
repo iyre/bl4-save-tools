@@ -62,6 +62,7 @@ function mergeMissionsetsOfType(type) {
 
 function completeAllMissions() {
   mergeMissionsetsOfType('all');
+  updateSDUPoints();
   showPresetNotification();
 }
 
@@ -73,5 +74,6 @@ function completeAllStoryMissions() {
 function completeAllSafehouseMissions() {
   mergeMissionsetsOfType('safehouse');
   mergeMissionsetsOfType('silo');
+  updateSDUPoints();
   showPresetNotification();
 }
