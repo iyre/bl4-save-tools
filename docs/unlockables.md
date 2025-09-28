@@ -1,7 +1,7 @@
 # Global Unlockables (All Characters)
 Game completion flags and cosmetic unlocks are stored in `profile.sav` under the `unlockables` key. They apply to all character saves.
 
-[Extracted unlockables data](../unlockables.yaml)
+[Extracted unlockables data](../data/unlockables.yaml)
 
 Example of the `unlockables` > `shared_progress` key in a profile save. (irrelevant keys omitted)
 ```yaml
