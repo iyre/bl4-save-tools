@@ -109,3 +109,8 @@ window.addEventListener('DOMContentLoaded', function() {
     document.getElementById('userIdInput').value = previousUserId;
   }
 });
+
+// Clear editor when selecting a new file
+document.getElementById('fileInput').addEventListener('change', function() {
+  if (editor) editor.setValue('');
+});
