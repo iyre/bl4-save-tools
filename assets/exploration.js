@@ -1,14 +1,8 @@
 // Functions for manipulating exploration & discovery data
 
 function clearMapFog() {
-  const yamlText = editor.getValue();
-  let data;
-  try {
-    data = jsyaml.load(yamlText);
-  } catch (e) {
-    alert("Failed to parse YAML: " + e);
-    return;
-  }
+  const data = getYamlDataFromEditor();
+  if (!data) return;
 
   // Levelnames and common fields
   const levelnames = [
@@ -58,7 +52,7 @@ function visitAllWorlds(data) {
     'ElpisElevator_P', 'Elpis_P', 'UpperCity_P'
   ];
   const regionlist = [
-    'KairosGeneric', 'grasslands_RegionA', 'grasslands_RegionB', 'grasslands_RegionC',
+    'KairosGeneric', 'grasslands_Prison', 'grasslands_RegionA', 'grasslands_RegionB', 'grasslands_RegionC',
     'grasslands_RegionD', 'grasslands_RegionE', 'Grasslands_Fortress', 'Grasslands_Vault',
     'shatteredlands_RegionA', 'shatteredlands_RegionB', 'shatteredlands_RegionC',
     'shatteredlands_RegionD', 'shatteredlands_RegionE', 'shatteredlands_Fortress',
@@ -88,44 +82,24 @@ function visitAllWorlds(data) {
   gbx.metrics.hasseenregionlist.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 }
 
-function loadLocations() {
-  const compressed = Uint8Array.from(atob(LOCATIONS_COMPRESSED), c => c.charCodeAt(0));
-  const decompressed = pako.inflate(compressed, { to: 'string' });
-  return decompressed.split(',');
-}
-
 function addDiscoveredLocations(data, locationSubstrings) {
-  const allLocations = loadLocations();
-  if (!Array.isArray(allLocations) || allLocations.length === 0) {
-    alert("Discovered locations data not loaded!");
-    return;
-  }
   data.gbx_discovery_pg = data.gbx_discovery_pg || {};
+  let existingBlob = data.gbx_discovery_pg.dlblob || '';
+  let existing = existingBlob.split(/:\d:/).filter(Boolean);
 
-  let existingBlob = data.gbx_discovery_pg['dlblob'] || '';
-  let existingEntries = existingBlob.split(/:\d:/).filter(Boolean);
-  let allEntries = new Set(existingEntries);
-
-  for (const line of allLocations) {
-    for (const substr of locationSubstrings) {
-      if (line.includes(substr)) {
-        allEntries.add(line);
-      }
+  let merged = new Set(existing);
+  for (const line of LOCATIONS) {
+    if (locationSubstrings.some(substr => line.includes(substr))) {
+      merged.add(line);
     }
   }
 
-  data.gbx_discovery_pg['dlblob'] = Array.from(allEntries).join(':2:')+':2:';
+  data.gbx_discovery_pg.dlblob = Array.from(merged).join(':2:')+':2:';
 }
 
 function discoverAllLocations() {
-  const yamlText = editor.getValue();
-  let data;
-  try {
-    data = jsyaml.load(yamlText);
-  } catch (e) {
-    alert("Failed to parse YAML: " + e);
-    return;
-  }
+  const data = getYamlDataFromEditor();
+  if (!data) return;
 
   // PoAActor = activities; couldnt find a pattern to get "just safehouses" or similar. add everything for now.
   const locationSubstrings = [''];

@@ -1,25 +1,8 @@
 // Functions for manipulating counter-type data
 
-function loadCollectibles() {
-  const compressed = Uint8Array.from(atob(COLLECTIBLES_COMPRESSED), c => c.charCodeAt(0));
-  const yamlBytes = pako.inflate(compressed);
-  const yamlText = new TextDecoder().decode(yamlBytes);
-  return jsyaml.load(yamlText);
-}
-
 function completeAllCollectibles() {
-  // Load the collectibles from the compressed string
-  const allCollectibles = loadCollectibles();
-
-  // Get the current YAML from the editor
-  const yamlText = editor.getValue();
-  let data;
-  try {
-    data = jsyaml.load(yamlText);
-  } catch (e) {
-    alert("Failed to parse YAML: " + e);
-    return;
-  }
+  const data = getYamlDataFromEditor();
+  if (!data) return;
 
   // Ensure the path exists
   data.stats = data.stats || {};
@@ -27,7 +10,7 @@ function completeAllCollectibles() {
   data.stats.openworld.collectibles = data.stats.openworld.collectibles || {};
 
   // For each top-level key in the template, add/overwrite child keys individually to avoid removing unexpected keys.
-  for (const [category, values] of Object.entries(allCollectibles)) {
+  for (const [category, values] of Object.entries(COLLECTIBLES)) {
     data.stats.openworld.collectibles[category] = data.stats.openworld.collectibles[category] || {};
     // If the value is an object, copy keys individually
     if (typeof values === 'object' && values !== null && !Array.isArray(values)) {
@@ -56,14 +39,8 @@ function completeAllCollectibles() {
 }
 
 function unlockUVHMode() {
-  const yamlText = editor.getValue();
-  let data;
-  try {
-    data = jsyaml.load(yamlText);
-  } catch (e) {
-    alert("Failed to parse YAML: " + e);
-    return;
-  }
+  const data = getYamlDataFromEditor();
+  if (!data) return;
 
   data.globals = data.globals || {};
   data.globals.highest_unlocked_vault_hunter_level = 5;
@@ -76,14 +53,8 @@ function unlockUVHMode() {
 }
 
 function setStoryValues() {
-  const yamlText = editor.getValue();
-  let data;
-  try {
-    data = jsyaml.load(yamlText);
-  } catch (e) {
-    alert("Failed to parse YAML: " + e);
-    return;
-  }
+  const data = getYamlDataFromEditor();
+  if (!data) return;
 
   // Set globals
   data.globals = data.globals || {};

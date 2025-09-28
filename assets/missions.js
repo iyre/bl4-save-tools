@@ -16,22 +16,15 @@ const MISSION_PREFIXES = {
   silo:      'missionset_zoneactivity_silo',
 };
 
-function loadMissionsets(b64) {
-  const compressed = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
-  const yamlBytes = pako.inflate(compressed);
-  const yamlText = new TextDecoder().decode(yamlBytes);
-  return jsyaml.load(yamlText);
-}
-
 // Extract missionsets of a given type (e.g. "story", "activity")
 function getMissionsetsOfType(type) {
   const prefix = MISSION_PREFIXES[type];
   if (!prefix) throw new Error(`Unknown mission type: ${type}`);
-  const allMissions = loadMissionsets(MISSIONSETS_COMPRESSED);
+
   const result = {};
-  for (const key in allMissions) {
+  for (const key in MISSIONSETS) {
     if (key.startsWith(prefix)) {
-      result[key] = allMissions[key];
+      result[key] = MISSIONSETS[key];
     }
   }
   return result;
@@ -39,21 +32,16 @@ function getMissionsetsOfType(type) {
 
 // Merge missionsets of a given type into save data
 function mergeMissionsetsOfType(type) {
-  const missionsets = getMissionsetsOfType(type);
-  const yamlText = editor.getValue();
-  let data;
-  try {
-    data = jsyaml.load(yamlText);
-  } catch (e) {
-    alert("Failed to parse YAML: " + e);
-    return;
-  }
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+
+  const filteredMissionsets = getMissionsetsOfType(type);
 
   if (!data.missions) data.missions = {};
   if (!data.missions.local_sets) data.missions.local_sets = {};
   const target = data.missions.local_sets;
-  for (const key in missionsets) {
-    target[key] = missionsets[key];
+  for (const key in filteredMissionsets) {
+    target[key] = filteredMissionsets[key];
   }
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });

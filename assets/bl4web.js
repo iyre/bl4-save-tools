@@ -9,6 +9,8 @@ require(['vs/editor/editor.main'], function() {
     language: 'yaml',
     theme: 'vs-dark',
     automaticLayout: true,
+    tabSize: 2,
+    stickyScroll: { enabled: true },
   });
 });
 
@@ -73,6 +75,16 @@ function downloadYaml() {
   a.download = exportFilename;
   a.click();
   URL.revokeObjectURL(url);
+}
+
+function getYamlDataFromEditor() {
+  const yamlText = editor.getValue();
+  try {
+    return jsyaml.load(yamlText);
+  } catch (e) {
+    alert("Failed to parse YAML: " + e);
+    return;
+  }
 }
 
 let presetNotificationTimeout = null;
