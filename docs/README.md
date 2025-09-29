@@ -49,7 +49,7 @@ Sub-regions are referred to generically as `RegionA`, `RegionB`, etc.
   - Main story missionsets are prefixed like `missionset_main_`
   - Side missionsets: `missionset_side_` or `missionset_micro_` (for singular missions)
   - Zone activity missionsets: `missionset_zoneactivity_` (safehouses, drill sites, etc.)
-- `pips` > `pips_list` - List of viewed notifications
+- `pips` > `pips_list` - List of unread <!> notifications. Remove all entries under this key to fix stuck <!> in your game.
 - `stats`
   - `achievements` - Achievement progress counters
   - `challenge` - Challenge progress counters
@@ -79,7 +79,7 @@ Contains state that is shared between characters such as bank contents (item ser
       - `shared_progress.prologue_completed` - Prologue completed (enables skipping the prologue)
       - `shared_progress.epilogue_started` - Post-game started (enables specialization system)
       - `shared_progress.story_completed` - Story completed (enables level 30 start)
-    - Unlocked cosmetics
+    - Unlocked cosmetics available to all characters
 - `deep_freeze_pips` > `pips_list_deep_freeze`
   - `profile.DLC.preorder`
   - `profile.newgame.ultimatevaulthunter`
