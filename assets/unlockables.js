@@ -57,6 +57,7 @@ function unlockAllSpecialization() {
   for (const exp of data.state.experience) {
     if (exp.type === 'Specialization') {
       exp.level = 701;
+      exp.points = 7431910510; // Set valid XP to avoid the GUI counter rolling over
       found = true;
     }
   }
