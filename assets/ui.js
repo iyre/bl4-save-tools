@@ -27,6 +27,11 @@ const PRESETS = [
     desc: "Unlocks all hover drive manufacturers and tiers."
   },
   {
+    handler: "unlockAllSpecialization",
+    title: "Unlock all Specializations",
+    desc: "Requires campaign completion. Unlocks all skill trees and grants 100 points in each."
+  },
+  {
     handler: "completeAllStoryMissions",
     title: "Skip Story Missions",
     desc: "Complete all main story missions."
@@ -41,11 +46,6 @@ const PRESETS = [
     title: "Unlock UVHM",
     desc: "Set flags to unlock UVH mode."
   },
-  {
-    handler: "unlockAllSpecialization",
-    title: "Unlock all Specialization",
-    desc: "Requires campaign completion. Unlocks all skill trees and grants 100 points in each."
-  }
 ];
 
 function renderPresets() {

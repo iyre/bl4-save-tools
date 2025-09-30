@@ -13,6 +13,7 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Unlock all safehouses
   - Unlock all collectibles
   - Unlock all hover drives
+  - Unlock all specializations
   - Skip story missions
   - Skip all missions
   - Unlock UVHM
@@ -65,6 +66,10 @@ These run JavaScript functions which apply pre-configured edits to save files qu
 - **Unlock all hover drives**
   - Unlocks all hover drive tiers and manufacturers.
   - Does not complete the associated kill count challenges. [More info](docs/challenges.md)
+- **Unlock all specializations**
+  - Unlocks all Specialization trees.
+  - Sets level 701 and grants 100 points in each tree.
+  - Does not currently enable the Specialization system. [More info & workaround](docs/unlockables.md)
 - **Skip story missions**
   - Completes all missions related to the main story. Doesn't modify any other missions.
   - Functionally equivalent to starting a new save with the in-game story skip option. (Does not unlock that option)
@@ -85,8 +90,14 @@ These run JavaScript functions which apply pre-configured edits to save files qu
 - `1.sav`, `2.sav`, etc. files represent characters (import these with the editor)
 - `profile.sav` contains global state such as black market inventory and bank contents. (the editor also works with this file)
 
+## Contributing
+Please feel free to submit a pull request!
+
+Please reach out on Discord if you'd like to discuss this project! (link in profile)
+
 ## Acknowledgements
 - Decryption functionality largely based on https://github.com/glacierpiece/borderlands-4-save-utility
 - Epic ID key derivation based on https://github.com/mi5hmash/Borderlands4SaveDataResigner
 - Examples of 100% saves from Bytelocker ([Nexus Mods page](https://www.nexusmods.com/borderlands4/mods/84))
+- [RegularLunar](https://github.com/RegularLunar) for specializations presets
 - This project was made possible through much coaching by LLM tools. I'm an amateur programmer.
