@@ -1,5 +1,81 @@
 // Functions for handling UI setup and interaction
 
+const PRESETS = [
+  {
+    handler: "clearMapFog",
+    title: "Remove Map Fog",
+    desc: "Replace fog of war maps for all levels with 100% explored maps."
+  },
+  {
+    handler: "discoverAllLocations",
+    title: "Discover All Locations",
+    desc: "Add all location icons to the map."
+  },
+  {
+    handler: "completeAllSafehouseMissions",
+    title: "Unlock All Safehouses",
+    desc: "Complete all safehouse and silo activities, unlocking them as fast travel destinations."
+  },
+  {
+    handler: "completeAllCollectibles",
+    title: "Unlock All Collectibles",
+    desc: "Complete all collectibles such as echo logs, propaganda towers, and vault keys."
+  },
+  {
+    handler: "unlockAllHoverDrives",
+    title: "Unlock All Hover Drives",
+    desc: "Unlocks all hover drive manufacturers and tiers."
+  },
+  {
+    handler: "completeAllStoryMissions",
+    title: "Skip Story Missions",
+    desc: "Complete all main story missions."
+  },
+  {
+    handler: "completeAllMissions",
+    title: "Skip All Missions",
+    desc: "Complete all main and side missions."
+  },
+  {
+    handler: "unlockUVHMode",
+    title: "Unlock UVHM",
+    desc: "Set flags to unlock UVH mode."
+  },
+  {
+    handler: "unlockAllSpecialization",
+    title: "Unlock all Specialization",
+    desc: "Requires campaign completion. Unlocks all skill trees and grants 100 points in each."
+  }
+];
+
+function renderPresets() {
+  const presetSection = document.getElementById('preset-section');
+
+  PRESETS.forEach(preset => {
+    const row = document.createElement('div');
+    row.className = 'preset-row';
+
+    const btn = document.createElement('button');
+    btn.className = 'secondary';
+    btn.textContent = preset.title;
+    btn.onclick = function() { window[preset.handler](); };
+
+    const tooltip = document.createElement('span');
+    tooltip.className = 'preset-tooltip';
+    tooltip.textContent = '?';
+
+    const tooltipText = document.createElement('span');
+    tooltipText.className = 'tooltiptext';
+    tooltipText.textContent = preset.desc;
+
+    tooltip.appendChild(tooltipText);
+    row.appendChild(btn);
+    row.appendChild(tooltip);
+
+    presetSection.appendChild(row);
+  });
+}
+
 // Initialize Monaco Editor
 require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs' }});
 let editor;
@@ -114,12 +190,15 @@ function showPresetNotification(msg, duration = 2000) {
   }, duration);
 }
 
-// Restore user ID from localStorage on page load
 window.addEventListener('DOMContentLoaded', function() {
+  // Restore user ID from localStorage on page load
   const previousUserId = localStorage.getItem('bl4_previous_userid');
   if (previousUserId) {
     document.getElementById('userIdInput').value = previousUserId;
   }
+
+  // Render preset buttons
+  renderPresets();
 });
 
 // Clear editor when selecting a new file

@@ -138,18 +138,18 @@ button.secondary:hover, button.secondary:focus {
   flex-direction: column;
 }
 
-.input-section, .preset-section {
+#input-section, #preset-section {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
 }
 
-.input-section label {
+#input-section label {
   margin-bottom: 0;
 }
 
-.input-section input[type="file"],
-.input-section input[type="text"] {
+#input-section input[type="file"],
+#input-section input[type="text"] {
   margin-top: 0.2em;
   margin-bottom: 0;
 }
@@ -365,8 +365,8 @@ button.secondary:hover, button.secondary:focus {
   .controls-group {
     flex-direction: row;
   }
-  .input-section,
-  .preset-section {
+  #input-section,
+  #preset-section {
     flex: 1 1 0;
     max-width: 50%;
   }
