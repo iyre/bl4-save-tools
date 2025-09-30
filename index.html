@@ -13,7 +13,7 @@
   </div>
   <div class="main-content">
     <div class="controls-group">
-      <div class="section input-section">
+      <div id="input-section" class="section">
         <h2>Upload Save</h2>
         <label>Select .sav or .yaml file: <input type="file" id="fileInput"></label>
         <br>
@@ -29,7 +29,7 @@
         <br>
         <button onclick="importFile()">Import</button>
       </div>
-      <div class="section preset-section">
+      <div id="preset-section" class="section">
         <div class="disabled-overlay" id="presetSectionOverlay">
           <div class="overlay-message">Import a file first.</div>
         </div>
@@ -37,91 +37,10 @@
           <h2>Apply Presets</h2>
           <div class="preset-notification" id="presetNotification" style="display:none;"></div>
         </div>
-        <div class="preset-row">
-          <button class="secondary" onclick="clearMapFog()">Remove Map Fog</button>
-          <span class="preset-tooltip">
-            ?
-            <span class="tooltiptext">
-              Replace fog of war maps for all levels with 100% explored maps.
-            </span>
-          </span>
-        </div>
-        <div class="preset-row">
-          <button class="secondary" onclick="discoverAllLocations()">Discover All Locations</button>
-          <span class="preset-tooltip">
-            ?
-            <span class="tooltiptext">
-              Add all location icons to the map.
-            </span>
-          </span>
-        </div>
-        <div class="preset-row">
-          <button class="secondary" onclick="completeAllSafehouseMissions()">Unlock All Safehouses</button>
-          <span class="preset-tooltip">
-            ?
-            <span class="tooltiptext">
-              Complete all safehouse and silo activities, unlocking them as fast travel destinations.
-            </span>
-          </span>
-        </div>
-        <div class="preset-row">
-          <button class="secondary" onclick="completeAllCollectibles()">Unlock All Collectibles</button>
-          <span class="preset-tooltip">
-            ?
-            <span class="tooltiptext">
-              Complete all collectibles such as echo logs, propaganda towers, and vault keys.
-            </span>
-          </span>
-        </div>
-        <div class="preset-row">
-          <button class="secondary" onclick="unlockAllHoverDrives()">Unlock All Hover Drives</button>
-          <span class="preset-tooltip">
-            ?
-            <span class="tooltiptext">
-              Unlocks all hover drive manufacturers and tiers.
-            </span>
-          </span>
-        </div>
-        <div class="preset-row">
-          <button class="secondary" onclick="completeAllStoryMissions()">Skip Story Missions</button>
-          <span class="preset-tooltip">
-            ?
-            <span class="tooltiptext">
-              Complete all main story missions.
-            </span>
-          </span>
-        </div>
-        <div class="preset-row">
-          <button class="secondary" onclick="completeAllMissions()">Skip All Missions</button>
-          <span class="preset-tooltip">
-            ?
-            <span class="tooltiptext">
-              Complete all main and side missions.
-            </span>
-          </span>
-        </div>
-        <div class="preset-row">
-          <button class="secondary" onclick="unlockUVHMode()">Unlock UVHM</button>
-          <span class="preset-tooltip">
-            ?
-            <span class="tooltiptext">
-              Set flags to unlock UVH mode.
-            </span>
-          </span>
-        </div>
-        <div class="preset-row">
-          <button class="secondary" onclick="unlockAllSpecialization()">Unlock all Specialization</button>
-          <span class="preset-tooltip">
-            ?
-            <span class="tooltiptext">
-              Requires campaign completion. Unlocks all skill trees and grants 100 points in each.
-            </span>
-          </span>
-        </div>
       </div>
     </div>
     <div class="editor-group">
-      <div class="section editor-section">
+      <div id="editor-section" class="section">
         <div class="disabled-overlay" id="editorSectionOverlay">
           <div class="overlay-message">Import a file first.</div>
         </div>
@@ -141,7 +60,7 @@
   <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
   
-  <script src="./assets/bl4web.js"></script>
+  <script src="./assets/ui.js"></script>
   <script src="./assets/crypto.js"></script>
   <script src="./assets/blobs.js"></script>
   <script src="./assets/counters.js"></script>
