@@ -94,5 +94,6 @@ function unlockAllSpecialization() {
   data.progression.point_pools.specializationtokenpool = 700;
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  alert("All Specializations unlocked and maxed out!");
+  console.log("All Specializations unlocked and maxed out!");
+  showPresetNotification();
 }
