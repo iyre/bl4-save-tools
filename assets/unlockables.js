@@ -41,3 +41,58 @@ function generateHoverDriveList() {
   }
   return list;
 }
+
+function unlockAllSpecialization() {
+  const yamlText = editor.getValue();
+  let data;
+  try {
+    data = jsyaml.load(yamlText);
+  } catch (e) {
+    alert("Failed to parse YAML: " + e);
+    return;
+  }
+  if (!data.state) data.state = {};
+  data.state.experience = data.state.experience || [];
+  let found = false;
+  for (const exp of data.state.experience) {
+    if (exp.type === 'Specialization') {
+      exp.level = 701;
+      found = true;
+    }
+  }
+  if (!found) {
+    data.state.experience.push({ type: 'Specialization', level: 701 });
+  }
+  if (!data.progression) data.progression = {};
+  data.progression.graphs = data.progression.graphs || [];
+  let graph = data.progression.graphs.find(g => g.name === 'ProgressGraph_Specializations');
+  if (!graph) {
+    graph = { name: 'ProgressGraph_Specializations', group_def_name: 'progress_group', nodes: [] };
+    data.progression.graphs.push(graph);
+  }
+  const specNames = [
+    'Survivor', 'Artificer', 'Enforcer', 'Slayer', 'Hunter', 'Adventurer', 'Wanderer'
+  ];
+  let foundGroupDef = null;
+  if (Array.isArray(data.progression.graphs)) {
+    for (const g of data.progression.graphs) {
+      if (g.group_def_name && g.group_def_name !== 'progress_group') {
+        foundGroupDef = g.group_def_name;
+        break;
+      }
+    }
+  }
+  graph.group_def_name = foundGroupDef || graph.group_def_name || '';
+  graph.nodes = specNames.map(name => ({
+    name,
+    points_spent: 100
+  }));
+  if (!graph.group_def_name) {
+    alert("Warning: No character-specific group_def_name found in progression.graphs. Please unlock at least one specialization in-game first, then use this tool.");
+  }
+  if (!data.progression.point_pools) data.progression.point_pools = {};
+  data.progression.point_pools.specializationtokenpool = 700;
+  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
+  editor.setValue(newYaml);
+  alert("All Specializations unlocked and maxed out!");
+}
