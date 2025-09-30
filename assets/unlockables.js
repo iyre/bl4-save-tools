@@ -95,5 +95,6 @@ function unlockAllSpecialization() {
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
   console.log("All Specializations unlocked and maxed out!");
+  stageEpilogueMission(); // Stage epilogue mission to ensure specialization system is enabled.
   showPresetNotification();
 }
