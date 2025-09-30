@@ -67,15 +67,15 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Unlocks all hover drive tiers and manufacturers.
   - Does not complete the associated kill count challenges. [More info](docs/challenges.md)
 - **Unlock all specializations**
-  - Unlocks all Specialization trees.
-  - Sets level 701 and grants 100 points in each tree.
-  - Does not currently enable the Specialization system. [More info & workaround](docs/unlockables.md)
+  - Unlocks the specialization system. [More info](docs/unlockables.md)
+  - Fully completes all trees.
 - **Skip story missions**
   - Completes all missions related to the main story. Doesn't modify any other missions.
   - Functionally equivalent to starting a new save with the in-game story skip option. (Does not unlock that option)
-  - Does not currently enable the Specialization system. [More info & workaround](docs/unlockables.md)
+  - Enables the specialization system.
 - **Skip all missions**
   - Completes all missions including the main story, vaults, and activities like drill sites.
+  - Enables the specialization system.
   - Re-calculates SDU points, applying the new total if it's higher.
 - **Unlock UVHM** (Ultimate Vault Hunter Mode, i.e. post-game)
   - Sets values in the save to unlock UVHM 1-5. You can select any difficulty in-game.

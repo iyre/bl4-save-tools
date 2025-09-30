@@ -4,22 +4,22 @@ const PRESETS = [
   {
     handler: "clearMapFog",
     title: "Remove Map Fog",
-    desc: "Replace fog of war maps for all levels with 100% explored maps."
+    desc: "Removes fog of war from all maps."
   },
   {
     handler: "discoverAllLocations",
     title: "Discover All Locations",
-    desc: "Add all location icons to the map."
+    desc: "Adds all location and collectible markers to the map."
   },
   {
     handler: "completeAllSafehouseMissions",
     title: "Unlock All Safehouses",
-    desc: "Complete all safehouse and silo activities, unlocking them as fast travel destinations."
+    desc: "Completes all safehouse and silo activities, unlocking them as fast travel destinations."
   },
   {
     handler: "completeAllCollectibles",
     title: "Unlock All Collectibles",
-    desc: "Complete all collectibles such as echo logs, propaganda towers, and vault keys."
+    desc: "Completes all collectibles such as echo logs, propaganda towers, and vault keys."
   },
   {
     handler: "unlockAllHoverDrives",
@@ -29,22 +29,22 @@ const PRESETS = [
   {
     handler: "unlockAllSpecialization",
     title: "Unlock all Specializations",
-    desc: "Requires campaign completion. Unlocks all skill trees and grants 100 points in each."
+    desc: "Unlocks the specialization system and all skills."
   },
   {
     handler: "completeAllStoryMissions",
     title: "Skip Story Missions",
-    desc: "Complete all main story missions."
+    desc: "Completes all main story missions."
   },
   {
     handler: "completeAllMissions",
     title: "Skip All Missions",
-    desc: "Complete all main and side missions."
+    desc: "Completes all main and side missions."
   },
   {
     handler: "unlockUVHMode",
     title: "Unlock UVHM",
-    desc: "Set flags to unlock UVH mode."
+    desc: "Sets flags to unlock UVH mode."
   },
 ];
 

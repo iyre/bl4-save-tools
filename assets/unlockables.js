@@ -57,6 +57,7 @@ function unlockAllSpecialization() {
   for (const exp of data.state.experience) {
     if (exp.type === 'Specialization') {
       exp.level = 701;
+      exp.points = 7431910510; // Set valid XP to avoid the GUI counter rolling over
       found = true;
     }
   }
@@ -94,5 +95,7 @@ function unlockAllSpecialization() {
   data.progression.point_pools.specializationtokenpool = 700;
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  alert("All Specializations unlocked and maxed out!");
+  console.log("All Specializations unlocked and maxed out!");
+  stageEpilogueMission(); // Stage epilogue mission to ensure specialization system is enabled.
+  showPresetNotification();
 }
