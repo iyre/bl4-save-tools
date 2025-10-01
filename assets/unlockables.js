@@ -25,8 +25,14 @@ function unlockAllHoverDrives() {
 const UNLOCKABLE_HOVERDRIVES = generateHoverDriveList();
 function generateHoverDriveList() {
   const manufacturers = [
-    'Borg', 'Daedalus', 'Jakobs', 'Maliwan', 'Order',
-    'Tediore', 'Torgue', 'Vladof'
+    'Borg',
+    'Daedalus',
+    'Jakobs',
+    'Maliwan',
+    'Order',
+    'Tediore',
+    'Torgue',
+    'Vladof',
   ];
   const list = [];
   for (const mfr of manufacturers) {
@@ -48,7 +54,7 @@ function unlockAllSpecialization() {
   try {
     data = jsyaml.load(yamlText);
   } catch (e) {
-    alert("Failed to parse YAML: " + e);
+    alert('Failed to parse YAML: ' + e);
     return;
   }
   if (!data.state) data.state = {};
@@ -66,13 +72,23 @@ function unlockAllSpecialization() {
   }
   if (!data.progression) data.progression = {};
   data.progression.graphs = data.progression.graphs || [];
-  let graph = data.progression.graphs.find(g => g.name === 'ProgressGraph_Specializations');
+  let graph = data.progression.graphs.find((g) => g.name === 'ProgressGraph_Specializations');
   if (!graph) {
-    graph = { name: 'ProgressGraph_Specializations', group_def_name: 'progress_group', nodes: [] };
+    graph = {
+      name: 'ProgressGraph_Specializations',
+      group_def_name: 'progress_group',
+      nodes: [],
+    };
     data.progression.graphs.push(graph);
   }
   const specNames = [
-    'Survivor', 'Artificer', 'Enforcer', 'Slayer', 'Hunter', 'Adventurer', 'Wanderer'
+    'Survivor',
+    'Artificer',
+    'Enforcer',
+    'Slayer',
+    'Hunter',
+    'Adventurer',
+    'Wanderer',
   ];
   let foundGroupDef = null;
   if (Array.isArray(data.progression.graphs)) {
@@ -84,18 +100,20 @@ function unlockAllSpecialization() {
     }
   }
   graph.group_def_name = foundGroupDef || graph.group_def_name || '';
-  graph.nodes = specNames.map(name => ({
+  graph.nodes = specNames.map((name) => ({
     name,
-    points_spent: 100
+    points_spent: 100,
   }));
   if (!graph.group_def_name) {
-    alert("Warning: No character-specific group_def_name found in progression.graphs. Please unlock at least one specialization in-game first, then use this tool.");
+    alert(
+      'Warning: No character-specific group_def_name found in progression.graphs. Please unlock at least one specialization in-game first, then use this tool.'
+    );
   }
   if (!data.progression.point_pools) data.progression.point_pools = {};
   data.progression.point_pools.specializationtokenpool = 700;
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log("All Specializations unlocked and maxed out!");
+  console.log('All Specializations unlocked and maxed out!');
   stageEpilogueMission(); // Stage epilogue mission to ensure specialization system is enabled.
   showPresetNotification();
 }
