@@ -7,6 +7,7 @@ import argparse
 import zlib
 import base64
 import sys
+import os
 
 def unknown_tag(loader, tag_suffix, node):
     if isinstance(node, yaml.SequenceNode):
@@ -48,7 +49,48 @@ def sort_dict(obj):
     else:
         return obj
 
+def merge_yaml(existing, new):
+    """
+    Recursively merge new into existing:
+    - Add new keys/values.
+    - If value is a dict, recurse.
+    - If value is a list, add new items (no duplicates) and sort.
+    - If value is a scalar, update only if not a dict/list.
+    """
+    for key, new_val in new.items():
+        if key in existing:
+            old_val = existing[key]
+            if isinstance(old_val, dict) and isinstance(new_val, dict):
+                merge_yaml(old_val, new_val)
+            elif isinstance(old_val, list) and isinstance(new_val, list):
+                # Merge, deduplicate, and sort
+                merged = list(set(old_val) | set(new_val))
+                # If all elements are strings, sort as strings
+                if all(isinstance(x, str) for x in merged):
+                    merged.sort(key=lambda x: x.lower())
+                else:
+                    merged.sort()
+                existing[key] = merged
+            elif not isinstance(old_val, (dict, list)):
+                # Only update if not an object/array
+                existing[key] = new_val
+            # else: do not update if types are incompatible
+        else:
+            # Add new key
+            existing[key] = new_val
+    # Sort keys at this level
+    if isinstance(existing, dict):
+        sorted_items = sorted(existing.items(), key=lambda x: x[0].lower())
+        existing.clear()
+        existing.update(sorted_items)
+    return existing
+
 def write_yaml_and_compressed(obj, output_yaml, compressed_txt):
+    # If existing_yaml is provided, load and merge
+    if output_yaml and os.path.exists(output_yaml):
+        with open(output_yaml, 'r', encoding='utf-8') as f:
+            existing = yaml.safe_load(f) or {}
+        obj = merge_yaml(existing, obj)
     with open(output_yaml, 'w', encoding='utf-8') as f:
         yaml.safe_dump(obj, f, allow_unicode=True, sort_keys=False)
     if compressed_txt:
