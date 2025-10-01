@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -37,7 +38,7 @@ h1 {
 .section {
   background: #23272b;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   padding: 1.2rem;
   max-width: 700px;
   position: relative;
@@ -54,8 +55,8 @@ label {
   font-weight: 500;
 }
 
-input[type="file"],
-input[type="text"] {
+input[type='file'],
+input[type='text'] {
   background: #222;
   color: #f3f3f3;
   border: 1px solid #444;
@@ -78,7 +79,7 @@ button {
   font-size: 1em;
   cursor: pointer;
   transition: background 0.2s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 button:hover {
   background: #106adf;
@@ -87,7 +88,8 @@ button:hover {
 button.secondary {
   background: #444;
 }
-button.secondary:hover, button.secondary:focus {
+button.secondary:hover,
+button.secondary:focus {
   background: #666;
 }
 
@@ -138,7 +140,8 @@ button.secondary:hover, button.secondary:focus {
   flex-direction: column;
 }
 
-#input-section, #preset-section {
+#input-section,
+#preset-section {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
@@ -148,8 +151,8 @@ button.secondary:hover, button.secondary:focus {
   margin-bottom: 0;
 }
 
-#input-section input[type="file"],
-#input-section input[type="text"] {
+#input-section input[type='file'],
+#input-section input[type='text'] {
   margin-top: 0.2em;
   margin-bottom: 0;
 }
@@ -203,7 +206,7 @@ button.secondary:hover, button.secondary:focus {
   opacity: 0;
   transition: opacity 0.2s;
   font-size: 0.95rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   max-width: 90vw;
   box-sizing: border-box;
   white-space: normal;
@@ -232,7 +235,10 @@ button.secondary:hover, button.secondary:focus {
 
 .disabled-overlay {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(24, 28, 32, 0.7);
   z-index: 10;
   pointer-events: all;
@@ -241,7 +247,8 @@ button.secondary:hover, button.secondary:focus {
 
 .overlay-message {
   position: absolute;
-  top: 50%; left: 50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   color: #fff;
   font-size: 1.1em;
@@ -303,7 +310,7 @@ button.secondary:hover, button.secondary:focus {
   padding: 0.5em 1em;
   font-size: 1em;
   right: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
@@ -316,9 +323,16 @@ button.secondary:hover, button.secondary:focus {
 }
 
 @keyframes flash-notification {
-  0% { background: #23272b; }
-  20% { background: #2d8cf0; color: #fff; }
-  100% { background: #23272b; }
+  0% {
+    background: #23272b;
+  }
+  20% {
+    background: #2d8cf0;
+    color: #fff;
+  }
+  100% {
+    background: #23272b;
+  }
 }
 
 .preset-notification.flash {
@@ -339,7 +353,8 @@ button.secondary:hover, button.secondary:focus {
     flex-direction: column;
     overflow-x: hidden;
   }
-  .controls-group, .editor-group {
+  .controls-group,
+  .editor-group {
     max-width: 100%;
     width: 100%;
   }

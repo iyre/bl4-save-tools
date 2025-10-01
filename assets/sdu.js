@@ -11,13 +11,13 @@ function updateSDUPoints() {
     'missionset_zoneactivity_silo',
   ];
   const COLLECTIBLES = {
-    'propaspeakers': 20,
-    'capsules':      15,
-    'evocariums':    15,
-    'augurshrines':  10,
-    'caches':        10,
-    'safes':         10,
-    'vaultsymbols':   5,
+    propaspeakers: 20,
+    capsules: 15,
+    evocariums: 15,
+    augurshrines: 10,
+    caches: 10,
+    safes: 10,
+    vaultsymbols: 5,
   };
 
   // Get YAML from editor
@@ -26,16 +26,16 @@ function updateSDUPoints() {
   try {
     data = jsyaml.load(yamlText);
   } catch (e) {
-    alert("Failed to parse YAML: " + e);
+    alert('Failed to parse YAML: ' + e);
     return;
   }
 
   let total = 0;
 
   // Activities
-  const mission_sets = (((data.missions || {}).local_sets) || {});
+  const mission_sets = (data.missions || {}).local_sets || {};
   for (const activity of ACTIVITIES) {
-    const missions = ((mission_sets[activity] || {}).missions) || {};
+    const missions = (mission_sets[activity] || {}).missions || {};
     let completed_activities = 0;
     for (const m of Object.values(missions)) {
       if (typeof m === 'object' && m.status === 'completed') {
@@ -46,7 +46,7 @@ function updateSDUPoints() {
   }
 
   // Collectibles
-  const collectibles = (((((data.stats || {}).openworld) || {}).collectibles) || {});
+  const collectibles = ((data.stats || {}).openworld || {}).collectibles || {};
   for (const key in COLLECTIBLES) {
     if (collectibles.hasOwnProperty(key)) {
       if (typeof collectibles[key] === 'object') {

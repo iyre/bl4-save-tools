@@ -4,15 +4,15 @@ function utf16leBytes(str) {
   const bytes = [];
   for (let i = 0; i < str.length; i++) {
     const code = str.charCodeAt(i);
-    bytes.push(code & 0xFF, (code >> 8) & 0xFF);
+    bytes.push(code & 0xff, (code >> 8) & 0xff);
   }
   return bytes;
 }
 
 function deriveKey(userID) {
   const BASE_KEY = [
-    0x35,0xEC,0x33,0x77,0xF3,0x5D,0xB0,0xEA,0xBE,0x6B,0x83,0x11,0x54,0x03,0xEB,0xFB,
-    0x27,0x25,0x64,0x2E,0xD5,0x49,0x06,0x29,0x05,0x78,0xBD,0x60,0xBA,0x4A,0xA7,0x87
+    0x35, 0xec, 0x33, 0x77, 0xf3, 0x5d, 0xb0, 0xea, 0xbe, 0x6b, 0x83, 0x11, 0x54, 0x03, 0xeb, 0xfb,
+    0x27, 0x25, 0x64, 0x2e, 0xd5, 0x49, 0x06, 0x29, 0x05, 0x78, 0xbd, 0x60, 0xba, 0x4a, 0xa7, 0x87,
   ];
   let k = BASE_KEY.slice();
 
@@ -22,7 +22,7 @@ function deriveKey(userID) {
     let sid = BigInt(userID);
     uid_bytes = [];
     for (let i = 0; i < 8; i++) {
-      uid_bytes.push(Number(sid & 0xFFn));
+      uid_bytes.push(Number(sid & 0xffn));
       sid >>= 8n;
     }
   } else {
@@ -42,7 +42,7 @@ function pkcs7Unpad(buf) {
   for (let i = 1; i <= pad; i++) {
     if (buf[buf.length - i] !== pad) {
       // Padding is invalid, return original buffer
-      console.warn("PKCS7 unpad failed, returning padded data");
+      console.warn('PKCS7 unpad failed, returning padded data');
       return buf;
     }
   }
@@ -58,22 +58,22 @@ function pkcs7Pad(buf, blockSize = 16) {
 }
 
 function uint8ArrayToWordArray(u8arr) {
-  var words = [], i = 0, len = u8arr.length;
+  var words = [],
+    i = 0,
+    len = u8arr.length;
   for (; i < len; i += 4) {
-    words.push(
-      (u8arr[i] << 24) |
-      (u8arr[i + 1] << 16) |
-      (u8arr[i + 2] << 8) |
-      (u8arr[i + 3])
-    );
+    words.push((u8arr[i] << 24) | (u8arr[i + 1] << 16) | (u8arr[i + 2] << 8) | u8arr[i + 3]);
   }
   return CryptoJS.lib.WordArray.create(words, len);
 }
 
 // Decrypt .sav to YAML
-function decryptSav(fileArrayBuffer, normalize=true) {
+function decryptSav(fileArrayBuffer, normalize = true) {
   const userID = document.getElementById('userIdInput').value.trim();
-  if (!userID) { alert("Please enter platform user ID (Steam or Epic)."); return; }
+  if (!userID) {
+    alert('Please enter platform user ID (Steam or Epic).');
+    return;
+  }
   localStorage.setItem('bl4_previous_userid', userID);
   const ciph = new Uint8Array(fileArrayBuffer);
 
@@ -81,19 +81,21 @@ function decryptSav(fileArrayBuffer, normalize=true) {
   const keyWordArray = uint8ArrayToWordArray(new Uint8Array(keyBytes));
 
   const ciphWordArray = uint8ArrayToWordArray(ciph);
-  const decrypted = CryptoJS.AES.decrypt(
-    { ciphertext: ciphWordArray },
-    keyWordArray,
-    { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.NoPadding }
-  );
+  const decrypted = CryptoJS.AES.decrypt({ ciphertext: ciphWordArray }, keyWordArray, {
+    mode: CryptoJS.mode.ECB,
+    padding: CryptoJS.pad.NoPadding,
+  });
   let pt = new Uint8Array(decrypted.words.length * 4);
   for (let i = 0; i < decrypted.words.length; i++) {
-    pt.set([
-      (decrypted.words[i] >> 24) & 0xFF,
-      (decrypted.words[i] >> 16) & 0xFF,
-      (decrypted.words[i] >> 8) & 0xFF,
-      decrypted.words[i] & 0xFF
-    ], i * 4);
+    pt.set(
+      [
+        (decrypted.words[i] >> 24) & 0xff,
+        (decrypted.words[i] >> 16) & 0xff,
+        (decrypted.words[i] >> 8) & 0xff,
+        decrypted.words[i] & 0xff,
+      ],
+      i * 4
+    );
   }
   pt = pt.slice(0, ciph.length); // Remove possible extra bytes
 
@@ -120,7 +122,7 @@ function decryptSav(fileArrayBuffer, normalize=true) {
   }
 
   if (!inflated) {
-    alert("Zlib decompress failed. Wrong user ID or file format?");
+    alert('Zlib decompress failed. Wrong user ID or file format?');
     return;
   }
 
@@ -140,7 +142,10 @@ function decryptSav(fileArrayBuffer, normalize=true) {
 function encryptSav() {
   const file = document.getElementById('fileInput').files[0];
   const userID = document.getElementById('userIdInput').value.trim();
-  if (!file || !userID) { alert("Please select a file and enter Steam/Epic ID."); return; }
+  if (!file || !userID) {
+    alert('Please select a file and enter Steam/Epic ID.');
+    return;
+  }
 
   // Save user ID to localStorage
   localStorage.setItem('bl4_previous_userid', userID);
@@ -152,7 +157,8 @@ function encryptSav() {
 
   // Compute adler32
   function adler32(buf) {
-    let a = 1, b = 0;
+    let a = 1,
+      b = 0;
     for (let i = 0; i < buf.length; i++) {
       a = (a + buf[i]) % 65521;
       b = (b + a) % 65521;
@@ -166,15 +172,15 @@ function encryptSav() {
   const packed = new Uint8Array(comp.length + 8);
   packed.set(comp, 0);
   // adler32
-  packed[comp.length + 0] = adler & 0xFF;
-  packed[comp.length + 1] = (adler >> 8) & 0xFF;
-  packed[comp.length + 2] = (adler >> 16) & 0xFF;
-  packed[comp.length + 3] = (adler >> 24) & 0xFF;
+  packed[comp.length + 0] = adler & 0xff;
+  packed[comp.length + 1] = (adler >> 8) & 0xff;
+  packed[comp.length + 2] = (adler >> 16) & 0xff;
+  packed[comp.length + 3] = (adler >> 24) & 0xff;
   // uncompressed length
-  packed[comp.length + 4] = uncompressedLen & 0xFF;
-  packed[comp.length + 5] = (uncompressedLen >> 8) & 0xFF;
-  packed[comp.length + 6] = (uncompressedLen >> 16) & 0xFF;
-  packed[comp.length + 7] = (uncompressedLen >> 24) & 0xFF;
+  packed[comp.length + 4] = uncompressedLen & 0xff;
+  packed[comp.length + 5] = (uncompressedLen >> 8) & 0xff;
+  packed[comp.length + 6] = (uncompressedLen >> 16) & 0xff;
+  packed[comp.length + 7] = (uncompressedLen >> 24) & 0xff;
 
   // PKCS7 pad
   const pt_padded = pkcs7Pad(packed);
@@ -185,20 +191,22 @@ function encryptSav() {
 
   // Encrypt AES-ECB
   const ptWordArray = CryptoJS.lib.WordArray.create(pt_padded);
-  const encrypted = CryptoJS.AES.encrypt(
-    ptWordArray,
-    keyWordArray,
-    { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.NoPadding }
-  );
+  const encrypted = CryptoJS.AES.encrypt(ptWordArray, keyWordArray, {
+    mode: CryptoJS.mode.ECB,
+    padding: CryptoJS.pad.NoPadding,
+  });
   // Convert to Uint8Array
   const encBytes = new Uint8Array(encrypted.ciphertext.words.length * 4);
   for (let i = 0; i < encrypted.ciphertext.words.length; i++) {
-    encBytes.set([
-      (encrypted.ciphertext.words[i] >> 24) & 0xFF,
-      (encrypted.ciphertext.words[i] >> 16) & 0xFF,
-      (encrypted.ciphertext.words[i] >> 8) & 0xFF,
-      encrypted.ciphertext.words[i] & 0xFF
-    ], i * 4);
+    encBytes.set(
+      [
+        (encrypted.ciphertext.words[i] >> 24) & 0xff,
+        (encrypted.ciphertext.words[i] >> 16) & 0xff,
+        (encrypted.ciphertext.words[i] >> 8) & 0xff,
+        encrypted.ciphertext.words[i] & 0xff,
+      ],
+      i * 4
+    );
   }
 
   // console.log("ENCRYPT VALIDATION (first 8):", Array.from(keyBytes.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')));
@@ -208,7 +216,7 @@ function encryptSav() {
   const timestamp = now.toISOString().replace(/[-:T]/g, '').slice(0, 14); // e.g. 20250924153012
   const exportFilename = `${importFilename}_${timestamp.slice(0, 8)}_${timestamp.slice(8)}.sav`;
 
-  const blob = new Blob([encBytes], { type: "application/octet-stream" });
+  const blob = new Blob([encBytes], { type: 'application/octet-stream' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;

@@ -1,72 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>BL4 Save Editor</title>
-  <link rel="stylesheet" href="./assets/style.css">
-  <link rel="icon" type="image/png" href="./assets/favicon.png">
-</head>
-<body>
-  <h1>Borderlands 4 - Online Save Editor</h1>
-  <div class="source-link">
-    <a href="https://github.com/iyre/bl4-save-tools" target="_blank" rel="noopener">View source on GitHub</a>
-  </div>
-  <div class="main-content">
-    <div class="controls-group">
-      <div id="input-section" class="section">
-        <h2>Upload Save</h2>
-        <label>Select .sav or .yaml file: <input type="file" id="fileInput"></label>
-        <br>
-        <label>
-          <span class="tooltip">
-            Steam/Epic user ID:
-            <span class="tooltiptext">
-              Required to decrypt/encrypt save files.<br/>Steam ID is 17 digits.<br/>Epic ID is 32 characters.
-            </span>
-          </span>
-          <input type="text" id="userIdInput" placeholder="7656119...">
-        </label>
-        <br>
-        <button onclick="importFile()">Import</button>
-      </div>
-      <div id="preset-section" class="section">
-        <div class="disabled-overlay" id="presetSectionOverlay">
-          <div class="overlay-message">Import a file first.</div>
-        </div>
-        <div class="preset-header">
-          <h2>Apply Presets</h2>
-          <div class="preset-notification" id="presetNotification" style="display:none;"></div>
-        </div>
-      </div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>BL4 Save Editor</title>
+    <link rel="stylesheet" href="./assets/style.css" />
+    <link rel="icon" type="image/png" href="./assets/favicon.png" />
+  </head>
+  <body>
+    <h1>Borderlands 4 - Online Save Editor</h1>
+    <div class="source-link">
+      <a href="https://github.com/iyre/bl4-save-tools" target="_blank" rel="noopener">
+        View source on GitHub
+      </a>
     </div>
-    <div class="editor-group">
-      <div id="editor-section" class="section">
-        <div class="disabled-overlay" id="editorSectionOverlay">
-          <div class="overlay-message">Import a file first.</div>
+    <div class="main-content">
+      <div class="controls-group">
+        <div id="input-section" class="section">
+          <h2>Upload Save</h2>
+          <label>Select .sav or .yaml file: <input type="file" id="fileInput" /></label>
+          <br />
+          <label>
+            <span class="tooltip">
+              Steam/Epic user ID:
+              <span class="tooltiptext">
+                Required to decrypt/encrypt saves.<br />
+                Steam ID is 17 digits.<br />
+                Epic ID is 32 characters.
+              </span>
+            </span>
+            <input type="text" id="userIdInput" placeholder="7656119..." />
+          </label>
+          <br />
+          <button onclick="importFile()">Import</button>
         </div>
-        <div class="editor-header">
-          <h2>Edit YAML (Advanced)</h2>
-          <div class="editor-actions">
-            <button onclick="encryptSav()">Download .sav</button>
-            <button class="secondary" onclick="downloadYaml()">Download .yaml</button>
+        <div id="preset-section" class="section">
+          <div class="disabled-overlay" id="presetSectionOverlay">
+            <div class="overlay-message">Import a file first.</div>
+          </div>
+          <div class="preset-header">
+            <h2>Apply Presets</h2>
+            <div class="preset-notification" id="presetNotification" style="display: none"></div>
           </div>
         </div>
-        <div id="editor" style="width:800px;height:500px;border:1px solid #ccc;"></div>
+      </div>
+      <div class="editor-group">
+        <div id="editor-section" class="section">
+          <div class="disabled-overlay" id="editorSectionOverlay">
+            <div class="overlay-message">Import a file first.</div>
+          </div>
+          <div class="editor-header">
+            <h2>Edit YAML (Advanced)</h2>
+            <div class="editor-actions">
+              <button onclick="encryptSav()">Download .sav</button>
+              <button class="secondary" onclick="downloadYaml()">Download .yaml</button>
+            </div>
+          </div>
+          <div id="editor" style="width: 800px; height: 500px; border: 1px solid #ccc"></div>
+        </div>
       </div>
     </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
-  
-  <script src="./assets/ui.js"></script>
-  <script src="./assets/crypto.js"></script>
-  <script src="./assets/blobs.js"></script>
-  <script src="./assets/counters.js"></script>
-  <script src="./assets/unlockables.js"></script>
-  <script src="./assets/exploration.js"></script>
-  <script src="./assets/missions.js"></script>
-  <script src="./assets/sdu.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+
+    <script src="./assets/ui.js"></script>
+    <script src="./assets/crypto.js"></script>
+    <script src="./assets/blobs.js"></script>
+    <script src="./assets/counters.js"></script>
+    <script src="./assets/unlockables.js"></script>
+    <script src="./assets/exploration.js"></script>
+    <script src="./assets/missions.js"></script>
+    <script src="./assets/sdu.js"></script>
+  </body>
 </html>
