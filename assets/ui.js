@@ -2,63 +2,65 @@
 
 const PRESETS = [
   {
-    handler: "clearMapFog",
-    title: "Remove Map Fog",
-    desc: "Removes fog of war from all maps."
+    handler: 'clearMapFog',
+    title: 'Remove Map Fog',
+    desc: 'Removes fog of war from all maps.',
   },
   {
-    handler: "discoverAllLocations",
-    title: "Discover All Locations",
-    desc: "Adds all location and collectible markers to the map."
+    handler: 'discoverAllLocations',
+    title: 'Discover All Locations',
+    desc: 'Adds all location and collectible markers to the map.',
   },
   {
-    handler: "completeAllSafehouseMissions",
-    title: "Unlock All Safehouses",
-    desc: "Completes all safehouse and silo activities, unlocking them as fast travel destinations."
+    handler: 'completeAllSafehouseMissions',
+    title: 'Unlock All Safehouses',
+    desc: 'Completes all safehouse and silo activities, unlocking them as fast travel destinations.',
   },
   {
-    handler: "completeAllCollectibles",
-    title: "Unlock All Collectibles",
-    desc: "Completes all collectibles such as echo logs, propaganda towers, and vault keys."
+    handler: 'completeAllCollectibles',
+    title: 'Unlock All Collectibles',
+    desc: 'Completes all collectibles such as echo logs, propaganda towers, and vault keys.',
   },
   {
-    handler: "unlockAllHoverDrives",
-    title: "Unlock All Hover Drives",
-    desc: "Unlocks all hover drive manufacturers and tiers."
+    handler: 'unlockAllHoverDrives',
+    title: 'Unlock All Hover Drives',
+    desc: 'Unlocks all hover drive manufacturers and tiers.',
   },
   {
-    handler: "unlockAllSpecialization",
-    title: "Unlock all Specializations",
-    desc: "Unlocks the specialization system and all skills."
+    handler: 'unlockAllSpecialization',
+    title: 'Unlock All Specializations',
+    desc: 'Unlocks the specialization system and all skills.',
   },
   {
-    handler: "completeAllStoryMissions",
-    title: "Skip Story Missions",
-    desc: "Completes all main story missions."
+    handler: 'completeAllStoryMissions',
+    title: 'Skip Story Missions',
+    desc: 'Completes all main story missions.',
   },
   {
-    handler: "completeAllMissions",
-    title: "Skip All Missions",
-    desc: "Completes all main and side missions."
+    handler: 'completeAllMissions',
+    title: 'Skip All Missions',
+    desc: 'Completes all main and side missions.',
   },
   {
-    handler: "unlockUVHMode",
-    title: "Unlock UVHM",
-    desc: "Sets flags to unlock UVH mode."
+    handler: 'unlockUVHMode',
+    title: 'Unlock UVHM',
+    desc: 'Sets flags to unlock UVH mode.',
   },
 ];
 
 function renderPresets() {
   const presetSection = document.getElementById('preset-section');
 
-  PRESETS.forEach(preset => {
+  PRESETS.forEach((preset) => {
     const row = document.createElement('div');
     row.className = 'preset-row';
 
     const btn = document.createElement('button');
     btn.className = 'secondary';
     btn.textContent = preset.title;
-    btn.onclick = function() { window[preset.handler](); };
+    btn.onclick = function () {
+      window[preset.handler]();
+    };
 
     const tooltip = document.createElement('span');
     tooltip.className = 'preset-tooltip';
@@ -77,9 +79,11 @@ function renderPresets() {
 }
 
 // Initialize Monaco Editor
-require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs' }});
+require.config({
+  paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs' },
+});
 let editor;
-require(['vs/editor/editor.main'], function() {
+require(['vs/editor/editor.main'], function () {
   editor = monaco.editor.create(document.getElementById('editor'), {
     value: '', // initial YAML text
     language: 'yaml',
@@ -99,7 +103,10 @@ function enableSections() {
 
 async function importFile() {
   const file = document.getElementById('fileInput').files[0];
-  if (!file) { alert("Please select a file to upload."); return; }
+  if (!file) {
+    alert('Please select a file to upload.');
+    return;
+  }
   const arrayBuffer = await file.arrayBuffer();
 
   importFilename = file.name.split('.').slice(0, -1).join('.') || file.name;
@@ -107,7 +114,7 @@ async function importFile() {
   // Exit early if YAML file provided (already decrypted)
   const ext = file.name.split('.').pop().toLowerCase();
   if (ext == 'yaml' || ext == 'yml') {
-    console.log("Loading YAML file directly into editor");
+    console.log('Loading YAML file directly into editor');
     yamlText = normalizeYaml(arrayBuffer);
   } else {
     yamlText = decryptSav(arrayBuffer);
@@ -121,8 +128,8 @@ function normalizeYaml(yamlBytes) {
     yamlBytes = new Uint8Array(yamlBytes);
   }
   let yamlText = new TextDecoder().decode(yamlBytes);
-  console.log("YAML preview:", yamlText.slice(0, 100));
-  console.log("YAML length:", yamlBytes.length);
+  console.log('YAML preview:', yamlText.slice(0, 100));
+  console.log('YAML length:', yamlBytes.length);
 
   // Remove !tags which jsyaml can't handle. These don't seem to be needed.
   yamlText = yamlText.replace(/:\s*!tags/g, ':');
@@ -130,7 +137,7 @@ function normalizeYaml(yamlBytes) {
   try {
     data = jsyaml.load(yamlText);
   } catch (e) {
-    alert("Failed to parse YAML after tag removal: " + e);
+    alert('Failed to parse YAML after tag removal: ' + e);
     return;
   }
 
@@ -144,7 +151,7 @@ function downloadYaml() {
   const timestamp = now.toISOString().replace(/[-:T]/g, '').slice(0, 14); // e.g. 20250924153012
   const exportFilename = `${importFilename}_${timestamp.slice(0, 8)}_${timestamp.slice(8)}.yaml`;
   const yamlText = editor.getValue();
-  const blob = new Blob([yamlText], { type: "text/yaml" });
+  const blob = new Blob([yamlText], { type: 'text/yaml' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -158,7 +165,7 @@ function getYamlDataFromEditor() {
   try {
     return jsyaml.load(yamlText);
   } catch (e) {
-    alert("Failed to parse YAML: " + e);
+    alert('Failed to parse YAML: ' + e);
     return;
   }
 }
@@ -185,12 +192,14 @@ function showPresetNotification(msg, duration = 2000) {
 
   presetNotificationTimeout = setTimeout(() => {
     el.classList.remove('show');
-    setTimeout(() => { el.style.display = 'none'; }, 300);
+    setTimeout(() => {
+      el.style.display = 'none';
+    }, 300);
     presetNotificationTimeout = null;
   }, duration);
 }
 
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
   // Restore user ID from localStorage on page load
   const previousUserId = localStorage.getItem('bl4_previous_userid');
   if (previousUserId) {
@@ -201,7 +210,15 @@ window.addEventListener('DOMContentLoaded', function() {
   renderPresets();
 });
 
-// Clear editor when selecting a new file
-document.getElementById('fileInput').addEventListener('change', function() {
+// Clear editor when selecting a new file, and try to import if userIdInput is set
+document.getElementById('fileInput').addEventListener('change', async function () {
   if (editor) editor.setValue('');
+  const userId = document.getElementById('userIdInput')?.value;
+  if (userId) {
+    try {
+      await importFile();
+    } catch (e) {
+      console.log('opportunistic import failed:', e);
+    }
+  }
 });
