@@ -8,6 +8,7 @@ import zlib
 import base64
 import sys
 import os
+from pathlib import Path
 
 def unknown_tag(loader, tag_suffix, node):
     if isinstance(node, yaml.SequenceNode):
@@ -85,7 +86,7 @@ def merge_yaml(existing, new):
         existing.update(sorted_items)
     return existing
 
-def write_yaml_and_compressed(obj, output_yaml, compressed_txt):
+def write_yaml_and_compressed(obj, output_yaml, compressed):
     # If existing_yaml is provided, load and merge
     if output_yaml and os.path.exists(output_yaml):
         with open(output_yaml, 'r', encoding='utf-8') as f:
@@ -93,7 +94,8 @@ def write_yaml_and_compressed(obj, output_yaml, compressed_txt):
         obj = merge_yaml(existing, obj)
     with open(output_yaml, 'w', encoding='utf-8') as f:
         yaml.safe_dump(obj, f, allow_unicode=True, sort_keys=False)
-    if compressed_txt:
+    if compressed:
+        compressed_txt = str(Path(output_yaml).with_suffix('')) + '_compressed.txt'
         yaml_str = yaml.safe_dump(obj, allow_unicode=True, sort_keys=False)
         compressed = zlib.compress(yaml_str.encode('utf-8'))
         b64 = base64.b64encode(compressed).decode('ascii')
@@ -104,11 +106,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Extract missionsets and/or collectibles from a YAML save file.")
     parser.add_argument('-i', '--input', required=True, help='Input YAML file')
     parser.add_argument('-m', '--missions-out', help='Output YAML file for missionsets')
-    parser.add_argument('-mc', '--missions-comp', help='Output compressed base64 file for missionsets')
+    parser.add_argument('-mc', '--missions-comp', action='store_true', help='Output compressed base64 file for missionsets')
     parser.add_argument('-c', '--collectibles-out', help='Output YAML file for collectibles')
-    parser.add_argument('-cc', '--collectibles-comp', help='Output compressed base64 file for collectibles')
+    parser.add_argument('-cc', '--collectibles-comp', action='store_true', help='Output compressed base64 file for collectibles')
     parser.add_argument('-u', '--unlockables-out', help='Output YAML file for unlockables. (profile.sav)')
-    parser.add_argument('-uc', '--unlockables-comp', help='Output compressed base64 file for unlockables')
+    parser.add_argument('-uc', '--unlockables-comp', action='store_true', help='Output compressed base64 file for unlockables')
     args = parser.parse_args()
 
     if not args.missions_out and not args.collectibles_out and not args.unlockables_out:

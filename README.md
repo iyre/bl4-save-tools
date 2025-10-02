@@ -12,11 +12,14 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Discover all locations
   - Unlock all safehouses
   - Unlock all collectibles
+  - Unlock all vault powers
   - Unlock all hover drives
   - Unlock all specializations
   - Skip story missions
   - Skip all missions
   - Unlock UVHM
+  - Unlock new game shortcuts - `profile.sav`
+  - Unlock all cosmetics - `profile.sav`
 
 I don't plan to implement any sort of item editing.
 
@@ -50,6 +53,7 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Example: "Unlock all collectibles" will technically just "collect" them. You'd also need to apply "Discover all locations" to have them shown on your map. 
 
 ---
+### Character Presets
 - **Remove map fog**
   - Fully reveals the in-game map terrain by setting fog of war overlay for every map to 100% discovered. [Technical details](docs/exploration.md)
   - Does not add PoI markers. See "Discover all locations".
@@ -63,6 +67,9 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Marks all* collectibles as found. ECHO logs, capsules, etc. (bobble heads aren't included)
   - Re-calculates SDU points, applying the new total if it's higher.
   - Does not add PoI markers. See "Discover all locations".
+- **Unlock all vault powers**
+  - Unlocks all vault poweres normally granted by completing vaults.
+  - Included in "Unlock all collectibles".
 - **Unlock all hover drives**
   - Unlocks all hover drive tiers and manufacturers.
   - Does not complete the associated kill count challenges. [More info](docs/challenges.md)
@@ -81,6 +88,13 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Sets values in the save to unlock UVHM 1-5. You can select any difficulty in-game.
   - Loading a save with this & story completion will enable starting at level 30 (flag is automatically added to `profile.sav`).
   - Doesn't complete any missions, so you could theoretically play the story from level 1 in UVHM difficulty which isn't otherwise possible.
+
+### Profile Presets `profile.sav`
+- **Unlock new game shortcuts**
+  - Enables starting new characters at level 30 with story already complete.
+  - Enables the specialization system.
+- **Unlock all cosmetics**
+  - Unlocks all cosmetic items, making them available to all characters.
 
 ## Where Are My Saves?
 **Windows:**

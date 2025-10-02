@@ -5,51 +5,79 @@ const PRESETS = [
     handler: 'clearMapFog',
     title: 'Remove Map Fog',
     desc: 'Removes fog of war from all maps.',
+    saveType: 'character',
   },
   {
     handler: 'discoverAllLocations',
     title: 'Discover All Locations',
     desc: 'Adds all location and collectible markers to the map.',
+    saveType: 'character',
   },
   {
     handler: 'completeAllSafehouseMissions',
     title: 'Unlock All Safehouses',
     desc: 'Completes all safehouse and silo activities, unlocking them as fast travel destinations.',
+    saveType: 'character',
   },
   {
     handler: 'completeAllCollectibles',
     title: 'Unlock All Collectibles',
     desc: 'Completes all collectibles such as echo logs, propaganda towers, and vault keys.',
+    saveType: 'character',
+  },
+  {
+    handler: 'unlockVaultPowers',
+    title: 'Unlock All Vault Powers',
+    desc: 'Unlocks all powerups from completing vaults.',
+    saveType: 'character',
   },
   {
     handler: 'unlockAllHoverDrives',
     title: 'Unlock All Hover Drives',
     desc: 'Unlocks all hover drive manufacturers and tiers.',
+    saveType: 'character',
   },
   {
     handler: 'unlockAllSpecialization',
     title: 'Unlock All Specializations',
     desc: 'Unlocks the specialization system and all skills.',
+    saveType: 'character',
   },
   {
     handler: 'completeAllStoryMissions',
     title: 'Skip Story Missions',
     desc: 'Completes all main story missions.',
+    saveType: 'character',
   },
   {
     handler: 'completeAllMissions',
     title: 'Skip All Missions',
     desc: 'Completes all main and side missions.',
+    saveType: 'character',
   },
   {
     handler: 'unlockUVHMode',
     title: 'Unlock UVHM',
     desc: 'Sets flags to unlock UVH mode.',
+    saveType: 'character',
+  },
+  {
+    handler: 'unlockNewGameShortcuts',
+    title: 'Unlock New Game Shortcuts',
+    desc: 'Unlocks all new game shortcuts (skip prologue, skip story, specialization system).',
+    saveType: 'profile',
+  },
+  {
+    handler: 'unlockAllCosmetics',
+    title: 'Unlock All Cosmetics',
+    desc: 'Unlocks all cosmetic items.',
+    saveType: 'profile',
   },
 ];
 
 function renderPresets() {
-  const presetSection = document.getElementById('preset-section');
+  const presetSection = document.getElementById('preset-buttons');
+  presetSection.innerHTML = '';
 
   PRESETS.forEach((preset) => {
     const row = document.createElement('div');
@@ -58,9 +86,21 @@ function renderPresets() {
     const btn = document.createElement('button');
     btn.className = 'secondary';
     btn.textContent = preset.title;
-    btn.onclick = function () {
-      window[preset.handler]();
-    };
+
+    // Disable button if save type doesn't match
+    if (
+      (isProfileSave && preset.saveType === 'character') ||
+      (!isProfileSave && preset.saveType === 'profile')
+    ) {
+      btn.disabled = true;
+      btn.title = isProfileSave
+        ? 'This preset only applies to character saves.'
+        : 'This preset only applies to profile saves.';
+    } else {
+      btn.onclick = function () {
+        window[preset.handler]();
+      };
+    }
 
     const tooltip = document.createElement('span');
     tooltip.className = 'preset-tooltip';
@@ -141,6 +181,13 @@ function normalizeYaml(yamlBytes) {
     return;
   }
 
+  try {
+    const yamlData = jsyaml.load(yamlText);
+    checkIfProfileSave(yamlData);
+  } catch (e) {
+    isProfileSave = false;
+  }
+
   // Dump back to YAML to normalize indentation and formatting
   let normalizedYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   return normalizedYaml;
@@ -149,7 +196,10 @@ function normalizeYaml(yamlBytes) {
 function downloadYaml() {
   const now = new Date();
   const timestamp = now.toISOString().replace(/[-:T]/g, '').slice(0, 14); // e.g. 20250924153012
-  const exportFilename = `${importFilename}_${timestamp.slice(0, 8)}_${timestamp.slice(8)}.yaml`;
+  const exportFilename = `${importFilename}_${timestamp.slice(
+    0,
+    8
+  )}_${timestamp.slice(8)}.yaml`;
   const yamlText = editor.getValue();
   const blob = new Blob([yamlText], { type: 'text/yaml' });
   const url = URL.createObjectURL(blob);
@@ -211,14 +261,28 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 // Clear editor when selecting a new file, and try to import if userIdInput is set
-document.getElementById('fileInput').addEventListener('change', async function () {
-  if (editor) editor.setValue('');
-  const userId = document.getElementById('userIdInput')?.value;
-  if (userId) {
-    try {
-      await importFile();
-    } catch (e) {
-      console.log('opportunistic import failed:', e);
+document
+  .getElementById('fileInput')
+  .addEventListener('change', async function () {
+    if (editor) editor.setValue('');
+    const userId = document.getElementById('userIdInput')?.value;
+    if (userId) {
+      try {
+        await importFile();
+      } catch (e) {
+        console.log('opportunistic import failed:', e);
+      }
     }
-  }
-});
+  });
+
+let isProfileSave = false;
+
+function checkIfProfileSave(yamlData) {
+  isProfileSave = !!(
+    yamlData &&
+    yamlData.domains &&
+    yamlData.domains.local &&
+    yamlData.domains.local.shared
+  );
+  renderPresets();
+}

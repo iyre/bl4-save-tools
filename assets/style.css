@@ -98,6 +98,16 @@ button.secondary:focus {
   padding: 0.4em;
 }
 
+.preset-row button:disabled {
+  background: #222;
+  color: #888;
+  outline: 1px solid #333;
+  outline-offset: -1px;
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+}
+
 .main-content {
   display: flex;
   flex-direction: row;
@@ -141,7 +151,8 @@ button.secondary:focus {
 }
 
 #input-section,
-#preset-section {
+#preset-section,
+#preset-buttons {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
