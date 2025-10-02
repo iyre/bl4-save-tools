@@ -40,6 +40,23 @@ function completeAllCollectibles() {
   showPresetNotification();
 }
 
+function unlockVaultPowers() {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+
+  data.stats = data.stats || {};
+  data.stats.openworld = data.stats.openworld || {};
+  data.stats.openworld.collectibles = data.stats.openworld.collectibles || {};
+
+  data.stats.openworld.collectibles.vaultpower_grasslands = 1;
+  data.stats.openworld.collectibles.vaultpower_shatteredlands = 1;
+  data.stats.openworld.collectibles.vaultpower_mountains = 1;
+
+  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
+  editor.setValue(newYaml);
+  showPresetNotification();
+}
+
 function unlockUVHMode() {
   const data = getYamlDataFromEditor();
   if (!data) return;
