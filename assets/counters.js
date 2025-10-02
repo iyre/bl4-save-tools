@@ -33,6 +33,9 @@ function completeAllCollectibles() {
     }
   }
 
+  // Eridian/Nyriad ECHO logs
+  data.state.seen_eridium_logs = 262143;
+
   // Update the editor with the new YAML
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
