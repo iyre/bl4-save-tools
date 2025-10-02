@@ -26,6 +26,12 @@ const PRESETS = [
     saveType: 'character',
   },
   {
+    handler: 'unlockVaultPowers',
+    title: 'Unlock All Vault Powers',
+    desc: 'Unlocks all powerups from completing vaults.',
+    saveType: 'character',
+  },
+  {
     handler: 'unlockAllHoverDrives',
     title: 'Unlock All Hover Drives',
     desc: 'Unlocks all hover drive manufacturers and tiers.',
@@ -53,6 +59,18 @@ const PRESETS = [
     handler: 'unlockUVHMode',
     title: 'Unlock UVHM',
     desc: 'Sets flags to unlock UVH mode.',
+    saveType: 'character',
+  },
+  {
+    handler: 'unlockNewGameShortcuts',
+    title: 'Unlock New Game Shortcuts',
+    desc: 'Unlocks all new game shortcuts (skip prologue, skip story, specialization system).',
+    saveType: 'profile',
+  },
+  {
+    handler: 'unlockAllCosmetics',
+    title: 'Unlock All Cosmetics',
+    desc: 'Unlocks all cosmetic items.',
     saveType: 'profile',
   },
 ];
