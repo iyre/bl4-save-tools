@@ -26,6 +26,30 @@ These `rewards_def` IDs are similar to the ones added to `profile.sav`, but not 
 
 Some package rewards contain both
 
+
+## ECHO Logs
+All _collectible_ ECHO logs that count toward Kairos Speaks are included in [collectibles.yaml](../data/collectibles.yaml).\
+This includes 2 logs that are currently only obtainable via a UVH new game (presumably due to some sort of bug) or save editing.
+- `city_mis_01` (Zadra Last Log)
+- `city_mis_16` (Maurice's Log)
+
+Replayable ECHO logs may also be attached to other collectibles such as Dead Bolts and Evocarium puzzles (see below).
+
+The ECHO collectible keys follow a naming pattern and there are a few gaps in the numbering. None of these "missing" IDs correlate with a real ECHO. They don't advance the total in-game under `Inventory > ECHO Logs`. I imagine they may have been cut from the game at some point.
+- `city_gen_20`
+- `elp_gen_02`
+- `elp_gen_05`
+- `gra_gen_08`
+- `gra_gen_25`
+
+### Eridian (Nyriad) Logs
+These are unlocked by completing the 18 collectible Evocarium puzzles.\
+This progress is encoded separately from the actual collectible to ensure you hear the ECHO recordings in the correct order.
+
+The `state.seen_eridium_logs` key has a binary counter value that is incremented with each completed puzzle. This controls which Eridian ECHO log is played when you collect the puzzle and which you're able to replay from the inventory. The key is created when the first puzzle is completed.
+
+A value of `262143` will unlock all 18 logs - literally 18x binary 1s.
+
 ## Hoverdrive unlocks
 - Weapon manufacturer challenges for total kills unlock hoverdrives.
 - Each mfg has 5 hoverdrive challenge tiers.
