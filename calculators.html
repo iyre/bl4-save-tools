@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BL4 XP Calculators</title>
+    <link rel="stylesheet" href="./assets/style.css" />
+    <link rel="icon" type="image/png" href="./assets/favicon.png" />
+  </head>
+  <body>
+    <h1>Borderlands 4 - XP Calculators</h1>
+    <div class="header-links">
+      <a
+        href="https://github.com/iyre/bl4-save-tools"
+        target="_blank"
+        rel="noopener"
+        >Source Code</a
+      >
+      <span class="header-separator">|</span>
+      <a href="./index.html">Save Editor</a>
+    </div>
+    <div class="calc-content">
+      <div class="calc-group">
+        <div class="section">
+          <h2>Information</h2>
+          <p>
+            Estimates the total XP required to reach a level.<br/>
+            Formulas are approximate, so a margin is added.
+          </p>
+          <p>
+            Formulas & research available in
+            <a
+              href="https://github.com/iyre/bl4-save-tools/blob/main/docs/xp.md"
+              target="_blank"
+              rel="noopener"
+              >GitHub docs</a
+            >
+        </div>
+        <div class="section">
+          <h2>Character Level → XP</h2>
+          <label>
+            Level:
+            <input
+              type="number"
+              id="charLevelInput"
+              min="1"
+              max="999"
+              value="1"
+              style="width: 60px"
+            />
+          </label>
+          <button onclick="runCharCalc()">Calculate</button>
+          <div
+            id="charXpResult"
+            style="margin-top: 8px; color: rgba(251, 209, 0, 1)"
+          ></div>
+        </div>
+        <div class="section">
+          <h2>Specialization Level → XP</h2>
+          <label>
+            Level:
+            <input
+              type="number"
+              id="specLevelInput"
+              min="1"
+              max="999"
+              value="1"
+              style="width: 60px"
+            />
+          </label>
+          <button onclick="runSpecCalc()">Calculate</button>
+          <div
+            id="specXpResult"
+            style="margin-top: 8px; color: rgba(180, 100, 255, 1)"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <script src="./assets/calculators.js"></script>
+    <script></script>
+  </body>
+</html>

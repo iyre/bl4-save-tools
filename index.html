@@ -8,16 +8,23 @@
   </head>
   <body>
     <h1>Borderlands 4 - Online Save Editor</h1>
-    <div class="source-link">
-      <a href="https://github.com/iyre/bl4-save-tools" target="_blank" rel="noopener">
-        View source on GitHub
-      </a>
+    <div class="header-links">
+      <a
+        href="https://github.com/iyre/bl4-save-tools"
+        target="_blank"
+        rel="noopener"
+        >Source Code</a
+      >
+      <span class="header-separator">|</span>
+      <a href="./calculators.html">XP Calculators</a>
     </div>
     <div class="main-content">
       <div class="controls-group">
         <div id="input-section" class="section">
           <h2>Upload Save</h2>
-          <label>Select .sav or .yaml file: <input type="file" id="fileInput" /></label>
+          <label
+            >Select .sav or .yaml file: <input type="file" id="fileInput"
+          /></label>
           <br />
           <label>
             <span class="tooltip">
@@ -39,7 +46,11 @@
           </div>
           <div class="preset-header">
             <h2>Apply Presets</h2>
-            <div class="preset-notification" id="presetNotification" style="display: none"></div>
+            <div
+              class="preset-notification"
+              id="presetNotification"
+              style="display: none"
+            ></div>
           </div>
           <div id="preset-buttons"></div>
         </div>
@@ -53,10 +64,15 @@
             <h2>Edit YAML (Advanced)</h2>
             <div class="editor-actions">
               <button onclick="encryptSav()">Download .sav</button>
-              <button class="secondary" onclick="downloadYaml()">Download .yaml</button>
+              <button class="secondary" onclick="downloadYaml()">
+                Download .yaml
+              </button>
             </div>
           </div>
-          <div id="editor" style="width: 800px; height: 500px; border: 1px solid #ccc"></div>
+          <div
+            id="editor"
+            style="width: 800px; height: 500px; border: 1px solid #ccc"
+          ></div>
         </div>
       </div>
     </div>
