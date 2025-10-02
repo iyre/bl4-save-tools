@@ -193,6 +193,7 @@ unlockable_exosoldier:
   - Unlockable_ExoSoldier.Skin40_Veil
   - Unlockable_ExoSoldier.Skin44_Premium
   - Unlockable_ExoSoldier.Skin45_BreakFree
+  - Unlockable_ExoSoldier.Skin51_LoreUnique
 unlockable_gravitar:
   entries:
   - Unlockable_Gravitar.Body01_Prison
