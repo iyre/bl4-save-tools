@@ -123,6 +123,7 @@ echologs_general:
     gra_gen_28: 1
     gra_mis_01: 1
     gra_mis_02: 1
+    gra_mis_03: 1
     gra_mis_04: 1
     gra_mis_05: 1
     gra_mis_06: 1
@@ -160,7 +161,9 @@ echologs_general:
     mtn_gen_26: 1
     mtn_gen_27: 1
     mtn_gen_28: 1
+    mtn_mis_04: 1
     mtn_mis_05: 1
+    mtn_mis_06: 1
     mtn_mis_07: 1
   el_g_shatteredlands:
     sha_gen_01: 1
