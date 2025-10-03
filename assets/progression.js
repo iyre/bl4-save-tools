@@ -1,8 +1,14 @@
-// Functions for calculating/updating SDU token total based on progression state
+// Functions related to character progression
 
 function updateSDUPoints() {
-  const ACTIVITY_POINTS = 40;
-  const ACTIVITIES = [
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+
+  let pointTotal = 0;
+
+  // Activities
+  const activityPoints = 40;
+  const activityNames = [
     'missionset_zoneactivity_crawler',
     'missionset_zoneactivity_drillsite',
     'missionset_zoneactivity_mine',
@@ -10,7 +16,23 @@ function updateSDUPoints() {
     'missionset_zoneactivity_safehouse',
     'missionset_zoneactivity_silo',
   ];
-  const COLLECTIBLES = {
+
+  const missionSets = (data.missions || {}).local_sets || {};
+  for (const activity of activityNames) {
+    const missions = (missionSets[activity] || {}).missions || {};
+    let completedActivities = 0;
+    for (const m of Object.values(missions)) {
+      if (typeof m === 'object' && m.status === 'completed') {
+        completedActivities += 1;
+      }
+    }
+    pointTotal += completedActivities * activityPoints;
+  }
+
+
+
+  // Collectibles
+  const collectiblePoints = {
     propaspeakers: 20,
     capsules: 15,
     evocariums: 15,
@@ -20,7 +42,33 @@ function updateSDUPoints() {
     vaultsymbols: 5,
   };
 
-  // Get YAML from editor
+  const collectibles = ((data.stats || {}).openworld || {}).collectibles || {};
+  for (const key in collectiblePoints) {
+    if (collectibles.hasOwnProperty(key)) {
+      if (typeof collectibles[key] === 'object') {
+        pointTotal += Object.keys(collectibles[key]).length * collectiblePoints[key];
+      } else {
+        pointTotal += collectiblePoints[key];
+      }
+    }
+  }
+
+  // Write value to progression.point_pools.echotokenprogresspoints only if higher
+  data.progression = data.progression || {};
+  data.progression.point_pools = data.progression.point_pools || {};
+  const oldValue = data.progression.point_pools.echotokenprogresspoints || 0;
+  if (total <= oldValue) {
+    console.log(`Not updating echotokenprogresspoints: current ${oldValue} > calculated ${total}`);
+    return;
+  }
+  data.progression.point_pools.echotokenprogresspoints = total;
+
+  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
+  editor.setValue(newYaml);
+  console.log(`Updated echotokenprogresspoints: ${oldValue} -> ${total}`);
+}
+
+function unlockAllSpecialization() {
   const yamlText = editor.getValue();
   let data;
   try {
@@ -29,45 +77,66 @@ function updateSDUPoints() {
     alert('Failed to parse YAML: ' + e);
     return;
   }
-
-  let total = 0;
-
-  // Activities
-  const mission_sets = (data.missions || {}).local_sets || {};
-  for (const activity of ACTIVITIES) {
-    const missions = (mission_sets[activity] || {}).missions || {};
-    let completed_activities = 0;
-    for (const m of Object.values(missions)) {
-      if (typeof m === 'object' && m.status === 'completed') {
-        completed_activities += 1;
-      }
-    }
-    total += completed_activities * ACTIVITY_POINTS;
-  }
-
-  // Collectibles
-  const collectibles = ((data.stats || {}).openworld || {}).collectibles || {};
-  for (const key in COLLECTIBLES) {
-    if (collectibles.hasOwnProperty(key)) {
-      if (typeof collectibles[key] === 'object') {
-        total += Object.keys(collectibles[key]).length * COLLECTIBLES[key];
-      } else {
-        total += COLLECTIBLES[key];
-      }
+  if (!data.state) data.state = {};
+  data.state.experience = data.state.experience || [];
+  let found = false;
+  for (const exp of data.state.experience) {
+    if (exp.type === 'Specialization') {
+      exp.level = 701;
+      exp.points = 7431910510; // Set valid XP to avoid the GUI counter rolling over
+      found = true;
     }
   }
-
-  // Write value to progression.point_pools.echotokenprogresspoints only if higher
+  if (!found) {
+    data.state.experience.push({ type: 'Specialization', level: 701 });
+  }
   if (!data.progression) data.progression = {};
-  if (!data.progression.point_pools) data.progression.point_pools = {};
-  const oldValue = data.progression.point_pools.echotokenprogresspoints || 0;
-  if (total <= oldValue) {
-    console.log(`Not updating echotokenprogresspoints: current ${oldValue} > calculated ${total}`);
-    return;
+  data.progression.graphs = data.progression.graphs || [];
+  let graph = data.progression.graphs.find(
+    (g) => g.name === 'ProgressGraph_Specializations'
+  );
+  if (!graph) {
+    graph = {
+      name: 'ProgressGraph_Specializations',
+      group_def_name: 'progress_group',
+      nodes: [],
+    };
+    data.progression.graphs.push(graph);
   }
-
-  data.progression.point_pools.echotokenprogresspoints = total;
+  const specNames = [
+    'Survivor',
+    'Artificer',
+    'Enforcer',
+    'Slayer',
+    'Hunter',
+    'Adventurer',
+    'Wanderer',
+  ];
+  let foundGroupDef = null;
+  if (Array.isArray(data.progression.graphs)) {
+    for (const g of data.progression.graphs) {
+      if (g.group_def_name && g.group_def_name !== 'progress_group') {
+        foundGroupDef = g.group_def_name;
+        break;
+      }
+    }
+  }
+  graph.group_def_name = foundGroupDef || graph.group_def_name || '';
+  graph.nodes = specNames.map((name) => ({
+    name,
+    points_spent: 100,
+  }));
+  if (!graph.group_def_name) {
+    alert(
+      'Warning: No character-specific group_def_name found in progression.graphs. ' +
+        'Please unlock at least one specialization in-game first, then use this tool.'
+    );
+  }
+  if (!data.progression.point_pools) data.progression.point_pools = {};
+  data.progression.point_pools.specializationtokenpool = 700;
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log(`Updated echotokenprogresspoints: ${oldValue} -> ${total}`);
+  console.log('All Specializations unlocked and maxed out!');
+  stageEpilogueMission(); // Stage epilogue mission to ensure specialization system is unlocked.
+  showPresetNotification();
 }
