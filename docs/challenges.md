@@ -1,5 +1,7 @@
 # Challenges
-Challenges will be marked completed in-game if the related counter is at or above a threshold. Rewards are not granted based on counter state, but rather when the threashold is actually reached. Increasing counters will not automatically grant rewards. You can increase a counter to `threshold - 1`, then manually reach the threshold in-game to receive the reward normally. Rewards are added to `state` > `packages` in save YAML. Accepting that package in-game will add a data key elsewhere in the save YAML to actually unlock the item for use, remove the reward package, and add its key to `pips` > `pips_list` (i.e. mark as "read").
+Challenges will be marked completed in-game if the related counter is at or above a threshold. Rewards are not granted based on counter state, but rather when the threashold is actually reached. Increasing counters will not automatically grant rewards. You can increase a counter to `threshold - 1`, then manually reach the threshold in-game to receive the reward normally. Rewards are added to `state` > `packages` in save YAML. Accepting that package in-game will add a data key elsewhere in the save YAML to actually unlock the item for use, remove the reward package, and add its key to `pips` > `pips_list` (**<!>** UI notifications).
+
+[Challenge Counters](../data/challenge_counters.csv)
 
 ## Rewards
 Example reward package entry - this is the package reward for the "Kairos Speaks" challenge (finding 156/156 ECHO logs).
@@ -41,6 +43,9 @@ The ECHO collectible keys follow a naming pattern and there are a few gaps in th
 - `elp_gen_05`
 - `gra_gen_08`
 - `gra_gen_25`
+- `mtn_mis_01`
+- `mtn_mis_02`
+- `mtn_mis_03`
 
 ### Eridian (Nyriad) Logs
 These are unlocked by completing the 18 collectible Evocarium puzzles.\

@@ -1,4 +1,5 @@
 // Functions for manipulating unlockables, typically structured as lists/arrays
+// Functions for manipulating progression graphs
 
 function unlockAllHoverDrives() {
   const data = getYamlDataFromEditor();
