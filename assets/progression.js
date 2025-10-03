@@ -55,7 +55,8 @@ function updateSDUPoints() {
   // Write value to progression.point_pools.echotokenprogresspoints only if higher
   data.progression = data.progression || {};
   data.progression.point_pools = data.progression.point_pools || {};
-  const oldPointTotal = data.progression.point_pools.echotokenprogresspoints || 0;
+  const oldPointTotal =
+    data.progression.point_pools.echotokenprogresspoints || 0;
   if (pointTotal <= oldPointTotal) {
     console.log(
       `Not updating echotokenprogresspoints: current ${oldPointTotal} > calculated ${pointTotal}`
@@ -66,7 +67,9 @@ function updateSDUPoints() {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log(`Updated echotokenprogresspoints: ${oldPointTotal} -> ${pointTotal}`);
+  console.log(
+    `Updated echotokenprogresspoints: ${oldPointTotal} -> ${pointTotal}`
+  );
 }
 
 function unlockAllSpecialization() {
@@ -140,4 +143,56 @@ function unlockAllSpecialization() {
   console.log('All Specializations unlocked and maxed out!');
   stageEpilogueMission(); // Stage epilogue mission to ensure specialization system is unlocked.
   showPresetNotification();
+}
+
+function setCharacterToMaxLevel() {
+  setCharacterLevel(50, 3430227);
+  showPresetNotification();
+}
+
+function setCharacterLevel(level, xp = null) {
+  const data = getYamlDataFromEditor();
+  if (!data || !data.state || !data.state.experience) return;
+  const idx = data.state.experience.findIndex(
+    (exp) => exp.type === 'Character'
+  );
+  if (idx === -1) {
+    console.log('Character experience entry not found.');
+    return;
+  }
+
+  xp = xp || calculateCharacterXp(level);
+  data.state.experience[idx].level = level;
+  data.state.experience[idx].points = xp;
+
+  data.progression.point_pools = data.progression.point_pools || {};
+  data.progression.point_pools.characterprogresspoints = level - 1;
+
+  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
+  editor.setValue(newYaml);
+  console.log(`Set character level to ${level} (XP: ${xp})`);
+}
+
+function generateUUID() {
+  // RFC4122 version 4 compliant UUID
+  return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0,
+      v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16).toUpperCase();
+  });
+}
+
+function setCharacterClass(className, charName) {
+  const data = getYamlDataFromEditor();
+  if (!data || !data.state) return;
+
+  // Class seems to be all you really need to change.
+  // Character-specific things like progression graphs are cleared when loading the save.
+  data.state.class = 'Char_' + className;
+  data.state.char_name = charName; // This name is displayed in character selection
+  data.state.char_guid = generateUUID(); // New GUID to avoid UI issues if swapping saves from the main menu
+
+  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
+  editor.setValue(newYaml);
+  console.log(`Set character class: ${className}`);
 }

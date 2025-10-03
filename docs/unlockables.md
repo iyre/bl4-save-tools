@@ -88,7 +88,7 @@ These unlock cosmetics, such as those rewarded from challenges or story mileston
 `domains` > `local` > `unlockables`
 - `unlockable_darksiren`
 - `unlockable_exosoldier`
-- `unlockable_gravatar`
+- `unlockable_gravitar`
 - `unlockable_paladin`
 - `unlockable_echo4`
 - `unlockable_vehicles`

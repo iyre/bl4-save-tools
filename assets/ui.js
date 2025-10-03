@@ -2,6 +2,12 @@
 
 const PRESETS = [
   {
+    handler: 'setCharacterToMaxLevel',
+    title: 'Max Level (50)',
+    desc: 'Sets character level to 50.',
+    saveType: 'character',
+  },
+  {
     handler: 'clearMapFog',
     title: 'Remove Map Fog',
     desc: 'Removes fog of war from all maps.',
@@ -84,6 +90,8 @@ const PRESETS = [
 function renderPresets() {
   const presetSection = document.getElementById('preset-buttons');
   presetSection.innerHTML = '';
+
+  presetSection.appendChild(makeCharacterClassButton());
 
   PRESETS.forEach((preset, idx) => {
     const row = document.createElement('div');
@@ -308,4 +316,54 @@ function clearPresetPips() {
   document.querySelectorAll('.preset-pip').forEach(pip => {
     pip.style.display = 'none';
   });
+}
+
+const CLASS_NAMES = {
+  DarkSiren: 'Vex',
+  Paladin: 'Amon',
+  Gravitar: 'Harlowe',
+  ExoSoldier: 'Rafa',
+};
+
+function makeCharacterClassButton() {
+  const segRow = document.createElement('div');
+  segRow.className = 'preset-row';
+
+  // Pip for the segmented button
+  const segPip = document.createElement('span');
+  segPip.className = 'preset-pip';
+  segPip.style.display = 'none';
+  segPip.title = 'Applied';
+
+  // Segmented button container
+  const segBtn = document.createElement('div');
+  segBtn.className = 'segmented-btn';
+
+  for (const [key, label] of Object.entries(CLASS_NAMES)) {
+    const seg = document.createElement('button');
+    seg.type = 'button';
+    seg.className = 'secondary';
+    seg.textContent = label;
+    seg.title = `Set class to ${label}`;
+    seg.onclick = function () {
+      setCharacterClass(key, label);
+      segPip.style.display = 'inline-block';
+    };
+    segBtn.appendChild(seg);
+  };
+
+  // Tooltip for the segmented button
+  const segTooltip = document.createElement('span');
+  segTooltip.className = 'preset-tooltip';
+  segTooltip.textContent = '?';
+  const segTooltipText = document.createElement('span');
+  segTooltipText.className = 'tooltiptext';
+  segTooltipText.textContent = 'Each segment sets a different character class.';
+  segTooltip.appendChild(segTooltipText);
+
+  segRow.appendChild(segPip);
+  segRow.appendChild(segBtn);
+  segRow.appendChild(segTooltip);
+
+  return segRow;
 }
