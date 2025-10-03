@@ -156,8 +156,7 @@ function completeLootChallenges() {
 
 // Doesn't complete Timekeeper's Oath main mission
 function completeWorldChallenges() {
-  // they do not trigger achievements
-  // used as counters for world challenges
+  // worldevent counters will trigger achievements on game launch
   const counters = {
     '10_worldevents_colosseum': 1,
     '11_worldevents_airship': 1,
