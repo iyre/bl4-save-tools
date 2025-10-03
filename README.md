@@ -17,6 +17,7 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Unlock all specializations
   - Skip story missions
   - Skip all missions
+  - Complete all challenges
   - Unlock UVHM
   - Unlock new game shortcuts - `profile.sav`
   - Unlock all cosmetics - `profile.sav`
@@ -72,10 +73,10 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Included in "Unlock all collectibles".
 - **Unlock all hover drives**
   - Unlocks all hover drive tiers and manufacturers.
-  - Does not complete the associated kill count challenges. [More info](docs/challenges.md)
+  - Does not complete the associated kill count challenges. See "Complete all challenges".
 - **Unlock all specializations**
   - Unlocks the specialization system. [More info](docs/unlockables.md)
-  - Fully completes all trees.
+  - Sets maximum level and fully completes all trees.
 - **Skip story missions**
   - Completes all missions related to the main story. Doesn't modify any other missions.
   - Functionally equivalent to starting a new save with the in-game story skip option. (Does not unlock that option)
@@ -84,10 +85,16 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Completes all missions including the main story, vaults, and activities like drill sites.
   - Enables the specialization system.
   - Re-calculates SDU points, applying the new total if it's higher.
+- **Complete all challenges**
+  - Completes all counter-based challenges.
+  - Does not complete activities or collectibles challenges. See "Skip all missions" and "Unlock all collectibles".
+  - Does not grant rewards for completion. [More info](docs/challenges.md)
+  - Does not unlock achievements. (except UVH 5)
 - **Unlock UVHM** (Ultimate Vault Hunter Mode, i.e. post-game)
-  - Sets values in the save to unlock UVHM 1-5. You can select any difficulty in-game.
-  - Loading a save with this & story completion will enable starting at level 30 (flag is automatically added to `profile.sav`).
+  - Sets values in the save to unlock UVH level 1-5. You can switch between them in-game.
   - Doesn't complete any missions, so you could theoretically play the story from level 1 in UVHM difficulty which isn't otherwise possible.
+  - Loading a save with this & story completion will enable starting at level 30 (flag is automatically added to `profile.sav`).
+  - Completes all UVH challenges.
 
 ### Profile Presets `profile.sav`
 - **Unlock new game shortcuts**

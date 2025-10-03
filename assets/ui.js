@@ -62,9 +62,9 @@ const PRESETS = [
     saveType: 'character',
   },
   {
-    handler: 'completeManufacturerChallenges',
-    title: 'Complete Manufacturer Challenges',
-    desc: 'Completes all weapon manufacturer challenges.',
+    handler: 'completeAllChallenges',
+    title: 'Complete All Challenges',
+    desc: 'Completes all challenges.',
     saveType: 'character',
   },
   {

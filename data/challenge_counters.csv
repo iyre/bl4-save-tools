@@ -1,0 +1,234 @@
+category,title,counter,tier1,tier2,tier3,tier4,tier5
+ultimate vault hunter,,stats.challenge.mission_uvh_1a,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_1b,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_1c,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_2a,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_2b,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_2c,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_2d,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_3a,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_3b,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_3c,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_3d,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_4a,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_4b,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_4c,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_4d,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_5a,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_5b,1,,,,
+ultimate vault hunter,,stats.challenge.mission_uvh_5c,1,,,,
+ultimate vault hunter,,stats.challenge.uvh_1_finalchallenge,1,,,,
+ultimate vault hunter,,stats.challenge.uvh_2_finalchallenge,1,,,,
+ultimate vault hunter,,stats.challenge.uvh_3_finalchallenge,1,,,,
+ultimate vault hunter,,stats.challenge.uvh_4_finalchallenge,1,,,,
+ultimate vault hunter,,stats.challenge.uvh_5_finalchallenge,1,,,,
+combat,,stats.challenge.general_kill_enemies,,,,,8000
+combat,,stats.challenge.general_kill_badass,,,,,500
+combat,,stats.challenge.general_kill_crit,,,,,2000
+combat,,stats.challenge.repkit_uses,,,,,500
+combat,,stats.challenge.general_kill_melee,,,,,2000
+combat,,stats.challenge.general_kill_groundpound,,,,,200
+combat,,stats.challenge.general_kill_sliding,,,,,1500
+combat,,stats.challenge.general_kill_dashing,,,,,1000
+combat,,stats.challenge.general_kill_airborne,,,,,1000
+combat,,stats.challenge.repkit_lifesteal,,,,,900000
+combat,,stats.challenge.revivepartner,,,,,200
+combat,,stats.challenge.secondwind,,,,,200
+combat,,stats.challenge.secondwindbadassboss,,,,,60
+character,,stats.challenge.siren_death_tiered,,,,,1000
+character,,stats.challenge.siren_death_single,1,,,,
+character,,stats.challenge.siren_demonology_tiered,,,,,1000
+character,,stats.challenge.siren_demonology_single,1,,,,
+character,,stats.challenge.siren_duplicate_tiered,,,,,1000
+character,,stats.challenge.siren_duplicate_single,1,,,,
+character,,stats.challenge.siren_levelup,,,,,50
+character,,stats.challenge.exo_autolock_tiered,,,,,1000
+character,,stats.challenge.exo_autolock_single,1,,,,
+character,,stats.challenge.exo_buster_tiered,,,,,1000
+character,,stats.challenge.exo_buster_single,1,,,,
+character,,stats.challenge.exo_heavyarms_tiered,,,,,1000
+character,,stats.challenge.exo_heavyarms_single,1,,,,
+character,,stats.challenge.exo_levelup,,,,,50
+character,,stats.challenge.gravitar_terminal_tiered,,,,,1000
+character,,stats.challenge.gravitar_terminal_single,1,,,,
+character,,stats.challenge.gravitar_stasis_tiered,,,,,1000
+character,,stats.challenge.gravitar_stasis_single,1,,,,
+character,,stats.challenge.gravitar_exodus_tiered,,,,,1000
+character,,stats.challenge.gravitar_exodus_single,1,,,,
+character,,stats.challenge.gravitar_levelup,,,,,50
+character,,stats.challenge.paladin_cybernetics_tiered,,,,,1000
+character,,stats.challenge.paladin_cybernetics_single,1,,,,
+character,,stats.challenge.paladin_vengeance_tiered,,,,,1000
+character,,stats.challenge.paladin_vengeance_single,1,,,,
+character,,stats.challenge.paladin_weaponmaster_tiered,,,,,1000
+character,,stats.challenge.paladin_weaponmaster_single,1,,,,
+character,,stats.challenge.paladin_levelup,,,,,50
+enemies,,stats.challenge.killenemyarmy_bandits,,,,,5000
+enemies,,stats.challenge.killenemytype_psycho,,,,,1500
+enemies,,stats.challenge.killenemytype_guntoter,,,,,1250
+enemies,,stats.challenge.killenemytype_splice,,,,,750
+enemies,,stats.challenge.killenemytype_meathead,,,,,300
+enemies,,stats.challenge.killenemytype_phalanx,,,,,250
+enemies,,stats.challenge.killenemyarmy_creatures,,,,,4500
+enemies,,stats.challenge.killenemytype_cat,,,,,1500
+enemies,,stats.challenge.killenemytype_bat,,,,,500
+enemies,,stats.challenge.killenemytype_beast,,,,,750
+enemies,,stats.challenge.killenemytype_creep,,,,,750
+enemies,,stats.challenge.killenemytype_pangolin,,,,,750
+enemies,,stats.challenge.killenemytype_thresher,,,,,750
+enemies,,stats.challenge.killenemyarmy_order,,,,,4000
+enemies,,stats.challenge.killenemytype_grunt,,,,,1500
+enemies,,stats.challenge.killenemytype_soldier,,,,,1500
+enemies,,stats.challenge.killenemytype_striker,,,,,1500
+enemies,,stats.challenge.killenemytype_drone,,,,,350
+enemies,,stats.challenge.killenemytype_leader,,,,,750
+enemies,,stats.challenge.killenemytype_brute,,,,,600
+enemies,,stats.challenge.general_kill_corrupted,,,,,200
+loot,,stats.challenge.loot_anylootable,,,,,2500
+loot,,stats.challenge.loot_redchest,,,,,250
+loot,,stats.challenge.getcash,,,,,3000000
+loot,,stats.challenge.geteridium,,,,,10000
+loot,,stats.challenge.loot_whites,,,,,200
+loot,,stats.challenge.loot_greens,,,,,200
+loot,,stats.challenge.loot_blues,,,,,150
+loot,,stats.challenge.loot_purples,,,,,75
+loot,,stats.challenge.loot_legendaries,,,,,25
+loot,,stats.challenge.loot_weapons,,,,,500
+loot,,stats.challenge.loot_gadgets,,,,,200
+loot,,stats.challenge.loot_shields,,,,,200
+loot,,stats.challenge.loot_repkits,,,,,200
+loot,,stats.challenge.loot_classmods,,,,,200
+loot,,stats.challenge.loot_enhancements,,,,,200
+world,,stats.achievements.10_worldevents_colosseum,1,,,,
+world,,stats.achievements.11_worldevents_airship,1,,,,
+world,,stats.achievements.12_worldevents_meteor,1,,,,
+world,,stats.achievements.24_missions_side,,,,,98
+world,,stats.openworld.misc.fish,,,,,50
+economy,,stats.challenge.economy_maxheld_cash,1,,,,
+economy,,stats.challenge.economy_maxheld_morecash,1,,,,
+economy,,stats.challenge.economy_upgrade_inventory,1,,,,
+economy,,stats.challenge.economy_upgrade_inventory_all,1,,,,
+economy,,stats.challenge.economy_sellloot,500,,,,
+economy,,stats.challenge.economy_firmware_set,1,,,,
+elemental,,stats.challenge.kill_elemental_fire,,,,,2500
+elemental,,stats.challenge.kill_elemental_shock,,,,,2000
+elemental,,stats.challenge.kill_elemental_corrosive,,,,,1600
+elemental,,stats.challenge.kill_elemental_radiation,,,,,2500
+elemental,,stats.challenge.kill_elemental_cryo,,,,,1000
+elemental,,stats.challenge.kill_2_status,5,,,,
+pistol,,stats.challenge.pistol_kill,,,,,2000
+pistol,,stats.challenge.pistol_kill_secondwind,,,,,75
+pistol,,stats.challenge.pistol_hit_crit,,,,,5000
+pistol,,stats.challenge.pistol_kill_crit,,,,,750
+pistol,,stats.challenge.pistol_kill_scoped,,,,,750
+pistol,,stats.challenge.pistol_kill_gliding,,,,,400
+submachine gun,,stats.challenge.smg_kill,,,,,2000
+submachine gun,,stats.challenge.smg_kill_secondwind,,,,,75
+submachine gun,,stats.challenge.smg_hit_crit,,,,,10000
+submachine gun,,stats.challenge.smg_kill_crit,,,,,1000
+submachine gun,,stats.challenge.smg_kill_dashing,,,,,1500
+submachine gun,,stats.challenge.smg_kill_sliding,,,,,750
+assault rifle,,stats.challenge.assault_kill,,,,,2500
+assault rifle,,stats.challenge.assault_kill_secondwind,,,,,75
+assault rifle,,stats.challenge.assault_hit_crit,,,,,7500
+assault rifle,,stats.challenge.assault_kill_crit,,,,,1000
+assault rifle,,stats.challenge.assault_kill_scoped,,,,,1500
+assault rifle,,stats.challenge.assault_kill_crouched,,,,,500
+shotgun,,stats.challenge.shotgun_kill,,,,,2000
+shotgun,,stats.challenge.shotgun_kill_secondwind,,,,,75
+shotgun,,stats.challenge.shotgun_hit_crit,,,,,5000
+shotgun,,stats.challenge.shotgun_kill_crit,,,,,750
+shotgun,,stats.challenge.shotgun_kill_sliding,,,,,1000
+shotgun,,stats.challenge.shotgun_kill_dashing,,,,,1000
+shotgun,,stats.challenge.shotgun_kill_close,,,,,1500
+shotgun,,stats.challenge.shotgun_kill_distant,,,,,600
+shotgun,,stats.challenge.shotgun_bigshot,1,,,,
+sniper,,stats.challenge.sniper_kill,,,,,2000
+sniper,,stats.challenge.sniper_kill_secondwind,,,,,75
+sniper,,stats.challenge.sniper_hit_crit,,,,,4500
+sniper,,stats.challenge.sniper_kill_crit,,,,,750
+sniper,,stats.challenge.sniper_kill_distant,,,,,1000
+sniper,,stats.challenge.sniper_kill_oneshot,,,,,150
+sniper,,stats.challenge.sniper_kill_unaware,,,,,300
+sniper,,stats.challenge.sniper_kill_unscoped,,,,,200
+sniper,,stats.challenge.sniper_bigshot,1,,,,
+grenade,,stats.challenge.killenemy_grenade,,,,,1000
+grenade,,stats.challenge.killenemy_grenade_multikill,,,,,300
+grenade,,stats.challenge.killenemy_grenade_mirv,,,,,400
+grenade,,stats.challenge.killenemy_grenade_artillery,,,,,450
+grenade,,stats.challenge.killenemy_grenade_lingering,,,,,300
+grenade,,stats.challenge.killenemy_grenade_singularity,,,,,500
+grenade,,stats.challenge.killenemy_grenade_amp,,,,,300
+shield,,stats.challenge.shield_take_damage,,,,,2000000
+shield,,stats.challenge.shield_kills,,,,,750
+shield,,stats.challenge.shield_pickup_boosters,,,,,1000
+shield,,stats.challenge.shield_pickup_shards,,,,,1000
+shield,,stats.challenge.shield_kills_nova,,,,,200
+shield,,stats.challenge.shield_kills_reflect,,,,,200
+shield,,stats.challenge.shield_absorb_ammo,,,,,5000
+shield,,stats.challenge.shield_kills_amp,,,,,500
+heavy weapon,,stats.challenge.killenemy_heavy_vladof,,,,,250
+heavy weapon,,stats.challenge.killenemy_heavy_vladof_multikill,,,,,100
+heavy weapon,,stats.challenge.killenemy_heavy_maliwan,,,,,350
+heavy weapon,,stats.challenge.killenemy_heavy_maliwan_bigshot,1,,,,
+heavy weapon,,stats.challenge.killenemy_heavy_torgue,,,,,300
+heavy weapon,,stats.challenge.killenemy_heavy_torgue_directhit,,,,,100
+heavy weapon,,stats.challenge.killenemy_heavy_borg,,,,,400
+heavy weapon,,stats.challenge.killenemy_heavy_borg_multikill,,,,,100
+repkits,,stats.challenge.repkit_healself,,,,,400000
+repkits,,stats.challenge.repkit_kills,,,,,250
+repkits,,stats.challenge.repkit_healothers,,,,,400000
+jakobs,,stats.challenge.manufacturer_jakobs_kills,,,,,2000
+jakobs,,stats.challenge.manufacturer_jakobs_underbarrel_kills,,,,,175
+jakobs,,stats.challenge.manufacturer_jakobs_ricochetkills,,,,,150
+jakobs,,stats.challenge.manufacturer_jakobs_oneshot,,,,,500
+jakobs,,stats.challenge.manufacturer_jakobs_quickdraw,,,,,350
+jakobs,,stats.challenge.manufacturer_jakobs_grenadecrits,,,,,400
+daedalus,,stats.challenge.manufacturer_daedalus_kills,,,,,2000
+daedalus,,stats.challenge.manufacturer_daedalus_underbarrel_kills,,,,,150
+daedalus,,stats.challenge.manufacturer_daedalus_multiloader_pistol,,,,,500
+daedalus,,stats.challenge.manufacturer_daedalus_multiloader_smg,,,,,750
+daedalus,,stats.challenge.manufacturer_daedalus_multiloader_assault,,,,,600
+daedalus,,stats.challenge.manufacturer_daedalus_multiloader_shotgun,,,,,400
+daedalus,,stats.challenge.manufacturer_daedalus_multiloader_sniper,,,,,400
+vladof,,stats.challenge.manufacturer_vladof_kills,,,,,2000
+vladof,,stats.challenge.manufacturer_vladof_extrabarrel,,,,,750
+vladof,,stats.challenge.manufacturer_vladof_explosive_underbarrel,,,,,175
+vladof,,stats.challenge.manufacturer_vladof_bipod,,,,,750
+vladof,,stats.challenge.manufacturer_vladof_shotgun_underbarrel,,,,,150
+maliwan,,stats.challenge.manufacturer_maliwan_kills,,,,,2000
+maliwan,,stats.challenge.manufacturer_maliwan_underbarrel_kills,,,,,175
+maliwan,,stats.challenge.manufacturer_maliwan_status_fire,,,,,750
+maliwan,,stats.challenge.manufacturer_maliwan_status_shock,,,,,750
+maliwan,,stats.challenge.manufacturer_maliwan_status_corrosive,,,,,400
+maliwan,,stats.challenge.manufacturer_maliwan_status_radiation,,,,,400
+maliwan,,stats.challenge.manufacturer_maliwan_status_cryo,,,,,750
+tediore,,stats.challenge.manufacturer_tediore_kills,,,,,1500
+tediore,,stats.challenge.manufacturer_tediore_underbarrel_kills,,,,,150
+tediore,,stats.challenge.manufacturer_tediore_emptyreload_kills,,,,,750
+tediore,,stats.challenge.manufacturer_tediore_fullreload_kills,,,,,600
+tediore,,stats.challenge.manufacturer_tediore_comboreload_kills,,,,,200
+tediore,,stats.challenge.manufacturer_tediore_turret_kills,,,,,500
+torgue,,stats.challenge.manufacturer_torgue_kills,,,,,1300
+torgue,,stats.challenge.manufacturer_torgue_underbarrel_kills,,,,,125
+torgue,,stats.challenge.manufacturer_torgue_splash_kills,,,,,600
+torgue,,stats.challenge.manufacturer_torgue_sticky_kills,,,,,750
+torgue,,stats.challenge.manufacturer_torgue_impact_kills,,,,,750
+torgue,,stats.challenge.manufacturer_torgue_grenade_kills,,,,,400
+ripper,,stats.challenge.manufacturer_borg_kills,,,,,1300
+ripper,,stats.challenge.manufacturer_borg_underbarrel_kills,,,,,125
+ripper,,stats.challenge.manufacturer_borg_criticalhits,,,,,1500
+ripper,,stats.challenge.manufacturer_borg_multikills,,,,,450
+order,,stats.challenge.manufacturer_order_kills,,,,,1500
+order,,stats.challenge.manufacturer_order_underbarrel_kills,,,,,125
+order,,stats.challenge.manufacturer_order_halfcharge_kills,,,,,600
+order,,stats.challenge.manufacturer_order_fullcharge_kills,,,,,750
+order,,stats.challenge.manufacturer_order_oneshot_kills,,,,,500
+order,,stats.challenge.manufacturer_order_killorder,,,,,750
+licensed parts,,stats.challenge.spareparts_atlas_tracker_pucks,,,,,350
+licensed parts,,stats.challenge.spareparts_atlas_tracker_grenades,,,,,600
+licensed parts,,stats.challenge.spareparts_cov_overheated,,,,,250
+licensed parts,,stats.challenge.spareparts_cov_not_overheated,,,,,600
+licensed parts,,stats.challenge.spareparts_hyperion_amp_shield,,,,,150
+licensed parts,,,,,,,
+licensed parts,,,,,,,
