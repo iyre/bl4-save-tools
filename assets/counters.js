@@ -82,7 +82,7 @@ function setStoryValues() {
 
   // Set globals
   data.globals = data.globals || {};
-  data.globals.lockdownlifted = true; // what does this do?
+  data.globals.lockdownlifted = true; // what does this do? open doors in dominion?
 
   // Set stats.challenge // some of these are updated automatically, so aren't set here
   data.stats.challenge = data.stats.challenge || {};

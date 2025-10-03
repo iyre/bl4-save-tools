@@ -89,9 +89,9 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Completes all counter-based challenges.
   - Does not complete activities or collectibles challenges. See "Skip all missions" and "Unlock all collectibles".
   - Does not grant rewards for completion. [More info](docs/challenges.md)
-  - Does not unlock achievements. (except UVH 5)
+  - Unlocks some achievements. (UVH 5 & world events confirmed)
 - **Unlock UVHM** (Ultimate Vault Hunter Mode, i.e. post-game)
-  - Sets values in the save to unlock UVH level 1-5. You can switch between them in-game.
+  - Sets values in the save to unlock UVH rank 1-5. You can switch between them in-game.
   - Doesn't complete any missions, so you could theoretically play the story from level 1 in UVHM difficulty which isn't otherwise possible.
   - Loading a save with this & story completion will enable starting at level 30 (flag is automatically added to `profile.sav`).
   - Completes all UVH challenges.

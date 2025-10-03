@@ -85,13 +85,20 @@ function renderPresets() {
   const presetSection = document.getElementById('preset-buttons');
   presetSection.innerHTML = '';
 
-  PRESETS.forEach((preset) => {
+  PRESETS.forEach((preset, idx) => {
     const row = document.createElement('div');
     row.className = 'preset-row';
+
+    // Pip container
+    const pip = document.createElement('span');
+    pip.className = 'preset-pip';
+    pip.style.display = 'none';
+    pip.title = 'Applied';
 
     const btn = document.createElement('button');
     btn.className = 'secondary';
     btn.textContent = preset.title;
+    btn.dataset.presetIdx = idx; // for reference
 
     // Disable button if save type doesn't match
     if (
@@ -105,6 +112,7 @@ function renderPresets() {
     } else {
       btn.onclick = function () {
         window[preset.handler]();
+        pip.style.display = 'inline-block'; // Show pip when clicked
       };
     }
 
@@ -117,6 +125,8 @@ function renderPresets() {
     tooltipText.textContent = preset.desc;
 
     tooltip.appendChild(tooltipText);
+
+    row.appendChild(pip);
     row.appendChild(btn);
     row.appendChild(tooltip);
 
@@ -166,6 +176,7 @@ async function importFile() {
     yamlText = decryptSav(arrayBuffer);
   }
   editor.setValue(yamlText);
+  clearPresetPips();
   enableSections();
 }
 
@@ -291,4 +302,10 @@ function checkIfProfileSave(yamlData) {
     yamlData.domains.local.shared
   );
   renderPresets();
+}
+
+function clearPresetPips() {
+  document.querySelectorAll('.preset-pip').forEach(pip => {
+    pip.style.display = 'none';
+  });
 }

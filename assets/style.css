@@ -357,6 +357,16 @@ a:hover {
   animation: flash-notification 0.4s;
 }
 
+.preset-pip {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  background: #1bba4bff;
+  border-radius: 50%;
+  vertical-align: middle;
+  box-shadow: 0 0 2px #222;
+}
+
 @media (max-width: 1100px) {
   h1 {
     font-size: 1.3rem;

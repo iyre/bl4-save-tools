@@ -35,7 +35,7 @@ This includes 2 logs that are currently only obtainable via a UVH new game (pres
 - `city_mis_01` (Zadra Last Log)
 - `city_mis_16` (Maurice's Log)
 
-Replayable ECHO logs may also be attached to other collectibles such as Dead Bolts and Evocarium puzzles (see below).
+Replayable ECHO logs may also be attached to other collectibles such as Dead Bolts and Evocarium puzzles (see "Eridian Logs" below).
 
 The ECHO collectible keys follow a naming pattern and there are a few gaps in the numbering. None of these "missing" IDs correlate with a real ECHO. They don't advance the total in-game under `Inventory > ECHO Logs`. I imagine they may have been cut from the game at some point.
 - `city_gen_20`

@@ -108,7 +108,7 @@ economy,,stats.challenge.economy_maxheld_cash,1,,,,
 economy,,stats.challenge.economy_maxheld_morecash,1,,,,
 economy,,stats.challenge.economy_upgrade_inventory,1,,,,
 economy,,stats.challenge.economy_upgrade_inventory_all,1,,,,
-economy,,stats.challenge.economy_sellloot,500,,,,
+economy,,stats.challenge.economy_sellloot,,,,,500
 economy,,stats.challenge.economy_firmware_set,1,,,,
 elemental,,stats.challenge.kill_elemental_fire,,,,,2500
 elemental,,stats.challenge.kill_elemental_shock,,,,,2000
@@ -230,5 +230,5 @@ licensed parts,,stats.challenge.spareparts_atlas_tracker_grenades,,,,,600
 licensed parts,,stats.challenge.spareparts_cov_overheated,,,,,250
 licensed parts,,stats.challenge.spareparts_cov_not_overheated,,,,,600
 licensed parts,,stats.challenge.spareparts_hyperion_amp_shield,,,,,150
-licensed parts,,,,,,,
-licensed parts,,,,,,,
+licensed parts,,spareparts_hyperion_absorb_ammo,,,,,3000
+licensed parts,,spareparts_hyperion_reflect_shield,,,,,100
