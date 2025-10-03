@@ -8,6 +8,8 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
 - Export as re-encrypted `.sav` file or YAML
 - Manually edit save YAML within the web page
 - Apply preset modifications
+  - Change class
+  - Max level (50)
   - Remove map fog
   - Discover all locations
   - Unlock all safehouses
@@ -55,6 +57,12 @@ These run JavaScript functions which apply pre-configured edits to save files qu
 
 ---
 ### Character Presets
+- **Change class**
+  - Changes the character class.
+  - Refunds skill points.
+- **Max level (50)**
+  - Sets character level to the maximum.
+  - Sets expected skill points & XP.
 - **Remove map fog**
   - Fully reveals the in-game map terrain by setting fog of war overlay for every map to 100% discovered. [Technical details](docs/exploration.md)
   - Does not add PoI markers. See "Discover all locations".

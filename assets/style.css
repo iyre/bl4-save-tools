@@ -118,6 +118,24 @@ button.secondary:focus {
   box-shadow: none;
 }
 
+.segmented-btn {
+  display: flex;
+  flex: 1 1 0;
+  width: 100%;
+  min-width: 4em;
+  height: 2.2em;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  background: #444;
+}
+.segmented-btn button {
+  border-right: 1px solid #23272b;
+}
+.segmented-btn button:last-child {
+  border-right: none;
+}
+
 .controls-group,
 .editor-group,
 .calc-group {
