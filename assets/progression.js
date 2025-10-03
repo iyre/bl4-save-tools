@@ -29,8 +29,6 @@ function updateSDUPoints() {
     pointTotal += completedActivities * activityPoints;
   }
 
-
-
   // Collectibles
   const collectiblePoints = {
     propaspeakers: 20,
@@ -46,7 +44,8 @@ function updateSDUPoints() {
   for (const key in collectiblePoints) {
     if (collectibles.hasOwnProperty(key)) {
       if (typeof collectibles[key] === 'object') {
-        pointTotal += Object.keys(collectibles[key]).length * collectiblePoints[key];
+        pointTotal +=
+          Object.keys(collectibles[key]).length * collectiblePoints[key];
       } else {
         pointTotal += collectiblePoints[key];
       }
@@ -56,16 +55,18 @@ function updateSDUPoints() {
   // Write value to progression.point_pools.echotokenprogresspoints only if higher
   data.progression = data.progression || {};
   data.progression.point_pools = data.progression.point_pools || {};
-  const oldValue = data.progression.point_pools.echotokenprogresspoints || 0;
-  if (total <= oldValue) {
-    console.log(`Not updating echotokenprogresspoints: current ${oldValue} > calculated ${total}`);
+  const oldPointTotal = data.progression.point_pools.echotokenprogresspoints || 0;
+  if (pointTotal <= oldPointTotal) {
+    console.log(
+      `Not updating echotokenprogresspoints: current ${oldPointTotal} > calculated ${pointTotal}`
+    );
     return;
   }
-  data.progression.point_pools.echotokenprogresspoints = total;
+  data.progression.point_pools.echotokenprogresspoints = pointTotal;
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log(`Updated echotokenprogresspoints: ${oldValue} -> ${total}`);
+  console.log(`Updated echotokenprogresspoints: ${oldPointTotal} -> ${pointTotal}`);
 }
 
 function unlockAllSpecialization() {

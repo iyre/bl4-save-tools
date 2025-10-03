@@ -359,7 +359,8 @@ function completeLicensedPartsChallenges() {
     spareparts_cov_overheated: 250,
     spareparts_cov_not_overheated: 600,
     spareparts_hyperion_amp_shield: 150,
-    // missing 2 counters
+    spareparts_hyperion_absorb_ammo: 3000,
+    spareparts_hyperion_reflect_shield: 100,
   };
 
   updateStatsCounters(counters);
