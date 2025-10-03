@@ -62,6 +62,12 @@ const PRESETS = [
     saveType: 'character',
   },
   {
+    handler: 'completeManufacturerChallenges',
+    title: 'Complete Manufacturer Challenges',
+    desc: 'Completes all weapon manufacturer challenges.',
+    saveType: 'character',
+  },
+  {
     handler: 'unlockNewGameShortcuts',
     title: 'Unlock New Game Shortcuts',
     desc: 'Unlocks all new game shortcuts (skip prologue, skip story, specialization system).',

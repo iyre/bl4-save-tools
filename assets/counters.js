@@ -68,6 +68,8 @@ function unlockUVHMode() {
   data.globals.highest_unlocked_vault_hunter_level = 5;
   data.globals.vault_hunter_level = 1;
 
+  completeUVHChallenges();
+
   // Update editor
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
