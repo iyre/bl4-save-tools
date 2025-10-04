@@ -356,6 +356,11 @@ function makeCharacterClassButtons() {
     btn.title = value.name;
     btn.style.position = 'relative';
 
+    if (isProfileSave) {
+      btn.disabled = true;
+      btn.title = 'This preset only applies to character saves.';
+    }
+
     btn.onclick = function () {
       setCharacterClass(key, value.name);
       btn.classList.add('preset-applied');
