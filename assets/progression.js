@@ -204,70 +204,27 @@ function setMaxSDU() {
   data.progression.point_pools = data.progression.point_pools || {};
 
   // Define the SDU upgrades graph as in the sample
+  const points = [5, 10, 20, 30, 50, 80, 120, 235];
+  const upgrades = [
+    { prefix: 'Ammo_Pistol', levels: 7 },
+    { prefix: 'Ammo_SMG', levels: 7 },
+    { prefix: 'Ammo_AR', levels: 7 },
+    { prefix: 'Ammo_SG', levels: 7 },
+    { prefix: 'Ammo_SR', levels: 7 },
+    { prefix: 'Backpack', levels: 8 },
+    { prefix: 'Bank', levels: 8 },
+    { prefix: 'Lost_Loot', levels: 8 },
+  ];
+  const nodes = upgrades.flatMap(({ prefix, levels }) =>
+    Array.from({ length: levels }, (_, i) => ({
+      name: `${prefix}_${String(i + 1).padStart(2, '0')}`,
+      points_spent: points[i],
+    }))
+  );
   const sduGraph = {
     name: 'sdu_upgrades',
     group_def_name: 'Oak2_GlobalProgressGraph_Group',
-    nodes: [
-      { name: 'Ammo_Pistol_01', points_spent: 5 },
-      { name: 'Ammo_Pistol_02', points_spent: 10 },
-      { name: 'Ammo_Pistol_03', points_spent: 20 },
-      { name: 'Ammo_Pistol_04', points_spent: 30 },
-      { name: 'Ammo_Pistol_05', points_spent: 50 },
-      { name: 'Ammo_Pistol_06', points_spent: 80 },
-      { name: 'Ammo_Pistol_07', points_spent: 120 },
-      { name: 'Ammo_SMG_01', points_spent: 5 },
-      { name: 'Ammo_SMG_02', points_spent: 10 },
-      { name: 'Ammo_SMG_03', points_spent: 20 },
-      { name: 'Ammo_SMG_04', points_spent: 30 },
-      { name: 'Ammo_SMG_05', points_spent: 50 },
-      { name: 'Ammo_SMG_06', points_spent: 80 },
-      { name: 'Ammo_SMG_07', points_spent: 120 },
-      { name: 'Ammo_AR_01', points_spent: 5 },
-      { name: 'Ammo_AR_02', points_spent: 10 },
-      { name: 'Ammo_AR_03', points_spent: 20 },
-      { name: 'Ammo_AR_04', points_spent: 30 },
-      { name: 'Ammo_AR_05', points_spent: 50 },
-      { name: 'Ammo_AR_06', points_spent: 80 },
-      { name: 'Ammo_AR_07', points_spent: 120 },
-      { name: 'Ammo_SG_01', points_spent: 5 },
-      { name: 'Ammo_SG_02', points_spent: 10 },
-      { name: 'Ammo_SG_03', points_spent: 20 },
-      { name: 'Ammo_SG_04', points_spent: 30 },
-      { name: 'Ammo_SG_05', points_spent: 50 },
-      { name: 'Ammo_SG_06', points_spent: 80 },
-      { name: 'Ammo_SG_07', points_spent: 120 },
-      { name: 'Ammo_SR_01', points_spent: 5 },
-      { name: 'Ammo_SR_02', points_spent: 10 },
-      { name: 'Ammo_SR_03', points_spent: 20 },
-      { name: 'Ammo_SR_04', points_spent: 30 },
-      { name: 'Ammo_SR_05', points_spent: 50 },
-      { name: 'Ammo_SR_06', points_spent: 80 },
-      { name: 'Ammo_SR_07', points_spent: 120 },
-      { name: 'Backpack_01', points_spent: 5 },
-      { name: 'Backpack_02', points_spent: 10 },
-      { name: 'Backpack_03', points_spent: 20 },
-      { name: 'Backpack_04', points_spent: 30 },
-      { name: 'Backpack_05', points_spent: 50 },
-      { name: 'Backpack_06', points_spent: 80 },
-      { name: 'Backpack_07', points_spent: 120 },
-      { name: 'Backpack_08', points_spent: 235 },
-      { name: 'Bank_01', points_spent: 5 },
-      { name: 'Bank_02', points_spent: 10 },
-      { name: 'Bank_03', points_spent: 20 },
-      { name: 'Bank_04', points_spent: 30 },
-      { name: 'Bank_05', points_spent: 50 },
-      { name: 'Bank_06', points_spent: 80 },
-      { name: 'Bank_07', points_spent: 120 },
-      { name: 'Bank_08', points_spent: 235 },
-      { name: 'Lost_Loot_01', points_spent: 5 },
-      { name: 'Lost_Loot_02', points_spent: 10 },
-      { name: 'Lost_Loot_03', points_spent: 20 },
-      { name: 'Lost_Loot_04', points_spent: 30 },
-      { name: 'Lost_Loot_05', points_spent: 50 },
-      { name: 'Lost_Loot_06', points_spent: 80 },
-      { name: 'Lost_Loot_07', points_spent: 120 },
-      { name: 'Lost_Loot_08', points_spent: 235 },
-    ],
+    nodes,
   };
 
   // Replace existing sdu_upgrades graph if present, otherwise add it
@@ -337,10 +294,9 @@ function unlockMaxEverything() {
 
     // Skip profile-only functions (unlockAllCosmetics, unlockNewGameShortcuts)
 
-    showPresetNotification('Unlock / Max Everything applied', 3500);
+    console.log('Unlock / Max Everything applied');
   } catch (e) {
     console.error('unlockMaxEverything failed:', e);
     alert('Failed to apply Unlock / Max Everything: ' + e);
   }
-
 }
