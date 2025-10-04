@@ -4,7 +4,7 @@ const PRESETS = [
   {
     handler: 'unlockMaxEverything',
     title: 'Unlock / Max Everything',
-    desc: 'Runs a sequence to unlock and max most progression, collectibles, SDU, cosmetics and challenges.',
+    desc: 'Runs a sequence to unlock and max progression, collectibles, SDU, and challenges.',
     saveType: 'character',
     group: 'Misc',
   },
@@ -424,3 +424,4 @@ function makeCharacterClassButton() {
 
   return segRow;
 }
+
