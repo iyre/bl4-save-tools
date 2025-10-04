@@ -179,7 +179,6 @@ function completeWorldChallenges() {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  showPresetNotification();
 }
 
 function completeEconomyChallenges() {
@@ -383,5 +382,4 @@ function updateStatsCounters(counters, category = 'challenge') {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  showPresetNotification();
 }

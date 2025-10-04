@@ -47,7 +47,6 @@ function clearMapFog() {
   // Update editor
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  showPresetNotification();
 }
 
 // not sure what these control, but they're related to map discovery
@@ -143,5 +142,4 @@ function discoverAllLocations() {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  showPresetNotification();
 }

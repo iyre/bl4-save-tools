@@ -142,9 +142,10 @@ function renderPresets() {
     header.textContent = groupName;
     presetSection.appendChild(header);
 
-    // If Character group, insert segmented class button first
+    // If Character group, insert class change buttons first
     if (groupName === 'Character') {
-      presetSection.appendChild(makeCharacterClassButton());
+      const charPresets = makeCharacterClassButtons();
+      charPresets.forEach((btn) => presetSection.appendChild(btn));
     }
 
     // Add presets for this group
@@ -153,15 +154,17 @@ function renderPresets() {
         const row = document.createElement('div');
         row.className = 'preset-row';
 
-        // Pip container
-        const pip = document.createElement('span');
-        pip.className = 'preset-pip';
-        pip.style.display = 'none';
-        pip.title = 'Applied';
-
         const btn = document.createElement('button');
         btn.className = 'secondary';
         btn.textContent = preset.title;
+        btn.style.position = 'relative';
+
+        // Pip container (now inside the button)
+        const pip = document.createElement('span');
+        pip.className = 'preset-pip';
+        pip.title = 'Applied';
+
+        btn.appendChild(pip);
 
         // Disable button if save type doesn't match
         if (
@@ -179,20 +182,7 @@ function renderPresets() {
           };
         }
 
-        const tooltip = document.createElement('span');
-        tooltip.className = 'preset-tooltip';
-        tooltip.textContent = '?';
-
-        const tooltipText = document.createElement('span');
-        tooltipText.className = 'tooltiptext';
-        tooltipText.textContent = preset.desc;
-
-        tooltip.appendChild(tooltipText);
-
-        row.appendChild(pip);
         row.appendChild(btn);
-        row.appendChild(tooltip);
-
         presetSection.appendChild(row);
       }
     );
@@ -302,35 +292,6 @@ function getYamlDataFromEditor() {
   }
 }
 
-let presetNotificationTimeout = null;
-
-function showPresetNotification(msg, duration = 2000) {
-  const el = document.getElementById('presetNotification');
-  if (!el) return;
-  el.textContent = 'Done';
-  el.style.display = 'block';
-  el.classList.add('show');
-
-  // Trigger flash animation
-  el.classList.remove('flash'); // Remove if already present to restart animation
-  // Force reflow to restart animation
-  void el.offsetWidth;
-  el.classList.add('flash');
-
-  // Clear any previous timeout
-  if (presetNotificationTimeout) {
-    clearTimeout(presetNotificationTimeout);
-  }
-
-  presetNotificationTimeout = setTimeout(() => {
-    el.classList.remove('show');
-    setTimeout(() => {
-      el.style.display = 'none';
-    }, 300);
-    presetNotificationTimeout = null;
-  }, duration);
-}
-
 window.addEventListener('DOMContentLoaded', function () {
   // Restore user ID from localStorage on page load
   const previousUserId = localStorage.getItem('bl4_previous_userid');
@@ -375,53 +336,53 @@ function clearPresetPips() {
   });
 }
 
-const CLASS_NAMES = {
-  DarkSiren: 'Change class to Vex',
-  Paladin: 'Change class to Amon',
-  Gravitar: 'Change class to Harlowe',
-  ExoSoldier: 'Change class to Rafa',
+const CHARACTER_CLASSES = {
+  DarkSiren: {
+    name: 'Vex',
+    class: 'Siren',
+  },
+  Paladin: {
+    name: 'Amon',
+    class: 'Forgeknight',
+  },
+  Gravitar: {
+    name: 'Harlowe',
+    class: 'Gravitar',
+  },
+  ExoSoldier: {
+    name: 'Rafa',
+    class: 'Exo-Soldier',
+  },
 };
 
-function makeCharacterClassButton() {
-  const segRow = document.createElement('div');
-  segRow.className = 'preset-row';
+function makeCharacterClassButtons() {
+  let classPresets = [];
+  for (const [key, value] of Object.entries(CHARACTER_CLASSES)) {
+    const row = document.createElement('div');
+    row.className = 'preset-row';
 
-  // Pip for the segmented button
-  const segPip = document.createElement('span');
-  segPip.className = 'preset-pip';
-  segPip.style.display = 'none';
-  segPip.title = 'Applied';
+    const btn = document.createElement('button');
+    btn.className = 'secondary';
+    btn.textContent = `Change Class to ${value.class}`;
+    btn.title = value.name;
+    btn.style.position = 'relative';
 
-  // Segmented button container
-  const segBtn = document.createElement('div');
-  segBtn.className = 'segmented-btn';
+    // Pip container (now inside the button)
+    const pip = document.createElement('span');
+    pip.className = 'preset-pip';
+    pip.title = 'Applied';
 
-  for (const [key, label] of Object.entries(CLASS_NAMES)) {
-    const seg = document.createElement('button');
-    seg.type = 'button';
-    seg.className = 'secondary';
-    seg.textContent = label;
-    seg.title = `Set class to ${label}`;
-    seg.onclick = function () {
-      setCharacterClass(key, label);
-      segPip.style.display = 'inline-block';
+    btn.appendChild(pip);
+    row.appendChild(btn);
+
+    btn.onclick = function () {
+      setCharacterClass(key, value.name);
+      pip.style.display = 'inline-block';
     };
-    segBtn.appendChild(seg);
-  };
 
-  // Tooltip for the segmented button
-  const segTooltip = document.createElement('span');
-  segTooltip.className = 'preset-tooltip';
-  segTooltip.textContent = '?';
-  const segTooltipText = document.createElement('span');
-  segTooltipText.className = 'tooltiptext';
-  segTooltipText.textContent = 'Each segment sets a different character class.';
-  segTooltip.appendChild(segTooltipText);
+    classPresets.push(row);
+  }
 
-  segRow.appendChild(segPip);
-  segRow.appendChild(segBtn);
-  segRow.appendChild(segTooltip);
-
-  return segRow;
+  return classPresets;
 }
 
