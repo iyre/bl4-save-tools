@@ -120,20 +120,27 @@ button.secondary:focus {
 
 .segmented-btn {
   display: flex;
+  flex-direction: column; /* stack segments vertically */
   flex: 1 1 0;
   width: 100%;
   min-width: 4em;
-  height: 2.2em;
-  border-radius: 5px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  background: #444;
+  height: auto;
+  border-radius: 0; /* individual segments will be rounded */
+  overflow: visible;
+  box-shadow: none;
+  background: transparent;
 }
 .segmented-btn button {
-  border-right: 1px solid #23272b;
+  /* Make each segment look like a standalone preset button */
+  width: 100%;
+  display: block;
+  border: none;
+  margin-bottom: 0.7rem; /* match spacing used between preset rows */
+  border-radius: 5px; /* each segment rounded like other buttons */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 .segmented-btn button:last-child {
-  border-right: none;
+  margin-bottom: 0;
 }
 
 .controls-group,
@@ -251,6 +258,16 @@ button.secondary:focus {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.preset-group-header {
+  margin-top: 0.6rem;
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+  color: #cfeaff;
+  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding-bottom: 0.3rem;
 }
 
 .preset-row button {
