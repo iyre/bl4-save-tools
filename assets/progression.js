@@ -142,12 +142,10 @@ function unlockAllSpecialization() {
   editor.setValue(newYaml);
   console.log('All Specializations unlocked and maxed out!');
   stageEpilogueMission(); // Stage epilogue mission to ensure specialization system is unlocked.
-  showPresetNotification();
 }
 
 function setCharacterToMaxLevel() {
   setCharacterLevel(50, 3430227);
-  showPresetNotification();
 }
 
 function setCharacterLevel(level, xp = null) {
@@ -296,7 +294,6 @@ function setMaxSDU() {
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
   console.log(`Inserted/Replaced sdu_upgrades graph and set echotokenprogresspoints: ${oldPoints} -> ${data.progression.point_pools.echotokenprogresspoints}`);
-  showPresetNotification();
 }
 
 // Runs a best-effort sequence to unlock / max most things in a character save.

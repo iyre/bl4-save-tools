@@ -40,7 +40,6 @@ function completeAllCollectibles() {
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
   updateSDUPoints();
-  showPresetNotification();
 }
 
 function unlockVaultPowers() {
@@ -57,7 +56,6 @@ function unlockVaultPowers() {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  showPresetNotification();
 }
 
 function unlockUVHMode() {
@@ -73,7 +71,6 @@ function unlockUVHMode() {
   // Update editor
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  showPresetNotification();
 }
 
 function setStoryValues() {
@@ -100,5 +97,4 @@ function setStoryValues() {
   // Update editor
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  showPresetNotification();
 }

@@ -21,7 +21,6 @@ function unlockAllHoverDrives() {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  showPresetNotification();
 }
 
 const UNLOCKABLE_HOVERDRIVES = generateHoverDriveList();
@@ -87,7 +86,6 @@ function unlockAllCosmetics() {
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
   console.log('All customizations unlocked!');
-  showPresetNotification();
 }
 
 // Set shared progress entries in profile save to unlock new game shortcuts globally.
@@ -119,5 +117,4 @@ function unlockNewGameShortcuts() {
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
   console.log('All new game shortcuts unlocked!');
-  showPresetNotification();
 }
