@@ -124,7 +124,6 @@ function renderPresets() {
   PRESETS.forEach((p) => presentGroups.add(p.group || 'Misc'));
 
   const preferredOrder = ['ChangeChr', 'World', 'Character', 'Misc'];
-  // Start with preferredOrder intersection, then append any other groups found
   const orderedGroups = [];
   for (const g of preferredOrder) {
     if (presentGroups.has(g)) {
@@ -132,60 +131,55 @@ function renderPresets() {
       presentGroups.delete(g);
     }
   }
-  // Any remaining groups (not in preferredOrder) append after
   for (const g of Array.from(presentGroups)) orderedGroups.push(g);
 
   orderedGroups.forEach((groupName) => {
-    // Insert group header
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'preset-category';
+
     const header = document.createElement('div');
     header.className = 'preset-group-header';
     header.textContent = groupName;
-    presetSection.appendChild(header);
+    groupDiv.appendChild(header);
+
+    const grid = document.createElement('div');
+    grid.className = 'preset-grid';
 
     // If Character group, insert class change buttons first
     if (groupName === 'Character') {
-      const charPresets = makeCharacterClassButtons();
-      charPresets.forEach((btn) => presetSection.appendChild(btn));
+      makeCharacterClassButtons().forEach((btnRow) => grid.appendChild(btnRow));
     }
 
-    // Add presets for this group
-    PRESETS.filter((p) => (p.group || 'Misc') === groupName).forEach(
-      (preset, idx) => {
-        const row = document.createElement('div');
-        row.className = 'preset-row';
+    PRESETS.filter((p) => (p.group || 'Misc') === groupName).forEach((preset) => {
+      const row = document.createElement('div');
+      row.className = 'preset-row';
 
-        const btn = document.createElement('button');
-        btn.className = 'secondary';
-        btn.textContent = preset.title;
-        btn.style.position = 'relative';
+      const btn = document.createElement('button');
+      btn.className = 'secondary';
+      btn.textContent = preset.title;
+      btn.style.position = 'relative';
 
-        // Pip container (now inside the button)
-        const pip = document.createElement('span');
-        pip.className = 'preset-pip';
-        pip.title = 'Applied';
-
-        btn.appendChild(pip);
-
-        // Disable button if save type doesn't match
-        if (
-          (isProfileSave && preset.saveType === 'character') ||
-          (!isProfileSave && preset.saveType === 'profile')
-        ) {
-          btn.disabled = true;
-          btn.title = isProfileSave
-            ? 'This preset only applies to character saves.'
-            : 'This preset only applies to profile saves.';
-        } else {
-          btn.onclick = function () {
-            window[preset.handler]();
-            pip.style.display = 'inline-block'; // Show pip when clicked
-          };
-        }
-
-        row.appendChild(btn);
-        presetSection.appendChild(row);
+      if (
+        (isProfileSave && preset.saveType === 'character') ||
+        (!isProfileSave && preset.saveType === 'profile')
+      ) {
+        btn.disabled = true;
+        btn.title = isProfileSave
+          ? 'This preset only applies to character saves.'
+          : 'This preset only applies to profile saves.';
+      } else {
+        btn.onclick = function () {
+          window[preset.handler]();
+          btn.classList.add('preset-applied');
+        };
       }
-    );
+
+      row.appendChild(btn);
+      grid.appendChild(row);
+    });
+
+    groupDiv.appendChild(grid);
+    presetSection.appendChild(groupDiv);
   });
 }
 
@@ -231,7 +225,7 @@ async function importFile() {
     yamlText = decryptSav(arrayBuffer);
   }
   editor.setValue(yamlText);
-  clearPresetPips();
+  clearPresetApplied();
   enableSections();
 }
 
@@ -268,10 +262,7 @@ function normalizeYaml(yamlBytes) {
 function downloadYaml() {
   const now = new Date();
   const timestamp = now.toISOString().replace(/[-:T]/g, '').slice(0, 14); // e.g. 20250924153012
-  const exportFilename = `${importFilename}_${timestamp.slice(
-    0,
-    8
-  )}_${timestamp.slice(8)}.yaml`;
+  const exportFilename = `${importFilename}_${timestamp.slice(0, 8)}_${timestamp.slice(8)}.yaml`;
   const yamlText = editor.getValue();
   const blob = new Blob([yamlText], { type: 'text/yaml' });
   const url = URL.createObjectURL(blob);
@@ -304,19 +295,17 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 // Clear editor when selecting a new file, and try to import if userIdInput is set
-document
-  .getElementById('fileInput')
-  .addEventListener('change', async function () {
-    if (editor) editor.setValue('');
-    const userId = document.getElementById('userIdInput')?.value;
-    if (userId) {
-      try {
-        await importFile();
-      } catch (e) {
-        console.log('opportunistic import failed:', e);
-      }
+document.getElementById('fileInput').addEventListener('change', async function () {
+  if (editor) editor.setValue('');
+  const userId = document.getElementById('userIdInput')?.value;
+  if (userId) {
+    try {
+      await importFile();
+    } catch (e) {
+      console.log('opportunistic import failed:', e);
     }
-  });
+  }
+});
 
 let isProfileSave = false;
 
@@ -330,9 +319,9 @@ function checkIfProfileSave(yamlData) {
   renderPresets();
 }
 
-function clearPresetPips() {
-  document.querySelectorAll('.preset-pip').forEach(pip => {
-    pip.style.display = 'none';
+function clearPresetApplied() {
+  document.querySelectorAll('.preset-applied').forEach((btn) => {
+    btn.classList.remove('preset-applied');
   });
 }
 
@@ -367,22 +356,14 @@ function makeCharacterClassButtons() {
     btn.title = value.name;
     btn.style.position = 'relative';
 
-    // Pip container (now inside the button)
-    const pip = document.createElement('span');
-    pip.className = 'preset-pip';
-    pip.title = 'Applied';
-
-    btn.appendChild(pip);
-    row.appendChild(btn);
-
     btn.onclick = function () {
       setCharacterClass(key, value.name);
-      pip.style.display = 'inline-block';
+      btn.classList.add('preset-applied');
     };
 
+    row.appendChild(btn);
     classPresets.push(row);
   }
 
   return classPresets;
 }
-

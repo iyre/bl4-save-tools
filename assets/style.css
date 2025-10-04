@@ -103,9 +103,61 @@ button.secondary:focus {
   background: #666;
 }
 
+.preset-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.preset-category {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.preset-group-header {
+  margin-top: 0.6rem;
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+  color: #cfeaff;
+  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  padding-bottom: 0.3rem;
+}
+
+.preset-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+}
+
+.preset-applied {
+  outline: 2px solid #1bba4b;
+  outline-offset: 0;
+  box-shadow: 0 0 0 2px #1bba4b33;
+}
+
+.preset-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  gap: 0;
+}
+
 .preset-row button {
+  flex: 1 1 0;
   font-size: 0.95rem;
   padding: 0.4em;
+  height: 2.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: normal;
+  overflow: hidden;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .preset-row button:disabled {
@@ -116,31 +168,6 @@ button.secondary:focus {
   cursor: not-allowed;
   opacity: 0.6;
   box-shadow: none;
-}
-
-.segmented-btn {
-  display: flex;
-  flex-direction: column; /* stack segments vertically */
-  flex: 1 1 0;
-  width: 100%;
-  min-width: 4em;
-  height: auto;
-  border-radius: 0; /* individual segments will be rounded */
-  overflow: visible;
-  box-shadow: none;
-  background: transparent;
-}
-.segmented-btn button {
-  /* Make each segment look like a standalone preset button */
-  width: 100%;
-  display: block;
-  border: none;
-  margin-bottom: 0.7rem; /* match spacing used between preset rows */
-  border-radius: 5px; /* each segment rounded like other buttons */
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-}
-.segmented-btn button:last-child {
-  margin-bottom: 0;
 }
 
 .controls-group,
@@ -206,22 +233,6 @@ button.secondary:focus {
   border-bottom: 1px dotted #aaa;
 }
 
-.preset-tooltip {
-  position: relative;
-  display: inline-block;
-  cursor: help;
-  color: #8ec6f7;
-  font-size: 1.1em;
-  border-radius: 50%;
-  width: 1.5em;
-  height: 1.5em;
-  text-align: center;
-  line-height: 1.5em;
-  background: #181c20;
-  border: 1px solid #2d8cf0;
-  margin-left: 0.3em;
-}
-
 .tooltiptext {
   visibility: hidden;
   width: 260px;
@@ -247,33 +258,9 @@ button.secondary:focus {
 }
 
 .tooltip:hover .tooltiptext,
-.tooltip:focus .tooltiptext,
-.preset-tooltip:hover .tooltiptext,
-.preset-tooltip:focus .tooltiptext {
+.tooltip:focus .tooltiptext {
   visibility: visible;
   opacity: 1;
-}
-
-.preset-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.preset-group-header {
-  margin-top: 0.6rem;
-  margin-bottom: 0.3rem;
-  font-weight: 700;
-  color: #cfeaff;
-  font-size: 0.95rem;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  padding-bottom: 0.3rem;
-}
-
-.preset-row button {
-  flex: 1 1 0;
-  width: auto;
-  min-width: 4em;
 }
 
 .disabled-overlay {
@@ -344,74 +331,4 @@ a:hover {
   color: #2d8cf0;
   text-decoration: underline;
   opacity: 1;
-}
-
-.preset-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1em;
-}
-
-.preset-pip {
-  position: absolute;
-  right: 0.9em;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0.7em;
-  height: 0.7em;
-  background: #1bba4bff;
-  border-radius: 50%;
-  vertical-align: middle;
-  box-shadow: 0 0 2px #222;
-  display: none;
-  pointer-events: none;
-}
-
-@media (max-width: 1100px) {
-  h1 {
-    font-size: 1.3rem;
-  }
-  h2 {
-    font-size: 1.1rem;
-  }
-  .section {
-    padding: 0.7rem;
-  }
-  .main-content {
-    flex-direction: column;
-    overflow-x: hidden;
-  }
-  .controls-group,
-  .editor-group {
-    max-width: 100%;
-    width: 100%;
-  }
-  button {
-    font-size: 0.95rem;
-    padding: 0.4em;
-  }
-  /* Move preset tooltips to the left to keep them in the viewport */
-  .preset-tooltip .tooltiptext {
-    left: auto;
-    right: 105%;
-    top: 50%;
-    bottom: auto;
-    transform: translateY(-50%);
-  }
-  .preset-notification {
-    font-size: 0.8rem;
-  }
-}
-
-/* Make controls group a row at middle widths */
-@media (max-width: 1100px) and (min-width: 651px) {
-  .controls-group {
-    flex-direction: row;
-  }
-  #input-section,
-  #preset-section {
-    flex: 1 1 0;
-    max-width: 50%;
-  }
 }
