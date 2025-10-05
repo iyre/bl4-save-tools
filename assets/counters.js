@@ -26,9 +26,14 @@ function completeAllCollectibles() {
   // For each top-level key in the template,
   // add/overwrite child keys individually to avoid removing unexpected keys.
   for (const [category, values] of Object.entries(COLLECTIBLES)) {
-    data.stats.openworld.collectibles[category] = data.stats.openworld.collectibles[category] || {};
+    data.stats.openworld.collectibles[category] =
+      data.stats.openworld.collectibles[category] || {};
     // If the value is an object, copy keys individually
-    if (typeof values === 'object' && values !== null && !Array.isArray(values)) {
+    if (
+      typeof values === 'object' &&
+      values !== null &&
+      !Array.isArray(values)
+    ) {
       for (const [k, v] of Object.entries(values)) {
         // If nested object (e.g., echologs_general), handle one more level
         if (typeof v === 'object' && v !== null && !Array.isArray(v)) {
@@ -114,7 +119,8 @@ function setStoryValues() {
 
   // Set unlockables.character_progress.entries (append if not present) - not sure what this does
   data.unlockables = data.unlockables || {};
-  data.unlockables.character_progress = data.unlockables.character_progress || {};
+  data.unlockables.character_progress =
+    data.unlockables.character_progress || {};
   let entries = data.unlockables.character_progress.entries || [];
   if (!entries.includes('character_progress.seen_credits')) {
     entries.push('character_progress.seen_credits');

@@ -282,7 +282,9 @@ function setMaxSDU() {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log(`Inserted/Replaced sdu_upgrades graph and set echotokenprogresspoints: ${oldPoints} -> ${data.progression.point_pools.echotokenprogresspoints}`);
+  console.log(
+    `Inserted/Replaced sdu_upgrades graph and set echotokenprogresspoints: ${oldPoints} -> ${data.progression.point_pools.echotokenprogresspoints}`
+  );
 }
 
 // Purely for convenience; maxes out both currencies & all ammo.
@@ -311,7 +313,7 @@ function maxAmmo() {
     shotgun: 220,
     smg: 1620,
     sniper: 190,
-    repkit: 10
+    repkit: 10,
   };
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
@@ -360,8 +362,7 @@ function unlockMaxEverything() {
     if (typeof completeAllChallenges === 'function') completeAllChallenges();
 
     // Character progression
-    if (typeof setCharacterToMaxLevel === 'function')
-      setCharacterToMaxLevel();
+    if (typeof setCharacterToMaxLevel === 'function') setCharacterToMaxLevel();
 
     console.log('Unlock / Max Everything applied');
   } catch (e) {

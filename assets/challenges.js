@@ -371,7 +371,7 @@ function completeLicensedPartsChallenges() {
 /**
  * Updates challenge counters in the save file.
  * Only updates counters if the new value is higher than the existing value.
- * 
+ *
  * @param {Object<string, number>} counters - Object mapping counter names to their target values
  * @param {string} [category='challenge'] - The category of counters to update ('challenge' or 'achievements')
  */

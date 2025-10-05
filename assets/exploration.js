@@ -130,7 +130,9 @@ function visitAllWorlds(data) {
       gbx.metrics.hasseenregionlist.push(r);
     }
   }
-  gbx.metrics.hasseenregionlist.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+  gbx.metrics.hasseenregionlist.sort((a, b) =>
+    a.toLowerCase().localeCompare(b.toLowerCase())
+  );
 }
 
 /**

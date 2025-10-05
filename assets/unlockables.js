@@ -4,7 +4,7 @@
  * - Hover drives for all manufacturers
  * - Cosmetic items and customizations
  * - New game shortcuts and shared progress
- * 
+ *
  * Most unlockables are stored as arrays of string entries in the save file.
  */
 

@@ -176,33 +176,35 @@ function renderPresets() {
       makeCharacterClassButtons().forEach((btnRow) => grid.appendChild(btnRow));
     }
 
-    PRESETS.filter((p) => (p.group || 'Misc') === groupName).forEach((preset) => {
-      const row = document.createElement('div');
-      row.className = 'preset-row';
+    PRESETS.filter((p) => (p.group || 'Misc') === groupName).forEach(
+      (preset) => {
+        const row = document.createElement('div');
+        row.className = 'preset-row';
 
-      const btn = document.createElement('button');
-      btn.className = 'secondary';
-      btn.textContent = preset.title;
-      btn.style.position = 'relative';
+        const btn = document.createElement('button');
+        btn.className = 'secondary';
+        btn.textContent = preset.title;
+        btn.style.position = 'relative';
 
-      if (
-        (isProfileSave && preset.saveType === 'character') ||
-        (!isProfileSave && preset.saveType === 'profile')
-      ) {
-        btn.disabled = true;
-        btn.title = isProfileSave
-          ? 'This preset only applies to character saves.'
-          : 'This preset only applies to profile saves.';
-      } else {
-        btn.onclick = function () {
-          window[preset.handler]();
-          btn.classList.add('preset-applied');
-        };
+        if (
+          (isProfileSave && preset.saveType === 'character') ||
+          (!isProfileSave && preset.saveType === 'profile')
+        ) {
+          btn.disabled = true;
+          btn.title = isProfileSave
+            ? 'This preset only applies to character saves.'
+            : 'This preset only applies to profile saves.';
+        } else {
+          btn.onclick = function () {
+            window[preset.handler]();
+            btn.classList.add('preset-applied');
+          };
+        }
+
+        row.appendChild(btn);
+        grid.appendChild(row);
       }
-
-      row.appendChild(btn);
-      grid.appendChild(row);
-    });
+    );
 
     groupDiv.appendChild(grid);
     presetSection.appendChild(groupDiv);
@@ -330,17 +332,19 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 // Clear editor when selecting a new file, and try to import if userIdInput is set
-document.getElementById('fileInput').addEventListener('change', async function () {
-  if (editor) editor.setValue('');
-  const userId = document.getElementById('userIdInput')?.value;
-  if (userId) {
-    try {
-      await importFile();
-    } catch (e) {
-      console.log('opportunistic import failed:', e);
+document
+  .getElementById('fileInput')
+  .addEventListener('change', async function () {
+    if (editor) editor.setValue('');
+    const userId = document.getElementById('userIdInput')?.value;
+    if (userId) {
+      try {
+        await importFile();
+      } catch (e) {
+        console.log('opportunistic import failed:', e);
+      }
     }
-  }
-});
+  });
 
 let isProfileSave = false;
 

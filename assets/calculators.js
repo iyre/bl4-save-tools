@@ -35,23 +35,14 @@ function renderXpResult(containerId, xp, color) {
  * Calculates total XP required to reach a specific character level.
  * Uses hardcoded values for levels 1-10 and a curve-fitted cubic polynomial for 11+.
  * Data derived from data/xp_character.csv with applied safety margins.
- * 
+ *
  * @param {number} level - The target character level
  * @returns {number} Total XP required to reach the level, or 0 if invalid
  */
 function calculateCharacterXp(level) {
   // Hardcoded total XP for levels 1-10
   const hardcoded = [
-    0,
-    857,
-    1740,
-    3349,
-    5875,
-    9496,
-    14385,
-    20707,
-    28625,
-    38297
+    0, 857, 1740, 3349, 5875, 9496, 14385, 20707, 28625, 38297,
   ];
   if (level > 0 && level <= 10) {
     return hardcoded[level - 1];
@@ -74,9 +65,9 @@ function calculateCharacterXp(level) {
  * - Levels 32-200: Cubic polynomial with 2.6% safety margin
  * - Levels 201-499: Cubic polynomial with 0.01% safety margin
  * - Levels 500+: Cubic polynomial with 0.001% safety margin
- * 
+ *
  * Data derived from data/xp_specialization.csv
- * 
+ *
  * @param {number} level - The target specialization level
  * @returns {number} Total XP required to reach the level, or 0 if invalid
  */
