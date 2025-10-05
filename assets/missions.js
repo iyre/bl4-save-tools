@@ -1,6 +1,17 @@
-// Functions for manipulating mission data
+/**
+ * Mission system management module.
+ * Handles mission state manipulation including:
+ * - Story mission completion
+ * - Side mission tracking
+ * - Activity and zone mission management
+ * - Mission set merging and updates
+ */
 
-// Map of friendly mission type names to missionset key prefixes
+/**
+ * Maps user-friendly mission type names to their internal missionset prefixes.
+ * Used for filtering and identifying different types of missions in the save file.
+ * @const {Object<string, string>}
+ */
 const MISSION_PREFIXES = {
   all: 'missionset_',
   story: 'missionset_main_',
@@ -16,7 +27,12 @@ const MISSION_PREFIXES = {
   silo: 'missionset_zoneactivity_silo',
 };
 
-// Extract missionsets of a given type (e.g. "story", "activity")
+/**
+ * Extracts all mission sets of a specific type from the mission data.
+ * @param {string} type - The type of missions to extract (e.g., 'story', 'activity')
+ * @returns {Object} Object containing filtered mission sets
+ * @throws {Error} If the mission type is unknown
+ */
 function getMissionsetsOfType(type) {
   const prefix = MISSION_PREFIXES[type];
   if (!prefix) throw new Error(`Unknown mission type: ${type}`);
@@ -65,7 +81,12 @@ function completeAllSafehouseMissions() {
   updateSDUPoints();
 }
 
-// Fix specialization system not being unlocked when story is "completed" via save editing
+/**
+ * Stages the epilogue mission in a specific state to unlock specializations.
+ * This is required when completing the story via save editing, as it ensures
+ * the proper game state for specialization system unlocking.
+ * Sets up all necessary objectives and flags for the city epilogue mission.
+ */
 function stageEpilogueMission() {
   const yamlText = editor.getValue();
   let data;
@@ -76,7 +97,6 @@ function stageEpilogueMission() {
     return;
   }
 
-  // Ensure the nested structure exists
   if (!data.missions) data.missions = {};
   if (!data.missions.local_sets) data.missions.local_sets = {};
 
