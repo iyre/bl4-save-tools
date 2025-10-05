@@ -1,5 +1,24 @@
-// Functions for handling UI setup and interaction
+/**
+ * User Interface management module.
+ * Provides functionality for:
+ * - Preset button management and rendering
+ * - Monaco editor setup and configuration
+ * - File  if (groupName === 'Character') {mport/export handling
+ * - YAML processing and normalization
+ * - Save type detection (profile vs character)
+ * - Character class selection UI
+ */
 
+/**
+ * Defines available preset modifications for save files.
+ * Each preset contains:
+ * - handler: Function name to execute
+ * - title: Display name in UI
+ * - desc: Detailed description of the modification
+ * - saveType: Whether it applies to 'character' or 'profile' saves
+ * - group: UI grouping category
+ * @type {Array<Object>}
+ */
 const PRESETS = [
   {
     handler: 'unlockMaxEverything',
@@ -115,6 +134,13 @@ const PRESETS = [
   },
 ];
 
+/**
+ * Renders all preset buttons in the UI, organized by category.
+ * - Groups presets by their defined categories
+ * - Handles character class change buttons separately
+ * - Applies proper button states based on save type
+ * - Sets up click handlers for each preset
+ */
 function renderPresets() {
   const presetSection = document.getElementById('preset-buttons');
   presetSection.innerHTML = '';
@@ -206,6 +232,15 @@ function enableSections() {
   document.getElementById('editorSectionOverlay').style.display = 'none';
 }
 
+/**
+ * Imports and processes a save or YAML file.
+ * Handles both encrypted .sav files and plain YAML files.
+ * - Stores filename for later export
+ * - Decrypts .sav files if necessary
+ * - Normalizes YAML content
+ * - Updates editor with processed content
+ * @async
+ */
 async function importFile() {
   const file = document.getElementById('fileInput').files[0];
   if (!file) {

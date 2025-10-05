@@ -1,5 +1,19 @@
-// Functions for manipulating counter-type data
+/**
+ * Counter and progression system module.
+ * Handles various game progression elements including:
+ * - Collectibles completion
+ * - Vault powers unlocking
+ * - Ultra Vault Hunter mode unlocking
+ * - Story progression flags
+ */
 
+/**
+ * Completes all collectibles in the game.
+ * Updates the following:
+ * - All openworld collectibles categories from COLLECTIBLES template
+ * - Eridian/Nyriad ECHO logs (sets to 262143)
+ * - Updates SDU points display
+ */
 function completeAllCollectibles() {
   const data = getYamlDataFromEditor();
   if (!data) return;
@@ -42,6 +56,13 @@ function completeAllCollectibles() {
   updateSDUPoints();
 }
 
+/**
+ * Unlocks all Vault Powers across all areas.
+ * Sets the vault power flags for:
+ * - Grasslands
+ * - Shattered Lands
+ * - Mountains
+ */
 function unlockVaultPowers() {
   const data = getYamlDataFromEditor();
   if (!data) return;
@@ -73,13 +94,19 @@ function unlockUVHMode() {
   editor.setValue(newYaml);
 }
 
+/**
+ * Sets various story progression flags and values.
+ * Updates:
+ * - Global lockdown status
+ * - Main mission completion counter
+ * - Character progress entries (credits seen flag)
+ */
 function setStoryValues() {
   const data = getYamlDataFromEditor();
   if (!data) return;
 
-  // Set globals
   data.globals = data.globals || {};
-  data.globals.lockdownlifted = true; // what does this do? open doors in dominion?
+  data.globals.lockdownlifted = true;
 
   // Set stats.challenge // some of these are updated automatically, so aren't set here
   data.stats.challenge = data.stats.challenge || {};

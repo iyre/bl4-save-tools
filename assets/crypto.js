@@ -1,5 +1,17 @@
-// Functions for handling encryption and compression of .sav files
+/**
+ * Cryptography and compression module for .sav files.
+ * Implements the game's save file format encryption and compression:
+ * - AES-ECB encryption with user-specific key derivation
+ * - PKCS7 padding
+ * - zlib compression
+ * - Checksum validation
+ */
 
+/**
+ * Converts a string to UTF-16 little-endian byte array.
+ * @param {string} str - The input string to convert
+ * @returns {number[]} Array of bytes representing the string in UTF-16LE
+ */
 function utf16leBytes(str) {
   const bytes = [];
   for (let i = 0; i < str.length; i++) {
@@ -9,6 +21,12 @@ function utf16leBytes(str) {
   return bytes;
 }
 
+/**
+ * Derives an encryption key from the user's platform ID.
+ * Supports both Steam IDs (64-bit numbers) and Epic IDs (strings).
+ * @param {string} userID - The user's Steam ID or Epic ID
+ * @returns {number[]} 32-byte encryption key
+ */
 function deriveKey(userID) {
   const BASE_KEY = [
     0x35, 0xec, 0x33, 0x77, 0xf3, 0x5d, 0xb0, 0xea, 0xbe, 0x6b, 0x83, 0x11, 0x54, 0x03, 0xeb, 0xfb,
@@ -36,6 +54,11 @@ function deriveKey(userID) {
   return k;
 }
 
+/**
+ * Removes PKCS7 padding from a buffer.
+ * @param {Uint8Array} buf - The padded buffer
+ * @returns {Uint8Array} The unpadded buffer
+ */
 function pkcs7Unpad(buf) {
   const pad = buf[buf.length - 1];
   // Check that all pad bytes are the same
@@ -67,7 +90,13 @@ function uint8ArrayToWordArray(u8arr) {
   return CryptoJS.lib.WordArray.create(words, len);
 }
 
-// Decrypt .sav to YAML
+/**
+ * Decrypts a .sav file and converts it to YAML.
+ * Process: AES decrypt -> PKCS7 unpad -> zlib decompress -> YAML
+ * @param {ArrayBuffer} fileArrayBuffer - The raw .sav file contents
+ * @param {boolean} normalize - Whether to normalize the output YAML
+ * @returns {string} The decrypted YAML content
+ */
 function decryptSav(fileArrayBuffer, normalize = true) {
   const userID = document.getElementById('userIdInput').value.trim();
   if (!userID) {
@@ -129,8 +158,7 @@ function decryptSav(fileArrayBuffer, normalize = true) {
   console.log(`Successfully decompressed with trim=${trimUsed}`);
   let yamlBytes = inflated;
 
-  // console.log("DECRYPT VALIDATION (first 8):", Array.from(yamlBytes.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')));
-  // console.log("DECRYPT VALIDATION (last 8):", Array.from(yamlBytes.slice(-8)).map(b => b.toString(16).padStart(2, '0')));
+
 
   if (normalize) {
     return normalizeYaml(yamlBytes);
@@ -147,7 +175,6 @@ function encryptSav() {
     return;
   }
 
-  // Save user ID to localStorage
   localStorage.setItem('bl4_previous_userid', userID);
 
   const yamlBytes = new TextEncoder().encode(editor.getValue());

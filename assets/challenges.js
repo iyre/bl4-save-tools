@@ -1,4 +1,9 @@
-// Functions for completing challenge counters
+/**
+ * Challenge system implementation module.
+ * Provides functions to complete various in-game challenges by setting
+ * appropriate counter values in the save file. Challenges are grouped by
+ * category (UVH, Combat, Character, etc.) with specific completion criteria.
+ */
 
 function completeAllChallenges() {
   completeUVHChallenges();
@@ -66,7 +71,6 @@ function completeCombatChallenges() {
 }
 
 function completeCharacterChallenges() {
-  // seems fine to add all counters regardless of character
   const counters = {
     siren_death_tiered: 1000,
     siren_death_single: 1,
@@ -156,7 +160,6 @@ function completeLootChallenges() {
 
 // Doesn't complete Timekeeper's Oath main mission
 function completeWorldChallenges() {
-  // worldevent counters will trigger achievements on game launch
   const counters = {
     '10_worldevents_colosseum': 1,
     '11_worldevents_airship': 1,
@@ -365,7 +368,13 @@ function completeLicensedPartsChallenges() {
   updateStatsCounters(counters);
 }
 
-// Update counters according to input object
+/**
+ * Updates challenge counters in the save file.
+ * Only updates counters if the new value is higher than the existing value.
+ * 
+ * @param {Object<string, number>} counters - Object mapping counter names to their target values
+ * @param {string} [category='challenge'] - The category of counters to update ('challenge' or 'achievements')
+ */
 function updateStatsCounters(counters, category = 'challenge') {
   const data = getYamlDataFromEditor();
   if (!data) return;

@@ -1,4 +1,8 @@
-// Functions for calculating XP (and potentially other things)
+/**
+ * Calculator module for game mechanics and progression systems.
+ * Currently implements XP calculators for character levels and specializations,
+ * using curve-fitted polynomial functions based on collected game data.
+ */
 
 function runCharCalc() {
   const lvl = parseInt(document.getElementById('charLevelInput').value, 10);
@@ -27,23 +31,27 @@ function renderXpResult(containerId, xp, color) {
   `;
 }
 
-// calculate XP required for a given character level
-// based on curve fitting of data from data/xp_character.csv
-// levels 1-10 are hardcoded, levels 11+ use a cubic polynomial
-// a percentage safety margin is applied to avoid undershooting & overflow
+/**
+ * Calculates total XP required to reach a specific character level.
+ * Uses hardcoded values for levels 1-10 and a curve-fitted cubic polynomial for 11+.
+ * Data derived from data/xp_character.csv with applied safety margins.
+ * 
+ * @param {number} level - The target character level
+ * @returns {number} Total XP required to reach the level, or 0 if invalid
+ */
 function calculateCharacterXp(level) {
   // Hardcoded total XP for levels 1-10
   const hardcoded = [
-    0, // Level 1
-    857, // Level 2
-    1740, // Level 3
-    3349, // Level 4
-    5875, // Level 5
-    9496, // Level 6
-    14385, // Level 7
-    20707, // Level 8
-    28625, // Level 9
-    38297, // Level 10
+    0,
+    857,
+    1740,
+    3349,
+    5875,
+    9496,
+    14385,
+    20707,
+    28625,
+    38297
   ];
   if (level > 0 && level <= 10) {
     return hardcoded[level - 1];
@@ -58,10 +66,20 @@ function calculateCharacterXp(level) {
   return Math.round(base * 1.018);
 }
 
-// calculate XP required for a given specialization level
-// based on curve fitting of level data from data/xp_specialization.csv
-// levels 1-10 are hardcoded, levels 11+ use different cubic polynomials
-// depending on the level range. a percentage safety margin is applied
+/**
+ * Calculates total XP required to reach a specific specialization level.
+ * Uses segmented curve fitting with different polynomials for different level ranges:
+ * - Levels 1-10: Hardcoded values
+ * - Levels 11-31: Cubic polynomial with 1.8% safety margin
+ * - Levels 32-200: Cubic polynomial with 2.6% safety margin
+ * - Levels 201-499: Cubic polynomial with 0.01% safety margin
+ * - Levels 500+: Cubic polynomial with 0.001% safety margin
+ * 
+ * Data derived from data/xp_specialization.csv
+ * 
+ * @param {number} level - The target specialization level
+ * @returns {number} Total XP required to reach the level, or 0 if invalid
+ */
 function calculateSpecializationXp(level) {
   // Hardcoded total XP for levels 1-10
   const hardcoded = [
@@ -124,6 +142,5 @@ function calculateSpecializationXp(level) {
     return Math.round(base * 1.00001);
   }
 
-  // Fallback (should not be reached)
   return 0;
 }

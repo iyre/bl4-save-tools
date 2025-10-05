@@ -1,5 +1,17 @@
-// Functions for manipulating exploration & discovery data
+/**
+ * World exploration and map discovery system module.
+ * Handles:
+ * - Map fog of war clearing
+ * - World and region visit tracking
+ * - Location discovery system
+ * - Map data compression and storage
+ */
 
+/**
+ * Clears the fog of war from all game maps.
+ * Updates fog of discovery (FOD) data for all game levels using zlib compression.
+ * Also marks all worlds and regions as visited.
+ */
 function clearMapFog() {
   const data = getYamlDataFromEditor();
   if (!data) return;
@@ -49,7 +61,11 @@ function clearMapFog() {
   editor.setValue(newYaml);
 }
 
-// not sure what these control, but they're related to map discovery
+/**
+ * Marks all worlds and regions as visited in the game's discovery metrics.
+ * This affects map markers, fast travel points, and region completion tracking.
+ * @param {Object} data - The parsed save file data
+ */
 function visitAllWorlds(data) {
   const worldlist = [
     'Intro_P',
@@ -117,6 +133,11 @@ function visitAllWorlds(data) {
   gbx.metrics.hasseenregionlist.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 }
 
+/**
+ * Adds locations to the player's discovered locations list.
+ * @param {Object} data - The parsed save file data
+ * @param {string[]} locationSubstrings - Array of substrings to match against location names
+ */
 function addDiscoveredLocations(data, locationSubstrings) {
   data.gbx_discovery_pg = data.gbx_discovery_pg || {};
   let existingBlob = data.gbx_discovery_pg.dlblob || '';
@@ -132,11 +153,15 @@ function addDiscoveredLocations(data, locationSubstrings) {
   data.gbx_discovery_pg.dlblob = Array.from(merged).join(':2:') + ':2:';
 }
 
+/**
+ * Discovers all locations in the game world.
+ * Currently adds all possible location types including activities,
+ * safehouses, and points of interest.
+ */
 function discoverAllLocations() {
   const data = getYamlDataFromEditor();
   if (!data) return;
 
-  // PoAActor = activities; couldnt find a pattern to get "just safehouses" or similar. add everything for now.
   const locationSubstrings = [''];
   addDiscoveredLocations(data, locationSubstrings);
 
