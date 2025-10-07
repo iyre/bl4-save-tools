@@ -51,7 +51,7 @@ function mergeMissionsetsOfType(type) {
 function completeAllMissions() {
   mergeMissionsetsOfType('all');
   stageEpilogueMission();
-  updateSDUPoints();
+  if (typeof updateSDUPoints === 'function') updateSDUPoints();
 }
 
 function completeAllStoryMissions() {
@@ -62,7 +62,8 @@ function completeAllStoryMissions() {
 function completeAllSafehouseMissions() {
   mergeMissionsetsOfType('safehouse');
   mergeMissionsetsOfType('silo');
-  updateSDUPoints();
+  if (typeof discoverSafehouseLocations === 'function') discoverSafehouseLocations();
+  if (typeof updateSDUPoints === 'function') updateSDUPoints();
 }
 
 // Fix specialization system not being unlocked when story is "completed" via save editing
