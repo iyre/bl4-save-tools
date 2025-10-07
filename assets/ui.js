@@ -1,5 +1,24 @@
-// Functions for handling UI setup and interaction
+/**
+ * User Interface management module.
+ * Provides functionality for:
+ * - Preset button management and rendering
+ * - Monaco editor setup and configuration
+ * - File  if (groupName === 'Character') {mport/export handling
+ * - YAML processing and normalization
+ * - Save type detection (profile vs character)
+ * - Character class selection UI
+ */
 
+/**
+ * Defines available preset modifications for save files.
+ * Each preset contains:
+ * - handler: Function name to execute
+ * - title: Display name in UI
+ * - desc: Detailed description of the modification
+ * - saveType: Whether it applies to 'character' or 'profile' saves
+ * - group: UI grouping category
+ * @type {Array<Object>}
+ */
 const PRESETS = [
   {
     handler: 'unlockMaxEverything',
@@ -115,6 +134,13 @@ const PRESETS = [
   },
 ];
 
+/**
+ * Renders all preset buttons in the UI, organized by category.
+ * - Groups presets by their defined categories
+ * - Handles character class change buttons separately
+ * - Applies proper button states based on save type
+ * - Sets up click handlers for each preset
+ */
 function renderPresets() {
   const presetSection = document.getElementById('preset-buttons');
   presetSection.innerHTML = '';
@@ -150,33 +176,35 @@ function renderPresets() {
       makeCharacterClassButtons().forEach((btnRow) => grid.appendChild(btnRow));
     }
 
-    PRESETS.filter((p) => (p.group || 'Misc') === groupName).forEach((preset) => {
-      const row = document.createElement('div');
-      row.className = 'preset-row';
+    PRESETS.filter((p) => (p.group || 'Misc') === groupName).forEach(
+      (preset) => {
+        const row = document.createElement('div');
+        row.className = 'preset-row';
 
-      const btn = document.createElement('button');
-      btn.className = 'secondary';
-      btn.textContent = preset.title;
-      btn.style.position = 'relative';
+        const btn = document.createElement('button');
+        btn.className = 'secondary';
+        btn.textContent = preset.title;
+        btn.style.position = 'relative';
 
-      if (
-        (isProfileSave && preset.saveType === 'character') ||
-        (!isProfileSave && preset.saveType === 'profile')
-      ) {
-        btn.disabled = true;
-        btn.title = isProfileSave
-          ? 'This preset only applies to character saves.'
-          : 'This preset only applies to profile saves.';
-      } else {
-        btn.onclick = function () {
-          window[preset.handler]();
-          btn.classList.add('preset-applied');
-        };
+        if (
+          (isProfileSave && preset.saveType === 'character') ||
+          (!isProfileSave && preset.saveType === 'profile')
+        ) {
+          btn.disabled = true;
+          btn.title = isProfileSave
+            ? 'This preset only applies to character saves.'
+            : 'This preset only applies to profile saves.';
+        } else {
+          btn.onclick = function () {
+            window[preset.handler]();
+            btn.classList.add('preset-applied');
+          };
+        }
+
+        row.appendChild(btn);
+        grid.appendChild(row);
       }
-
-      row.appendChild(btn);
-      grid.appendChild(row);
-    });
+    );
 
     groupDiv.appendChild(grid);
     presetSection.appendChild(groupDiv);
@@ -206,6 +234,15 @@ function enableSections() {
   document.getElementById('editorSectionOverlay').style.display = 'none';
 }
 
+/**
+ * Imports and processes a save or YAML file.
+ * Handles both encrypted .sav files and plain YAML files.
+ * - Stores filename for later export
+ * - Decrypts .sav files if necessary
+ * - Normalizes YAML content
+ * - Updates editor with processed content
+ * @async
+ */
 async function importFile() {
   const file = document.getElementById('fileInput').files[0];
   if (!file) {
@@ -295,17 +332,19 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 // Clear editor when selecting a new file, and try to import if userIdInput is set
-document.getElementById('fileInput').addEventListener('change', async function () {
-  if (editor) editor.setValue('');
-  const userId = document.getElementById('userIdInput')?.value;
-  if (userId) {
-    try {
-      await importFile();
-    } catch (e) {
-      console.log('opportunistic import failed:', e);
+document
+  .getElementById('fileInput')
+  .addEventListener('change', async function () {
+    if (editor) editor.setValue('');
+    const userId = document.getElementById('userIdInput')?.value;
+    if (userId) {
+      try {
+        await importFile();
+      } catch (e) {
+        console.log('opportunistic import failed:', e);
+      }
     }
-  }
-});
+  });
 
 let isProfileSave = false;
 

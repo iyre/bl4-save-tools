@@ -1,5 +1,20 @@
-// Functions related to character progression
+/**
+ * Character progression and advancement system module.
+ * Handles:
+ * - SDU points and upgrades
+ * - Character level and experience
+ * - Specialization system unlocks
+ * - Character class management
+ * - Global unlock and max-out functionality
+ */
 
+/**
+ * Updates the SDU (Storage Deck Upgrade) points based on completed activities and collectibles.
+ * Points are awarded for:
+ * - Completed zone activities (40 points each)
+ * - Various collectible types with different point values
+ * Only updates if the calculated total is higher than existing points.
+ */
 function updateSDUPoints() {
   const data = getYamlDataFromEditor();
   if (!data) return;
@@ -72,6 +87,15 @@ function updateSDUPoints() {
   );
 }
 
+/**
+ * Unlocks and maxes out all specializations for the character.
+ * - Sets specialization level to 701
+ * - Sets appropriate XP value
+ * - Unlocks all specialization trees
+ * - Allocates maximum points to each specialization
+ * - Sets specialization tokens to maximum
+ * - Ensures specialization system is properly unlocked via epilogue mission
+ */
 function unlockAllSpecialization() {
   const yamlText = editor.getValue();
   let data;
@@ -144,6 +168,9 @@ function unlockAllSpecialization() {
   stageEpilogueMission(); // Stage epilogue mission to ensure specialization system is unlocked.
 }
 
+/**
+ * Sets the character to maximum level (50) with appropriate XP.
+ */
 function setCharacterToMaxLevel() {
   setCharacterLevel(50, 3430227);
 }
@@ -171,6 +198,11 @@ function setCharacterLevel(level, xp = null) {
   console.log(`Set character level to ${level} (XP: ${xp})`);
 }
 
+/**
+ * Generates a RFC4122 version 4 compliant UUID.
+ * Used for character identification when changing classes.
+ * @returns {string} A new UUID
+ */
 function generateUUID() {
   // RFC4122 version 4 compliant UUID
   return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -250,13 +282,54 @@ function setMaxSDU() {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log(`Inserted/Replaced sdu_upgrades graph and set echotokenprogresspoints: ${oldPoints} -> ${data.progression.point_pools.echotokenprogresspoints}`);
+  console.log(
+    `Inserted/Replaced sdu_upgrades graph and set echotokenprogresspoints: ${oldPoints} -> ${data.progression.point_pools.echotokenprogresspoints}`
+  );
+}
+
+// Purely for convenience; maxes out both currencies & all ammo.
+function maxCurrency() {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+
+  data.state = data.state || {};
+  data.state.currencies = data.state.currencies || {};
+  data.state.currencies.cash = 2147483647;
+  data.state.currencies.eridium = 2147483647;
+
+  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
+  editor.setValue(newYaml);
+  console.log('Currencies maxed out');
+}
+
+function maxAmmo() {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+
+  data.state = data.state || {};
+  data.state.ammo = {
+    assaultrifle: 1260,
+    pistol: 900,
+    shotgun: 220,
+    smg: 1620,
+    sniper: 190,
+    repkit: 10,
+  };
+
+  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
+  editor.setValue(newYaml);
+  console.log('Ammo maxed out');
 }
 
 // Runs a best-effort sequence to unlock / max most things in a character save.
 function unlockMaxEverything() {
   // Call every non-profile mutation function in a reasonable order.
+
   try {
+    // Ammo & Currency
+    if (typeof maxAmmo === 'function') maxAmmo();
+    if (typeof maxCurrency === 'function') maxCurrency();
+
     // Exploration / discovery
     if (typeof clearMapFog === 'function') clearMapFog();
     if (typeof discoverAllLocations === 'function') discoverAllLocations();
@@ -289,10 +362,7 @@ function unlockMaxEverything() {
     if (typeof completeAllChallenges === 'function') completeAllChallenges();
 
     // Character progression
-    if (typeof setCharacterToMaxLevel === 'function')
-      setCharacterToMaxLevel();
-
-    // Skip profile-only functions (unlockAllCosmetics, unlockNewGameShortcuts)
+    if (typeof setCharacterToMaxLevel === 'function') setCharacterToMaxLevel();
 
     console.log('Unlock / Max Everything applied');
   } catch (e) {
