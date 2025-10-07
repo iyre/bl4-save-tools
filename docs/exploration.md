@@ -10,6 +10,8 @@ Discovered locations are stored in the save file YAML under `gbx_discovery_pg` >
 
 Most POIs don't have easily distinguishable names. For example, all activities have the same prefix, `DLMD_World_P_PoAActor_UAID`, but specific activities (e.g. safehouses) aren't differentiated.
 
+I've manually identified most activity location markers in: [locations_activities.csv](../data/locations_activities.csv) 
+
 ## Fog of War Data
 This is how the game progressively reveals the map as you explore new areas.
 
