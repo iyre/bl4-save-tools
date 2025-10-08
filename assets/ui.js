@@ -91,6 +91,20 @@ const PRESETS = [
     group: 'Character',
   },
   {
+    handler: 'completeAllChallenges',
+    title: 'Complete All Challenges',
+    desc: 'Completes all challenges.',
+    saveType: 'character',
+    group: 'World',
+  },
+  {
+    handler: 'completeAllAchievements',
+    title: 'Complete All Achievements',
+    desc: 'Completes all achievements.',
+    saveType: 'character',
+    group: 'World',
+  },
+  {
     handler: 'completeAllStoryMissions',
     title: 'Skip Story Missions',
     desc: 'Completes all main story missions.',
@@ -110,13 +124,6 @@ const PRESETS = [
     desc: 'Sets flags to unlock UVH mode.',
     saveType: 'character',
     group: 'Character',
-  },
-  {
-    handler: 'completeAllChallenges',
-    title: 'Complete All Challenges',
-    desc: 'Completes all challenges.',
-    saveType: 'character',
-    group: 'World',
   },
   {
     handler: 'unlockNewGameShortcuts',

@@ -337,7 +337,8 @@ function unlockMaxEverything() {
     // Collectibles / counters
     if (typeof completeAllCollectibles === 'function')
       completeAllCollectibles();
-    if (typeof setStoryValues === 'function') setStoryValues();
+    if (typeof completeAllAchievements === 'function')
+      completeAllAchievements();
 
     // Missions / progression
     if (typeof completeAllSafehouseMissions === 'function')
