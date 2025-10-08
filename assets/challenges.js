@@ -369,6 +369,58 @@ function completeLicensedPartsChallenges() {
 }
 
 /**
+ * Sets all achievement counter values to completed.
+ * Unknown how effective this is for actually unlocking achievements.
+ * Activity completion achievement is not controlled by a counter.
+ */
+function completeAllAchievements() {
+  const counters = {
+    '00_level_10': 1,
+    '01_level_30': 1,
+    '02_level_50': 1,
+    '03_uvh_5': 1,
+    '04_cosmetics_collect': 60,
+    '05_vehicles_collect': 10,
+    '06_legendaries_equip': 1,
+    '07_challenges_gear': 1,
+    '08_challenges_manufacturer': 1,
+    // complete all activities achievement doesnt seem to have a counter - it just checks completed activity missions
+    '10_worldevents_colosseum': 1,
+    '11_worldevents_airship': 1,
+    '12_worldevents_meteor': 1,
+    '13_contracts_complete': 80,
+    '14_discovery_grasslands': 54,
+    '15_discovery_mountains': 62,
+    '16_discovery_shatteredlands': 47,
+    '17_discovery_city': 21,
+    '18_worldboss_defeat': 1,
+    '19_vaultguardian_defeat': {
+      '19_vaultguardian_grasslands': 1,
+      '19_vaultguardian_mountains': 1,
+      '19_vaultguardian_shatteredlands': 1,
+    },
+    '20_missions_survivalist': 3,
+    '21_missions_auger': 7,
+    '22_missions_electi': 3,
+    '23_missions_claptrap': 5,
+    '24_missions_side': 98,
+    '25_missions_grasslands': 1,
+    '26_missions_mountains': 1,
+    '27_missions_shatteredlands': 1,
+    '28_missions_elpis': 1,
+    '29_missions_main': 1,
+    '30_moxxi_hidden': 1,
+    '31_tannis_hidden': 1,
+    '32_zane_hidden': 1,
+    '33_oddman_hidden': 1,
+    '34_dave_hidden': 1,
+  };
+
+  updateStatsCounters(counters, 'achievements');
+  if (typeof mergeMissionsetsOfType === 'function') mergeMissionsetsOfType('activity');
+}
+
+/**
  * Updates challenge counters in the save file.
  * Only updates counters if the new value is higher than the existing value.
  *

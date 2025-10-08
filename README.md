@@ -12,9 +12,10 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Discover all locations
   - Unlock all safehouses
   - Unlock all collectibles
+  - Complete all challenges
+  - Unlock all achievements
   - Skip story missions
   - Skip all missions
-  - Complete all challenges
   - Change class
   - Max level (50)
   - Max SDU
@@ -71,6 +72,14 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Marks all* collectibles as found. ECHO logs, capsules, etc. (bobble heads aren't included)
   - Re-calculates SDU points, applying the new total if it's higher.
   - Does not add PoI markers. See "Discover all locations".
+- **Complete all challenges**
+  - Completes all counter-based challenges.
+  - Does not complete activities or collectibles challenges. See "Skip all missions" and "Unlock all collectibles".
+  - Does not grant rewards for completion. [More info](docs/challenges.md)
+  - Unlocks some achievements. (UVH 5 & world events confirmed)
+- **Complete all achievements**
+  - Also completes all activities.
+  - Triggers platform achievements (Steam/Epic).
 - **Skip story missions**
   - Completes all missions related to the main story. Doesn't modify any other missions.
   - Functionally equivalent to starting a new save with the in-game story skip option. (Does not unlock that option)
@@ -79,11 +88,6 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Completes all missions including the main story, vaults, and activities like drill sites.
   - Enables the specialization system.
   - Re-calculates SDU points, applying the new total if it's higher.
-- **Complete all challenges**
-  - Completes all counter-based challenges.
-  - Does not complete activities or collectibles challenges. See "Skip all missions" and "Unlock all collectibles".
-  - Does not grant rewards for completion. [More info](docs/challenges.md)
-  - Unlocks some achievements. (UVH 5 & world events confirmed)
 
 ### Character
 - **Change class**

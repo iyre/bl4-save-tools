@@ -73,6 +73,7 @@ function completeAllMissions() {
 function completeAllStoryMissions() {
   mergeMissionsetsOfType('story');
   stageEpilogueMission();
+  if (typeof setStoryValues === 'function') setStoryValues();
 }
 
 function completeAllSafehouseMissions() {
