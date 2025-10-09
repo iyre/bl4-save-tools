@@ -139,6 +139,13 @@ const PRESETS = [
     saveType: 'profile',
     group: 'Misc',
   },
+  {
+    handler: 'generateShinyRewards',
+    title: 'Unlock Shiny Rewards',
+    desc: 'Unlocks all cosmetic items.',
+    saveType: 'character',
+    group: 'Misc',
+  },
 ];
 
 /**
