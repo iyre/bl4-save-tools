@@ -56,7 +56,31 @@ The `state.seen_eridium_logs` key has a binary counter value that is incremented
 A value of `262143` will unlock all 18 logs - literally 18x binary 1s.
 
 ### Phosphene (Shiny) Weapons
-"Phosphene" is an alternate skin available for all legendary weapons which is obtained randomly through an extremely rare weapon roll. Looting a phosphene weapon will unlock a hidden challenge category dedicated to collecting all weapons and complete the challenge for that weapon. Completing each phosphene challenge will grant a reward package which unlocks the skin for all characters. 
+"Phosphene" is an alternate skin available for all legendary weapons which is obtained randomly through an extremely rare weapon roll. Looting a phosphene weapon will unlock a hidden challenge category dedicated to collecting all weapons and complete the challenge for that weapon.
+
+Completing each phosphene challenge will grant a reward package which unlocks the skin for all characters. Finding all 69 different phosphene weapons (completing the final challenge) will unlock an additional unique skin for all characters, _**Ratatataclysm**_.
+
+Challenge progress is tracked with ddicated per-weapon counters in `stats` > `shinygear`. Challenge counter 
+
+Individual shiny weapon paintjob reward def IDs follow the form `ChallengeReward_Shiny_<gun shortname>`. Gun shortnames are the same between unlockables, rewards, and challenges. Claiming these rewards will place a similar unlockable ID in `profile.sav`, unlocking the paintjob for all characters. Those IDs follow the form `Unlockable_Weapons.shiny_<gun shortname>`.
+
+Reward packages can be constructed like so, to be claimed in-game and automatically added to `profile.sav` (unlockables may also be added directly using keys from [unlockables.yaml](../data/unlockables.yaml))
+```yaml
+state:
+  packages:
+  - time_received: 1759129953
+    game_stage: 1,
+    reward_scale: 1,
+    rewards_def: ChallengeReward_Shiny_Beegun # "birts bees" phosphene paintjob - note the short gun name
+    source: None
+    viewed: false
+  - time_received: 1759129953
+    game_stage: 1,
+    reward_scale: 1,
+    rewards_def: RewardPackage_WeaponSkin_Shiny_Ultimate # ratatataclysm paintjob - reward for finding 69/69 phosphene weapons
+    source: None
+    viewed: false
+```
 
 ## Hoverdrive unlocks
 - Weapon manufacturer challenges for total kills unlock hoverdrives.
