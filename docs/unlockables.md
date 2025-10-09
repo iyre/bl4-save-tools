@@ -17,8 +17,8 @@ domains:
       unlockable_vehicles:
         entries:
           - Unlockable_Vehicles.Grazer
-          - Unlockable_Vehicles.Paladin_Proto
-          - Unlockable_Vehicles.mat47_jakobsuncommon
+          - Unlockable_Vehicles.Paladin_Proto # vehicle skin
+          - Unlockable_Vehicles.mat47_jakobsuncommon # vehicle paintjob
 ```
 
 
@@ -27,7 +27,7 @@ Completing the story by any means (and then loading the save) will add the `shar
 
 
 ## Specialization System
-Completing the story and starting the post-game phase normally (i.e. not through save editing) will add the `shared_progress.epilogue_started` flag to `unlockables` > `shared_progress` > `entries` key in `profile.sav`. This enables the specialization system for **all** characters.
+Completing the story and starting the post-game phase normally (i.e. not through save editing) will add the `shared_progress.epilogue_started` flag to the `unlockables` > `shared_progress` > `entries` key in `profile.sav`. This enables the specialization system for **all** characters.
 
 That flag is ONLY added when the state of the `missionset_main_cityepilogue` mission set is progressed in-game.
 

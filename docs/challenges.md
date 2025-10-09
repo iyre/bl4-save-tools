@@ -26,7 +26,7 @@ state:
 
 These `rewards_def` IDs are similar to the ones added to `profile.sav`, but not exactly the same. Names of each type of reward and unlockable ID seem consistent and similar, so we can probably infer the package reward `rewards_def` value for a given reward if we know the unlockable ID stored in `profile.sav`.
 
-Some package rewards contain both
+Some package rewards contain both a cosmetic unlock and a weapon serial.
 
 
 ## ECHO Logs
@@ -55,6 +55,9 @@ The `state.seen_eridium_logs` key has a binary counter value that is incremented
 
 A value of `262143` will unlock all 18 logs - literally 18x binary 1s.
 
+### Phosphene (Shiny) Weapons
+"Phosphene" is an alternate skin available for all legendary weapons which is obtained randomly through an extremely rare weapon roll. Looting a phosphene weapon will unlock a hidden challenge category dedicated to collecting all weapons and complete the challenge for that weapon. Completing each phosphene challenge will grant a reward package which unlocks the skin for all characters. 
+
 ## Hoverdrive unlocks
 - Weapon manufacturer challenges for total kills unlock hoverdrives.
 - Each mfg has 5 hoverdrive challenge tiers.
@@ -70,9 +73,9 @@ A value of `262143` will unlock all 18 logs - literally 18x binary 1s.
 | Daedalus     | 3    | 400   | `Reward_HoverDrive_Daedalus_03` | `unlockable_hoverdrives.Daedalus_03` |
 | Daedalus     | 4    | 1000  | `Reward_HoverDrive_Daedalus_04` | `unlockable_hoverdrives.Daedalus_04` |
 | Daedalus     | 5    | 2000  | `Reward_HoverDrive_Daedalus_05` | `unlockable_hoverdrives.Daedalus_05` |
-| Jakobs       | 1    | 50    | `Reward_HoverDrive_Jakobs_01`   | `unlockable_hoverdrives.Jakobs_01`   |
+| Jakobs       | 1    | 50    | `Reward_HoverDrive_Jakobs_01`   | `unlockable_hoverdrives.jakobs_01`   |
 | Jakobs       | 2    | 200   | `Reward_HoverDrive_Jakobs_02`   | `unlockable_hoverdrives.Jakobs_02`   |
-| Jakobs       | 3    | 400   | `Reward_HoverDrive_Jakobs_03`   | `unlockable_hoverdrives.Jakobs_03`   |
+| Jakobs       | 3    | 400   | `Reward_HoverDrive_Jakobs_03`   | `unlockable_hoverdrives.jakobs_03`   |
 | Jakobs       | 4    | 1000  | `Reward_HoverDrive_Jakobs_04`   | `unlockable_hoverdrives.Jakobs_04`   |
 | Jakobs       | 5    | 2000  | `Reward_HoverDrive_Jakobs_05`   | `unlockable_hoverdrives.Jakobs_05`   |
 | Maliwan      | 1    | 50    | `Reward_HoverDrive_Maliwan_01`  | `unlockable_hoverdrives.Maliwan_01`  |
