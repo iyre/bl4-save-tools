@@ -18,6 +18,7 @@ function completeAllChallenges() {
   completeEquipmentChallenges();
   completeManufacturerChallenges();
   completeLicensedPartsChallenges();
+  completePhospheneChallenges();
 }
 
 function completeUVHChallenges() {
@@ -367,6 +368,87 @@ function completeLicensedPartsChallenges() {
 
   updateStatsCounters(counters);
 }
+
+function completePhospheneChallenges() {
+  const counters = {
+      base: {
+        shiny_anarchy: 1,
+        shiny_asher: 1,
+        shiny_atlien: 1,
+        shiny_ballista: 1,
+        shiny_beegun: 1,
+        shiny_bloodstarved: 1,
+        shiny_bod: 1,
+        shiny_bonnieclyde: 1,
+        shiny_boomslang: 1,
+        shiny_bugbear: 1,
+        shiny_bully: 1,
+        shiny_chuck: 1,
+        shiny_coldshoulder: 1,
+        shiny_commbd: 1,
+        shiny_complex_root: 1,
+        shiny_conglomerate: 1,
+        shiny_convergence: 1,
+        shiny_crowdsourced: 1,
+        shiny_dividedfocus: 1,
+        shiny_dualdamage: 1,
+        shiny_finnty: 1,
+        shiny_fisheye: 1,
+        shiny_gmr: 1,
+        shiny_goalkeeper: 1,
+        shiny_goldengod: 1,
+        shiny_goremaster: 1,
+        shiny_heartgun: 1,
+        shiny_heavyturret: 1,
+        shiny_hellfire: 1,
+        shiny_hellwalker: 1,
+        shiny_kaleidosplode: 1,
+        shiny_kaoson: 1,
+        shiny_katagawa: 1,
+        shiny_kickballer: 1,
+        shiny_kingsgambit: 1,
+        shiny_leadballoon: 1,
+        shiny_linebacker: 1,
+        Shiny_Loarmaster: 1,
+        shiny_lucian: 1,
+        shiny_lumberjack: 1,
+        shiny_luty: 1,
+        shiny_noisycricket: 1,
+        shiny_ohmigot: 1,
+        shiny_om: 1,
+        shiny_onslaught: 1,
+        shiny_phantom_flame: 1,
+        shiny_plasmacoil: 1,
+        shiny_potatothrower: 1,
+        shiny_prince: 1,
+        shiny_queensrest: 1,
+        shiny_quickdraw: 1,
+        shiny_rainbowvomit: 1,
+        shiny_rangefinder: 1,
+        shiny_roach: 1,
+        shiny_rocketreload: 1,
+        shiny_rowan: 1,
+        shiny_rubysgrasp: 1,
+        shiny_seventh_sense: 1,
+        shiny_sideshow: 1,
+        shiny_slugger: 1,
+        shiny_star_helix: 1,
+        shiny_stopgap: 1,
+        shiny_stray: 1,
+        shiny_sweet_embrace: 1,
+        shiny_symmetry: 1,
+        shiny_tkswave: 1,
+        shiny_truck: 1,
+        shiny_vamoose: 1,
+        shiny_wf: 1,
+        shiny_wombocombo: 1,
+        shiny_zipgun: 1,
+      },
+  };
+
+  updateStatsCounters(counters, 'shinygear');
+}
+
 
 /**
  * Sets all achievement counter values to completed.
