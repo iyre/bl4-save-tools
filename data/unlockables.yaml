@@ -67,6 +67,7 @@ unlockable_darksiren:
   - Unlockable_DarkSiren.Skin40_Veil
   - Unlockable_DarkSiren.Skin44_Premium
   - Unlockable_DarkSiren.Skin45_BreakFree
+  - Unlockable_DarkSiren.Skin51_LoreUnique
 unlockable_echo4:
   entries:
   - Unlockable_Echo4.attachment01_partyhat
@@ -258,6 +259,7 @@ unlockable_gravitar:
   - Unlockable_Gravitar.Skin40_Veil
   - Unlockable_Gravitar.Skin44_Premium
   - Unlockable_Gravitar.Skin45_BreakFree
+  - Unlockable_Gravitar.Skin51_LoreUnique
 unlockable_paladin:
   entries:
   - Unlockable_Paladin.Body01_Prison
@@ -321,6 +323,7 @@ unlockable_paladin:
   - Unlockable_Paladin.Skin40_Veil
   - Unlockable_Paladin.Skin44_Premium
   - Unlockable_Paladin.Skin45_BreakFree
+  - Unlockable_Paladin.Skin51_LoreUnique
 unlockable_vehicles:
   entries:
   - Unlockable_Vehicles.Borg
