@@ -4,9 +4,10 @@ _GearBox has historically shown a positive attitude toward the Borderlands moddi
 These are my personal findings through observation and experimentation while developing this tool. I'm not an expert.
 
 - [Encryption & Compression](encryption.md)
-- [Exploration data](exploration.md)
+- [Exploration Data](exploration.md)
 - [Challenges & Rewards](challenges.md)
 - [Global Unlockables](unlockables.md) - Most challenge rewards are unlocked globally (i.e. for all characters).
+- [Maurice's Black Market](blackmarket.md)
 - [XP Formulas](xp.md)
 
 ## Files
