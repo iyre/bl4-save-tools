@@ -83,7 +83,7 @@ name_en,blackmarket_itemtype,blackmarket_itemcomp
 "Super Soldier",dad_shield,dad_shield.comp_05_legendary_SuperSoldier
 "Swarm",ord_grenade_gadget,ord_grenade_gadget.comp_05_legendary_swarm
 "Symmetry",ORD_SR,ORD_SR.comp_05_legendary_symmetry
-"T.K's Wave"",JAK_SG,JAK_SG.comp_05_legendary_TKsWave
+"T.K's Wave",JAK_SG,JAK_SG.comp_05_legendary_TKsWave
 "Truck",JAK_SR,JAK_SR.comp_05_legendary_Truck
 "UAV",ted_grenade_gadget,ted_grenade_gadget.comp_05_legendary_PredatorDrone
 "Vamoose",bor_sr,bor_sr.comp_05_legendary_Vamoose
