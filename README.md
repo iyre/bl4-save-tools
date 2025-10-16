@@ -23,10 +23,11 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Unlock all hover drives
   - Unlock all specializations
   - Unlock UVHM
+  - Set all items to character level
   - Unlock new game shortcuts - `profile.sav`
   - Unlock all cosmetics - `profile.sav`
 
-I don't plan to implement any sort of item editing.
+I don't plan to implement item editing beyond basic preset manipulations.
 
 ## Usage
 1. Open the online editor linked above or clone the repo and open `index.html` in any web browser.
@@ -117,6 +118,8 @@ These run JavaScript functions which apply pre-configured edits to save files qu
 - **Apply all presets**
   - Applies all character presets - does not include the below "profile" presets which use a different save file.
   - Grants maximum money & eridium.
+- **Set all items to character level**
+  - Updates all item serials in character inventory to match the level of the character.
 - **Unlock new game shortcuts**  `profile.sav`
   - Enables starting new characters at level 30 with story already complete.
   - Enables the specialization system.

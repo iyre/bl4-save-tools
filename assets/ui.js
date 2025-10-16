@@ -21,13 +21,6 @@
  */
 const PRESETS = [
   {
-    handler: 'unlockMaxEverything',
-    title: 'Unlock / Max Everything',
-    desc: 'Runs a sequence to unlock and max progression, collectibles, SDU, and challenges.',
-    saveType: 'character',
-    group: 'Misc',
-  },
-  {
     handler: 'setCharacterToMaxLevel',
     title: 'Max Level (50)',
     desc: 'Sets character level to 50.',
@@ -126,6 +119,20 @@ const PRESETS = [
     group: 'Character',
   },
   {
+    handler: 'unlockMaxEverything',
+    title: 'Unlock / Max Everything',
+    desc: 'Runs a sequence of presets to unlock and max progression, collectibles, SDU, and challenges.',
+    saveType: 'character',
+    group: 'Misc',
+  },
+  {
+    handler: 'updateAllSerialLevels',
+    title: 'Set All Items to Character Level',
+    desc: 'Update item serials to match current character level.',
+    saveType: 'character',
+    group: 'Misc',
+  },
+  {
     handler: 'unlockNewGameShortcuts',
     title: 'Unlock New Game Shortcuts',
     desc: 'Unlocks all new game shortcuts (skip prologue, skip story, specialization system).',
@@ -202,6 +209,7 @@ function renderPresets() {
             ? 'This preset only applies to character saves.'
             : 'This preset only applies to profile saves.';
         } else {
+          btn.title = preset.desc;
           btn.onclick = function () {
             window[preset.handler]();
             btn.classList.add('preset-applied');
