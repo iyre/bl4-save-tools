@@ -69,12 +69,12 @@ function reverseBitsInByte(b) {
  */
 function parseVarintChunks(binaryStr) {
   let idx = binaryStr.indexOf(LEVEL_PREFIX);
-  if (idx === -1) throw new Error('LEVEL_PREFIX not found in binary string');
+  if (idx === -1) throw new Error(`LEVEL_PREFIX not found in binary string [${binaryStr}]`);
   let pos = idx + LEVEL_PREFIX.length;
   let valueBits = '';
   while (true) {
     let chunk = binaryStr.slice(pos, pos + 5);
-    if (chunk.length < 5) throw new Error('Unexpected end of binary string while parsing varint');
+    if (chunk.length < 5) throw new Error(`Unexpected end of binary string while parsing varint [${binaryStr}]`);
     let dataBits = chunk.slice(0, 4);
     let cont = chunk[4] === '1';
     valueBits += dataBits;
@@ -165,7 +165,13 @@ function updateSerialLevel(serial, newLevel) {
   let binaryStr = Array.from(reversedBytes)
     .map((b) => b.toString(2).padStart(8, '0'))
     .join('');
-  let { value: oldLevel, start, end } = parseVarintChunks(binaryStr);
+  let oldLevel, start, end;
+  try {
+    ({ value: oldLevel, start, end } = parseVarintChunks(binaryStr));
+  } catch (err) {
+    console.error(`parseVarintChunks error for serial [${serial}]:`, err.message);
+    return serial;
+  }
   let newVarintBits = encodeVarintChunks(newLevel);
   let newBinaryStr = binaryStr.slice(0, start) + newVarintBits + binaryStr.slice(end);
   let newBytes = bitsToBytes(newBinaryStr);
