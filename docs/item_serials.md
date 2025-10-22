@@ -1,20 +1,39 @@
 # Item Serials
 
-ex. ``@Uge8Cmm/)}}$pj+IrVgrus?-aE3Wxfg>Sa(Z4C*dwM5=Z)QN)IP0s`` or ``@Ugd_t@Fme!KW>!#GRH1&NdZON-VxdwZ9>(Su00``
+Credit to [Nicnl & co.](https://github.com/Nicnl/borderlands4-serials) for item serial research. See that repo for excellent detail and examples on the decoding process. I refer to some key topics covered in that project like tokens and separators.
 
-### Decoding
-- Strip `@U` prefix
-- Replace `/` with `|`
-- Decode with custom base85 scheme
-- Reverse the order of the bits in each byte
 
-### Interpretation
-1. Item Type - variable length - item manufacturer and type. Ex. "jakobs shotgun" or "order repkit"
-2. 25-bit separator - `0110000000011001000001100` - this sequence is present in all serials currently. Unknown whether it has a special meaning
-3. Level - varint - 1 or 2 5-bit "chunks" where the 5th bit is a continuation indicator. The non-continuation bits from the chunks are combined, then reversed to get the level requirement for the item (8-bit int). 
-    - `0` continuatuion bit denotes the end of the varint.
-    - `1` continuatuion bit means the varint continues in the next chunk.
-4. ???
+# Missing level field
+The `Matador's Match` (from Gilded Glory DLC) has a static serial which does not include a level field. The game seems to default to level 1 in this case.
+
+It's possible to insert the missing level field with a desired value. (I noticed this while comparing with another DLC weapon.)
+
+The early section of the serial (up to the double hard separator `||`) contains a few notable fields:
+- varint or varbit itemtype ID + soft separator
+- varint `0` + soft sep (presumed to be padding)
+- list of key/value fields. key & value are separated by soft sep `,`(01) and each pair is terminated by hard sep `|`(00)
+  - 1: level
+  - 2: price
+  - 9: ??
+  - ?? others
+- section terminated by hard separator `|`(00)
+
+The level field always appears immediately after the padding varint `0`. So, we can check whether the price field follows the padding `0` and insert our level between them.
+
+Comparison of partial DLC serials for "First Impression" (level 50) with "Matador's Match" (original, then with level field inserted)
+```
+FirstImpression
+00100 00  10010110 01     10000000 01 10010000 01 1000100111000 00 10001000 01 100010110001101010 00 00 <part data omitted>
+      |      13    ,         0     ,     1     ,     50         |     2     ,     2698            |  |
+
+MatadorsMatch (original)
+00100 00 1001010110000 01 10000000 01                              10001000 01 100100111000101000 00 00 <part data omitted>
+      |     21         ,     0     ,                                  2     ,    537             |  |
+
+MatadorsMatch (with added level field)
+00100 00 1001010110000 01 10000000 01 10010000 01 1000100111000 00 10001000 01 100100111000101000 00 00  <part data omitted>
+      |     21         ,     0     ,     1     ,     50         |     2     ,     537             |  |
+```
 
 # State Flags
 `state_flags` encode the labels you're able to attach to items.

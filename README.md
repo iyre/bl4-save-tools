@@ -144,4 +144,5 @@ Please reach out on Discord if you'd like to discuss this project! (link in prof
 - Epic ID key derivation based on https://github.com/mi5hmash/Borderlands4SaveDataResigner
 - Examples of 100% saves from Bytelocker ([Nexus Mods page](https://www.nexusmods.com/borderlands4/mods/84))
 - [RegularLunar](https://github.com/RegularLunar) for various features and enhancements.
+- Item serial research via [Nicnl & co.](https://github.com/Nicnl/borderlands4-serials)
 - This project was made possible through much coaching by LLM tools. I'm an amateur programmer.

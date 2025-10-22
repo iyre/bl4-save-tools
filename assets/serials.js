@@ -15,10 +15,18 @@ const CUSTOM_B85_ALPHABET =
   '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~';
 
 /**
- * Bit pattern prefix used to locate the level varint in the serial binary string.
+ * Bit pattern used to locate the level varint in the serial bitstream.
  * @const {string}
  */
-const LEVEL_PREFIX = '0110000000011001000001100';
+const LEVEL_PREFIX = '0110000000011001000001100'
+
+/**
+ * Bit pattern used to identify a missing level field in the serial bitstream.
+ * No level field exists (item level will default to "1" in-game). Seen with "Matador's Match" from Gilded Glory DLC.
+ * We must insert the level field between padding and price with the desired value.
+ * @const {string}
+ */
+const MISSING_LEVEL_PATTERN = '0110000000011000100001'
 
 /**
  * Decodes a custom base85-encoded serial string into a Uint8Array of bytes.
@@ -166,21 +174,43 @@ function updateSerialLevel(serial, newLevel) {
     .map((b) => b.toString(2).padStart(8, '0'))
     .join('');
   let oldLevel, start, end;
+  let newBinaryStr = null;
+  let maxDifferenceBytes = 1;
   try {
     ({ value: oldLevel, start, end } = parseVarintChunks(binaryStr));
+    let newVarintBits = encodeVarintChunks(newLevel);
+    newBinaryStr = binaryStr.slice(0, start) + newVarintBits + binaryStr.slice(end);
   } catch (err) {
-    console.error(`parseVarintChunks error for serial [${serial}]:`, err.message);
-    return serial;
+    // If LEVEL_PREFIX not found, check for MISSING_LEVEL_PATTERN and insert the level field
+    const missIdx = binaryStr.indexOf(MISSING_LEVEL_PATTERN);
+    if (missIdx !== -1) {
+      // Insert point is 12 bits from the start of the match
+      const insertPos = missIdx + 12;
+      // We must insert the level fgifield label and value, plus varint tokens and separators.
+      // "100" (label varint type token) + "100000" (label varint value = 1) + "01" (soft separator) +
+      // "100" (level varint type token) + encoded level varint chunks + "00" (hard separator)
+      const insertBits = '1001000001100' + encodeVarintChunks(newLevel) + '00';
+      newBinaryStr = binaryStr.slice(0, insertPos) + insertBits + binaryStr.slice(insertPos);
+      console.log(`Inserted missing level at bit pos ${insertPos} for serial ${serial}`);
+      console.debug(binaryStr);
+      console.debug(newBinaryStr);
+      maxDifferenceBytes += 4; // Insertion adds more bytes
+    } else {
+      console.error(`parseVarintChunks error for serial [${serial}]:`, err.message);
+      return serial;
+    }
   }
-  let newVarintBits = encodeVarintChunks(newLevel);
-  let newBinaryStr = binaryStr.slice(0, start) + newVarintBits + binaryStr.slice(end);
+
+  // If we have a new binary string, convert back to bytes and base85 serial
+  if (newBinaryStr === null) return serial;
+
   let newBytes = bitsToBytes(newBinaryStr);
   let restoredBytes = Uint8Array.from(newBytes, reverseBitsInByte);
   let b85Str = bytesToCustomB85(restoredBytes).replace(/\|/g, '/');
   let newSerial = '@U' + b85Str;
-  if (Math.abs(newSerial.length - serial.length) > 1) {
+  if (Math.abs(newSerial.length - serial.length) > maxDifferenceBytes) {
     console.warn(
-      `Serial length differs by more than 1 byte, keeping old value: '${newSerial}' (new) vs '${serial}' (old)`
+      `Serial length differs by more than ${maxDifferenceBytes} byte(s), keeping old value: '${newSerial}' (new) vs '${serial}' (old)`
     );
     return serial;
   }
