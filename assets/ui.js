@@ -190,36 +190,50 @@ function renderPresets() {
       makeCharacterClassButtons().forEach((btnRow) => grid.appendChild(btnRow));
     }
 
-    PRESETS.filter((p) => (p.group || 'Misc') === groupName).forEach(
-      (preset) => {
-        const row = document.createElement('div');
-        row.className = 'preset-row';
+    PRESETS.filter((p) => (p.group || 'Misc') === groupName).forEach((preset) => {
+      const row = document.createElement('div');
+      row.className = 'preset-row';
 
-        const btn = document.createElement('button');
-        btn.className = 'secondary';
-        btn.textContent = preset.title;
-        btn.style.position = 'relative';
+      const btn = document.createElement('button');
+      btn.className = 'secondary';
+      btn.style.position = 'relative';
 
-        if (
-          (isProfileSave && preset.saveType === 'character') ||
-          (!isProfileSave && preset.saveType === 'profile')
-        ) {
-          btn.disabled = true;
-          btn.title = isProfileSave
-            ? 'This preset only applies to character saves.'
-            : 'This preset only applies to profile saves.';
-        } else {
-          btn.title = preset.desc;
-          btn.onclick = function () {
+      // Compute display metadata without mutating PRESETS
+      const display = {
+        title: preset.title,
+        desc: preset.desc,
+        saveType: preset.saveType,
+      };
+
+      // Special-case: updateAllSerialLevels displays differently when a profile save is loaded
+      if (preset.handler === 'updateAllSerialLevels' && isProfileSave) {
+        display.title = 'Set All Items to Max Level (50)';
+        display.desc = 'Set all item serials to max level (50) for profile saves (applies to all characters).';
+        display.saveType = 'profile';
+      }
+
+      btn.textContent = display.title;
+
+      // Determine disabled state based on computed saveType (no mutation)
+      if ((isProfileSave && display.saveType === 'character') || (!isProfileSave && display.saveType === 'profile')) {
+        btn.disabled = true;
+        btn.title = isProfileSave ? 'This preset only applies to character saves.' : 'This preset only applies to profile saves.';
+      } else {
+        btn.title = display.desc;
+        btn.onclick = function () {
+          // call handler by name if present
+          if (typeof window[preset.handler] === 'function') {
             window[preset.handler]();
             btn.classList.add('preset-applied');
-          };
-        }
-
-        row.appendChild(btn);
-        grid.appendChild(row);
+          } else {
+            console.warn(`Handler not found: ${preset.handler}`);
+          }
+        };
       }
-    );
+
+      row.appendChild(btn);
+      grid.appendChild(row);
+    });
 
     groupDiv.appendChild(grid);
     presetSection.appendChild(groupDiv);
