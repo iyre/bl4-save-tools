@@ -67,6 +67,9 @@ function mergeMissionsetsOfType(type) {
 function completeAllMissions() {
   mergeMissionsetsOfType('all');
   stageEpilogueMission();
+  if (typeof setStoryValues === 'function') setStoryValues();
+  if (typeof openAllVaultDoors === 'function') openAllVaultDoors();
+  if (typeof discoverSafehouseLocations === 'function') discoverSafehouseLocations();
   if (typeof updateSDUPoints === 'function') updateSDUPoints();
 }
 
