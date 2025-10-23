@@ -59,8 +59,7 @@ function updateSDUPoints() {
   for (const key in collectiblePoints) {
     if (collectibles.hasOwnProperty(key)) {
       if (typeof collectibles[key] === 'object') {
-        pointTotal +=
-          Object.keys(collectibles[key]).length * collectiblePoints[key];
+        pointTotal += Object.keys(collectibles[key]).length * collectiblePoints[key];
       } else {
         pointTotal += collectiblePoints[key];
       }
@@ -70,8 +69,7 @@ function updateSDUPoints() {
   // Write value to progression.point_pools.echotokenprogresspoints only if higher
   data.progression = data.progression || {};
   data.progression.point_pools = data.progression.point_pools || {};
-  const oldPointTotal =
-    data.progression.point_pools.echotokenprogresspoints || 0;
+  const oldPointTotal = data.progression.point_pools.echotokenprogresspoints || 0;
   if (pointTotal <= oldPointTotal) {
     console.log(
       `Not updating echotokenprogresspoints: current ${oldPointTotal} > calculated ${pointTotal}`
@@ -82,9 +80,7 @@ function updateSDUPoints() {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log(
-    `Updated echotokenprogresspoints: ${oldPointTotal} -> ${pointTotal}`
-  );
+  console.log(`Updated echotokenprogresspoints: ${oldPointTotal} -> ${pointTotal}`);
 }
 
 /**
@@ -102,6 +98,7 @@ function unlockAllSpecialization() {
   try {
     data = jsyaml.load(yamlText);
   } catch (e) {
+    console.error('YAML parse error:', e);
     alert('Failed to parse YAML: ' + e);
     return;
   }
@@ -120,9 +117,7 @@ function unlockAllSpecialization() {
   }
   if (!data.progression) data.progression = {};
   data.progression.graphs = data.progression.graphs || [];
-  let graph = data.progression.graphs.find(
-    (g) => g.name === 'ProgressGraph_Specializations'
-  );
+  let graph = data.progression.graphs.find((g) => g.name === 'ProgressGraph_Specializations');
   if (!graph) {
     graph = {
       name: 'ProgressGraph_Specializations',
@@ -164,29 +159,38 @@ function unlockAllSpecialization() {
   data.progression.point_pools.specializationtokenpool = 700;
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log('All Specializations unlocked and maxed out!');
+  console.info('All Specializations unlocked and maxed out!');
   stageEpilogueMission(); // Stage epilogue mission to ensure specialization system is unlocked.
 }
 
 /**
- * Sets the character to maximum level (50) with appropriate XP.
+ * Sets the character to maximum level.
  */
 function setCharacterToMaxLevel() {
-  setCharacterLevel(50, 3430227);
+  let level = typeof MAX_LEVEL === 'number' ? MAX_LEVEL : 50;
+  setCharacterLevel(level);
 }
 
-function setCharacterLevel(level, xp = null) {
+/**
+ * Sets the character level to a specified value.
+ * Also calculates and updates experience points accordingly.
+ * @param {number} level - The target character level
+ */
+function setCharacterLevel(level) {
   const data = getYamlDataFromEditor();
   if (!data || !data.state || !data.state.experience) return;
-  const idx = data.state.experience.findIndex(
-    (exp) => exp.type === 'Character'
-  );
+  const idx = data.state.experience.findIndex((exp) => exp.type === 'Character');
   if (idx === -1) {
-    console.log('Character experience entry not found.');
+    console.warn('Character experience entry not found.');
+    alert('Character experience entry not found in save data.');
     return;
   }
 
-  xp = xp || calculateCharacterXp(level);
+  let xp =
+    typeof CHARACTER_LEVEL_XP === 'object' && CHARACTER_LEVEL_XP[level]
+      ? CHARACTER_LEVEL_XP[level]
+      : calculateCharacterXp(level);
+
   data.state.experience[idx].level = level;
   data.state.experience[idx].points = xp;
 
@@ -195,7 +199,7 @@ function setCharacterLevel(level, xp = null) {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log(`Set character level to ${level} (XP: ${xp})`);
+  console.info(`Set character level to ${level} (XP: ${xp})`);
 }
 
 /**
@@ -224,8 +228,9 @@ function setCharacterClass(className, charName) {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log(`Set character class: ${className}`);
+  console.info(`Set character class: ${className}`);
 }
+
 function setMaxSDU() {
   const data = getYamlDataFromEditor();
   if (!data) return;
@@ -260,9 +265,7 @@ function setMaxSDU() {
   };
 
   // Replace existing sdu_upgrades graph if present, otherwise add it
-  const existingIdx = data.progression.graphs.findIndex(
-    (g) => g.name === 'sdu_upgrades'
-  );
+  const existingIdx = data.progression.graphs.findIndex((g) => g.name === 'sdu_upgrades');
   if (existingIdx !== -1) {
     data.progression.graphs[existingIdx] = sduGraph;
   } else {
@@ -270,19 +273,13 @@ function setMaxSDU() {
   }
 
   // Calculate total points to reflect in echotokenprogresspoints
-  const totalPoints = sduGraph.nodes.reduce(
-    (acc, n) => acc + (n.points_spent || 0),
-    0
-  );
+  const totalPoints = sduGraph.nodes.reduce((acc, n) => acc + (n.points_spent || 0), 0);
   const oldPoints = data.progression.point_pools.echotokenprogresspoints || 0;
-  data.progression.point_pools.echotokenprogresspoints = Math.max(
-    oldPoints,
-    totalPoints
-  );
+  data.progression.point_pools.echotokenprogresspoints = Math.max(oldPoints, totalPoints);
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log(
+  console.info(
     `Inserted/Replaced sdu_upgrades graph and set echotokenprogresspoints: ${oldPoints} -> ${data.progression.point_pools.echotokenprogresspoints}`
   );
 }
@@ -299,7 +296,7 @@ function maxCurrency() {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log('Currencies maxed out');
+  console.info('Currencies maxed out');
 }
 
 function maxAmmo() {
@@ -318,7 +315,7 @@ function maxAmmo() {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log('Ammo maxed out');
+  console.info('Ammo maxed out');
 }
 
 // Runs a best-effort sequence to unlock / max most things in a character save.
@@ -335,17 +332,13 @@ function unlockMaxEverything() {
     if (typeof discoverAllLocations === 'function') discoverAllLocations();
 
     // Collectibles / counters
-    if (typeof completeAllCollectibles === 'function')
-      completeAllCollectibles();
-    if (typeof completeAllAchievements === 'function')
-      completeAllAchievements();
+    if (typeof completeAllCollectibles === 'function') completeAllCollectibles();
+    if (typeof completeAllAchievements === 'function') completeAllAchievements();
 
     // Missions / progression
-    if (typeof completeAllSafehouseMissions === 'function')
-      completeAllSafehouseMissions();
+    if (typeof completeAllSafehouseMissions === 'function') completeAllSafehouseMissions();
     if (typeof completeAllMissions === 'function') completeAllMissions();
-    if (typeof completeAllStoryMissions === 'function')
-      completeAllStoryMissions();
+    if (typeof completeAllStoryMissions === 'function') completeAllStoryMissions();
     if (typeof stageEpilogueMission === 'function') stageEpilogueMission();
 
     // SDU / progression graphs
@@ -356,8 +349,7 @@ function unlockMaxEverything() {
     if (typeof unlockVaultPowers === 'function') unlockVaultPowers();
     if (typeof unlockUVHMode === 'function') unlockUVHMode();
     if (typeof unlockAllHoverDrives === 'function') unlockAllHoverDrives();
-    if (typeof unlockAllSpecialization === 'function')
-      unlockAllSpecialization();
+    if (typeof unlockAllSpecialization === 'function') unlockAllSpecialization();
 
     // Challenges and counters (these are many; the master function calls the grouped helper)
     if (typeof completeAllChallenges === 'function') completeAllChallenges();
@@ -365,7 +357,7 @@ function unlockMaxEverything() {
     // Character progression
     if (typeof setCharacterToMaxLevel === 'function') setCharacterToMaxLevel();
 
-    console.log('Unlock / Max Everything applied');
+    console.info('Unlock / Max Everything applied');
   } catch (e) {
     console.error('unlockMaxEverything failed:', e);
     alert('Failed to apply Unlock / Max Everything: ' + e);

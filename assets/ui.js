@@ -9,6 +9,9 @@
  * - Character class selection UI
  */
 
+// Defines maximum character level globally. Used in other files.
+let MAX_LEVEL = 50;
+
 /**
  * Defines available preset modifications for save files.
  * Each preset contains:
@@ -22,15 +25,15 @@
 const PRESETS = [
   {
     handler: 'setCharacterToMaxLevel',
-    title: 'Max Level (50)',
-    desc: 'Sets character level to 50.',
+    title: `Max Level (${MAX_LEVEL})`,
+    desc: `Sets character level to the maximum (${MAX_LEVEL}).`,
     saveType: 'character',
     group: 'Character',
   },
   {
     handler: 'setMaxSDU',
     title: 'Max SDU',
-    desc: 'Sets SDU/echo token progress points to a high value to unlock SDU upgrades.',
+    desc: 'Purchases all SDU upgrades, granting additional Echo tokens as needed.',
     saveType: 'character',
     group: 'Character',
   },
@@ -86,7 +89,7 @@ const PRESETS = [
   {
     handler: 'completeAllChallenges',
     title: 'Complete All Challenges',
-    desc: 'Completes all challenges.',
+    desc: "Completes all challenges (doesn't grant rewards).",
     saveType: 'character',
     group: 'World',
   },
@@ -107,7 +110,7 @@ const PRESETS = [
   {
     handler: 'completeAllMissions',
     title: 'Skip All Missions',
-    desc: 'Completes all main and side missions.',
+    desc: 'Completes all main and side missions (including activities).',
     saveType: 'character',
     group: 'World',
   },
@@ -128,7 +131,7 @@ const PRESETS = [
   {
     handler: 'updateAllSerialLevels',
     title: 'Set All Items to Character Level',
-    desc: 'Update item serials to match current character level.',
+    desc: 'Updates serials for all backpack items to match current character level.',
     saveType: 'character',
     group: 'Misc',
   },
@@ -205,19 +208,24 @@ function renderPresets() {
         saveType: preset.saveType,
       };
 
-      // Special-case: updateAllSerialLevels displays differently when a profile save is loaded
+      // Special-case: updateAllSerialLevels also works for profile saves, but should be displayed differently in that case
       if (preset.handler === 'updateAllSerialLevels' && isProfileSave) {
-        display.title = 'Set All Items to Max Level (50)';
-        display.desc = 'Set all item serials to max level (50) for profile saves (applies to all characters).';
+        display.title = `Set All Bank Items to Max Level (${MAX_LEVEL})`;
+        display.desc = `Updates serials for all bank items to have max level (${MAX_LEVEL}).`;
         display.saveType = 'profile';
       }
 
       btn.textContent = display.title;
 
       // Determine disabled state based on computed saveType (no mutation)
-      if ((isProfileSave && display.saveType === 'character') || (!isProfileSave && display.saveType === 'profile')) {
+      if (
+        (isProfileSave && display.saveType === 'character') ||
+        (!isProfileSave && display.saveType === 'profile')
+      ) {
         btn.disabled = true;
-        btn.title = isProfileSave ? 'This preset only applies to character saves.' : 'This preset only applies to profile saves.';
+        btn.title = isProfileSave
+          ? 'This preset only applies to character saves.'
+          : 'This preset only applies to profile saves.';
       } else {
         btn.title = display.desc;
         btn.onclick = function () {
@@ -285,7 +293,7 @@ async function importFile() {
   // Exit early if YAML file provided (already decrypted)
   const ext = file.name.split('.').pop().toLowerCase();
   if (ext == 'yaml' || ext == 'yml') {
-    console.log('Loading YAML file directly into editor');
+    console.info('Loading YAML file directly into editor');
     yamlText = normalizeYaml(arrayBuffer);
   } else {
     yamlText = decryptSav(arrayBuffer);
@@ -300,8 +308,8 @@ function normalizeYaml(yamlBytes) {
     yamlBytes = new Uint8Array(yamlBytes);
   }
   let yamlText = new TextDecoder().decode(yamlBytes);
-  console.log('YAML preview:', yamlText.slice(0, 100));
-  console.log('YAML length:', yamlBytes.length);
+  console.debug('YAML preview:', yamlText.slice(0, 100));
+  console.debug('YAML length:', yamlBytes.length);
 
   // Remove !tags which jsyaml can't handle. These don't seem to be needed.
   yamlText = yamlText.replace(/:\s*!tags/g, ':');
@@ -361,19 +369,17 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 // Clear editor when selecting a new file, and try to import if userIdInput is set
-document
-  .getElementById('fileInput')
-  .addEventListener('change', async function () {
-    if (editor) editor.setValue('');
-    const userId = document.getElementById('userIdInput')?.value;
-    if (userId) {
-      try {
-        await importFile();
-      } catch (e) {
-        console.log('opportunistic import failed:', e);
-      }
+document.getElementById('fileInput').addEventListener('change', async function () {
+  if (editor) editor.setValue('');
+  const userId = document.getElementById('userIdInput')?.value;
+  if (userId) {
+    try {
+      await importFile();
+    } catch (e) {
+      console.error('opportunistic import failed:', e);
     }
-  });
+  }
+});
 
 let isProfileSave = false;
 

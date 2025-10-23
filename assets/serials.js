@@ -18,7 +18,7 @@ const CUSTOM_B85_ALPHABET =
  * Bit pattern used to locate the level varint in the serial bitstream.
  * @const {string}
  */
-const LEVEL_PREFIX = '0110000000011001000001100'
+const LEVEL_PREFIX = '0110000000011001000001100';
 
 /**
  * Bit pattern used to identify a missing level field in the serial bitstream.
@@ -26,7 +26,7 @@ const LEVEL_PREFIX = '0110000000011001000001100'
  * We must insert the level field between padding and price with the desired value.
  * @const {string}
  */
-const MISSING_LEVEL_PATTERN = '0110000000011000100001'
+const MISSING_LEVEL_PATTERN = '0110000000011000100001';
 
 /**
  * Decodes a custom base85-encoded serial string into a Uint8Array of bytes.
@@ -82,7 +82,8 @@ function parseVarintChunks(binaryStr) {
   let valueBits = '';
   while (true) {
     let chunk = binaryStr.slice(pos, pos + 5);
-    if (chunk.length < 5) throw new Error(`Unexpected end of binary string while parsing varint [${binaryStr}]`);
+    if (chunk.length < 5)
+      throw new Error(`Unexpected end of binary string while parsing varint [${binaryStr}]`);
     let dataBits = chunk.slice(0, 4);
     let cont = chunk[4] === '1';
     valueBits += dataBits;
@@ -191,9 +192,7 @@ function updateSerialLevel(serial, newLevel) {
       // "100" (level varint type token) + encoded level varint chunks + "00" (hard separator)
       const insertBits = '1001000001100' + encodeVarintChunks(newLevel) + '00';
       newBinaryStr = binaryStr.slice(0, insertPos) + insertBits + binaryStr.slice(insertPos);
-      console.log(`Inserted missing level at bit pos ${insertPos} for serial ${serial}`);
-      console.debug(binaryStr);
-      console.debug(newBinaryStr);
+      console.info(`Inserted missing level at bit pos ${insertPos} for serial ${serial}`);
       maxDifferenceBytes += 4; // Insertion adds more bytes
     } else {
       console.error(`parseVarintChunks error for serial [${serial}]:`, err.message);
@@ -244,7 +243,7 @@ function updateAllSerialLevels() {
   const data = getYamlDataFromEditor();
   if (!data) return;
 
-  let level = 50;
+  let level = typeof MAX_LEVEL === 'number' ? MAX_LEVEL : 50;
   if (isProfileSave) {
     Object.values(data.domains.local.shared.inventory.items.bank).forEach((slot) => {
       processSlot(slot, level);
@@ -253,7 +252,8 @@ function updateAllSerialLevels() {
     if (!data.state || !data.state.experience) return;
     const idx = data.state.experience.findIndex((exp) => exp.type === 'Character');
     if (idx === -1) {
-      console.log('Character experience entry not found.');
+      console.error('Character experience entry not found.');
+      alert('Character experience entry not found in save data.');
       return;
     }
     level = data.state.experience[idx].level;
@@ -267,5 +267,5 @@ function updateAllSerialLevels() {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log('Item serials updated to level ' + level);
+  console.info('Item serials updated to level ' + level);
 }

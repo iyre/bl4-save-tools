@@ -4,6 +4,11 @@
  * using curve-fitted polynomial functions based on collected game data.
  */
 
+// Define exact XP values for common levels to avoid calculation which isn't perfectly accurate.
+const CHARACTER_LEVEL_XP = {
+  50: 3430227,
+};
+
 function runCharCalc() {
   const lvl = parseInt(document.getElementById('charLevelInput').value, 10);
   const xp = calculateCharacterXp(lvl);
@@ -41,9 +46,7 @@ function renderXpResult(containerId, xp, color) {
  */
 function calculateCharacterXp(level) {
   // Hardcoded total XP for levels 1-10
-  const hardcoded = [
-    0, 857, 1740, 3349, 5875, 9496, 14385, 20707, 28625, 38297,
-  ];
+  const hardcoded = [0, 857, 1740, 3349, 5875, 9496, 14385, 20707, 28625, 38297];
   if (level > 0 && level <= 10) {
     return hardcoded[level - 1];
   }

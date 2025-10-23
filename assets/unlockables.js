@@ -18,16 +18,15 @@ function unlockAllHoverDrives() {
   if (!data) return;
 
   data.unlockables = data.unlockables || {};
-  data.unlockables.unlockable_hoverdrives =
-    data.unlockables.unlockable_hoverdrives || {};
+  data.unlockables.unlockable_hoverdrives = data.unlockables.unlockable_hoverdrives || {};
   let existing = Array.isArray(data.unlockables.unlockable_hoverdrives.entries)
     ? data.unlockables.unlockable_hoverdrives.entries
     : [];
 
   // Merge, deduplicate, and sort (case-insensitive)
-  const merged = Array.from(
-    new Set([...existing, ...UNLOCKABLE_HOVERDRIVES])
-  ).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+  const merged = Array.from(new Set([...existing, ...UNLOCKABLE_HOVERDRIVES])).sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: 'base' })
+  );
   data.unlockables.unlockable_hoverdrives.entries = merged;
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
@@ -57,16 +56,9 @@ function generateHoverDriveList() {
     for (let i = 1; i <= 5; i++) {
       // Special case: Jakobs_01 and Jakobs_03 should be "jakobs" -_-
       if (mfr === 'Jakobs' && (i === 1 || i === 3)) {
-        list.push(
-          `unlockable_hoverdrives.${mfr.toLowerCase()}_${String(i).padStart(
-            2,
-            '0'
-          )}`
-        );
+        list.push(`unlockable_hoverdrives.${mfr.toLowerCase()}_${String(i).padStart(2, '0')}`);
       } else {
-        list.push(
-          `unlockable_hoverdrives.${mfr}_${String(i).padStart(2, '0')}`
-        );
+        list.push(`unlockable_hoverdrives.${mfr}_${String(i).padStart(2, '0')}`);
       }
     }
   }
@@ -83,15 +75,13 @@ function unlockAllCosmetics() {
   const data = getYamlDataFromEditor();
   if (!data) return;
 
-  if (!data.domains || !data.domains.local || !data.domains.local.unlockables)
-    return;
+  if (!data.domains || !data.domains.local || !data.domains.local.unlockables) return;
 
   // Merge cosmetic unlocks for each key
   Object.keys(UNLOCKABLES).forEach((key) => {
     if (key === 'shared_progress') return; // skip this one - no cosmetics
 
-    data.domains.local.unlockables[key] =
-      data.domains.local.unlockables[key] || {};
+    data.domains.local.unlockables[key] = data.domains.local.unlockables[key] || {};
 
     let existing = data.domains.local.unlockables[key].entries || [];
     let merged = new Set(existing);
@@ -99,14 +89,14 @@ function unlockAllCosmetics() {
       merged.add(entry);
     }
 
-    data.domains.local.unlockables[key].entries = Array.from(merged).sort(
-      (a, b) => a.toLowerCase().localeCompare(b.toLowerCase())
+    data.domains.local.unlockables[key].entries = Array.from(merged).sort((a, b) =>
+      a.toLowerCase().localeCompare(b.toLowerCase())
     );
   });
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log('All customizations unlocked!');
+  console.info('All customizations unlocked!');
 }
 
 /**
@@ -138,11 +128,11 @@ function unlockNewGameShortcuts() {
     merged.add(entry);
   }
 
-  data.domains.local.unlockables.shared_progress.entries = Array.from(
-    merged
-  ).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+  data.domains.local.unlockables.shared_progress.entries = Array.from(merged).sort((a, b) =>
+    a.toLowerCase().localeCompare(b.toLowerCase())
+  );
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
-  console.log('All new game shortcuts unlocked!');
+  console.info('All new game shortcuts unlocked!');
 }

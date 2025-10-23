@@ -23,7 +23,7 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Unlock all hover drives
   - Unlock all specializations
   - Unlock UVHM
-  - Set all items to character level
+  - Set all items to character level (or max level for bank items)
   - Unlock new game shortcuts - `profile.sav`
   - Unlock all cosmetics - `profile.sav`
 
@@ -118,8 +118,10 @@ These run JavaScript functions which apply pre-configured edits to save files qu
 - **Apply all presets**
   - Applies all character presets - does not include the below "profile" presets which use a different save file.
   - Grants maximum money & eridium.
-- **Set all items to character level**
+- **Set all backpack items to character level**
   - Updates all item serials in character inventory to match the level of the character.
+- **Set all bank items to max level**  `profile.sav`
+  - Updates all item serials in bank to have max level (50).
 - **Unlock new game shortcuts**  `profile.sav`
   - Enables starting new characters at level 30 with story already complete.
   - Enables the specialization system.

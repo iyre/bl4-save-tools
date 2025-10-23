@@ -29,9 +29,8 @@ function utf16leBytes(str) {
  */
 function deriveKey(userID) {
   const BASE_KEY = [
-    0x35, 0xec, 0x33, 0x77, 0xf3, 0x5d, 0xb0, 0xea, 0xbe, 0x6b, 0x83, 0x11,
-    0x54, 0x03, 0xeb, 0xfb, 0x27, 0x25, 0x64, 0x2e, 0xd5, 0x49, 0x06, 0x29,
-    0x05, 0x78, 0xbd, 0x60, 0xba, 0x4a, 0xa7, 0x87,
+    0x35, 0xec, 0x33, 0x77, 0xf3, 0x5d, 0xb0, 0xea, 0xbe, 0x6b, 0x83, 0x11, 0x54, 0x03, 0xeb, 0xfb,
+    0x27, 0x25, 0x64, 0x2e, 0xd5, 0x49, 0x06, 0x29, 0x05, 0x78, 0xbd, 0x60, 0xba, 0x4a, 0xa7, 0x87,
   ];
   let k = BASE_KEY.slice();
 
@@ -86,12 +85,7 @@ function uint8ArrayToWordArray(u8arr) {
     i = 0,
     len = u8arr.length;
   for (; i < len; i += 4) {
-    words.push(
-      (u8arr[i] << 24) |
-        (u8arr[i + 1] << 16) |
-        (u8arr[i + 2] << 8) |
-        u8arr[i + 3]
-    );
+    words.push((u8arr[i] << 24) | (u8arr[i + 1] << 16) | (u8arr[i + 2] << 8) | u8arr[i + 3]);
   }
   return CryptoJS.lib.WordArray.create(words, len);
 }
@@ -116,14 +110,10 @@ function decryptSav(fileArrayBuffer, normalize = true) {
   const keyWordArray = uint8ArrayToWordArray(new Uint8Array(keyBytes));
 
   const ciphWordArray = uint8ArrayToWordArray(ciph);
-  const decrypted = CryptoJS.AES.decrypt(
-    { ciphertext: ciphWordArray },
-    keyWordArray,
-    {
-      mode: CryptoJS.mode.ECB,
-      padding: CryptoJS.pad.NoPadding,
-    }
-  );
+  const decrypted = CryptoJS.AES.decrypt({ ciphertext: ciphWordArray }, keyWordArray, {
+    mode: CryptoJS.mode.ECB,
+    padding: CryptoJS.pad.NoPadding,
+  });
   let pt = new Uint8Array(decrypted.words.length * 4);
   for (let i = 0; i < decrypted.words.length; i++) {
     pt.set(
@@ -165,7 +155,7 @@ function decryptSav(fileArrayBuffer, normalize = true) {
     return;
   }
 
-  console.log(`Successfully decompressed with trim=${trimUsed}`);
+  console.debug(`Successfully decompressed with trim=${trimUsed}`);
   let yamlBytes = inflated;
 
   if (normalize) {
@@ -243,9 +233,6 @@ function encryptSav() {
       i * 4
     );
   }
-
-  // console.log("ENCRYPT VALIDATION (first 8):", Array.from(keyBytes.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')));
-  // console.log("ENCRYPT VALIDATION (last 8):", Array.from(keyBytes.slice(-8)).map(b => b.toString(16).padStart(2, '0')));
 
   const now = new Date();
   const timestamp = now.toISOString().replace(/[-:T]/g, '').slice(0, 14); // e.g. 20250924153012
