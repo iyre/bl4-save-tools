@@ -24,6 +24,7 @@ unlockable_darksiren:
   - Unlockable_DarkSiren.Head14_Thresher
   - Unlockable_DarkSiren.Head15_CrimeLord
   - Unlockable_DarkSiren.Head16_Premium
+  - Unlockable_DarkSiren.Head18_Pumpkin
   - Unlockable_DarkSiren.Head23_CrashTestDummy
   - Unlockable_DarkSiren.Skin01_Prison
   - Unlockable_DarkSiren.Skin02_Order
@@ -151,6 +152,7 @@ unlockable_exosoldier:
   - Unlockable_ExoSoldier.Head14_Thresher
   - Unlockable_ExoSoldier.Head15_CrimeLord
   - Unlockable_ExoSoldier.Head16_Premium
+  - Unlockable_ExoSoldier.Head18_Pumpkin
   - Unlockable_ExoSoldier.Head23_CrushTestDummy
   - Unlockable_ExoSoldier.Skin01_Prison
   - Unlockable_ExoSoldier.Skin02_Order
@@ -215,6 +217,7 @@ unlockable_gravitar:
   - Unlockable_Gravitar.Head14_Thresher
   - Unlockable_Gravitar.Head15_CrimeLord
   - Unlockable_Gravitar.Head16_Premium
+  - Unlockable_Gravitar.Head18_Pumpkin
   - Unlockable_Gravitar.Head23_CrushTestDummy
   - Unlockable_Gravitar.Skin01_Prison
   - Unlockable_Gravitar.Skin02_Order
@@ -279,6 +282,7 @@ unlockable_paladin:
   - Unlockable_Paladin.Head14_Thresher
   - Unlockable_Paladin.Head15_CrimeLord
   - Unlockable_Paladin.Head16_Premium
+  - Unlockable_Paladin.Head18_Pumpkin
   - Unlockable_Paladin.Head23_CrushTestDummy
   - Unlockable_Paladin.Skin01_Prison
   - Unlockable_Paladin.Skin02_Order
@@ -370,7 +374,7 @@ unlockable_vehicles:
   - Unlockable_Vehicles.Mat35_GearboxDev
   - Unlockable_Vehicles.mat40_animemech
   - Unlockable_Vehicles.mat41_synthesizer
-  - Unlockable_Vehicles.mat42_gratata
+  - Unlockable_Vehicles.Mat42_Gratata
   - Unlockable_Vehicles.mat43_nitroflame
   - Unlockable_Vehicles.mat44_hotrod
   - Unlockable_Vehicles.mat45_ripperuncommon
@@ -424,6 +428,7 @@ unlockable_weapons:
   - Unlockable_Weapons.Mat37_SHiFT
   - Unlockable_Weapons.Mat38_HeadHunter
   - Unlockable_Weapons.Mat39_Premium
+  - Unlockable_Weapons.Mat40_Halloween
   - Unlockable_Weapons.shiny_anarchy
   - Unlockable_Weapons.shiny_asher
   - Unlockable_Weapons.shiny_atlien
