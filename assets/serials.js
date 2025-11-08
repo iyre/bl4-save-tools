@@ -176,7 +176,7 @@ function updateSerialLevel(serial, newLevel) {
     .join('');
   let oldLevel, start, end;
   let newBinaryStr = null;
-  let maxDifferenceBytes = 1;
+  let maxDifferenceBytes = 3; // Default max byte difference
   try {
     ({ value: oldLevel, start, end } = parseVarintChunks(binaryStr));
     let newVarintBits = encodeVarintChunks(newLevel);
