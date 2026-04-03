@@ -52,15 +52,26 @@ yaml.SafeLoader.add_multi_constructor('!', unknown_tag)
 
 
 def extract_missionsets(data):
+    if not isinstance(data, dict):
+        raise TypeError('Invalid data type. Expected a dictionary.')
     local_sets = data.get('missions', {}).get('local_sets', {})
+    if not isinstance(local_sets, dict):
+        raise TypeError('Invalid missionset data type. Expected a dictionary.')
     sorted_sets = {}
     for missionset_key in sorted(local_sets.keys()):
+        if not isinstance(missionset_key, str):
+            raise TypeError('Invalid missionset key type. Expected a string.')
         missionset = local_sets[missionset_key]
+        if not isinstance(missionset, dict):
+            raise TypeError('Invalid missionset data type. Expected a dictionary.')
         missionset_copy = dict(missionset)
-        if 'missions' in missionset and isinstance(missionset['missions'], dict):
+        if 'missions' in missionset and isinstance(missionset['missions'], dict) and missionset['missions']:
             sorted_missions = {k: missionset['missions'][k] for k in sorted(missionset['missions'].keys())}
             missionset_copy['missions'] = sorted_missions
+        elif 'missions' not in missionset:
+            missionset_copy['missions'] = {}
         sorted_sets[missionset_key] = missionset_copy
+    return sorted_sets
     return sorted_sets
 
 
