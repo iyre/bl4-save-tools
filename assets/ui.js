@@ -9,11 +9,11 @@
  * - Character class selection UI
  */
 
-let UPDATE_BANNER_ID = 'update-warning-v1';
+let UPDATE_BANNER_ID = 'update-warning-v2';
 if (localStorage.getItem('dismissed-banner') === UPDATE_BANNER_ID) {
   document.getElementById('update-banner').style.display = 'none';
 } else {
-  //document.getElementById('update-banner').style.display = 'flex'; // no outstanding issues, so hide banner by default
+  document.getElementById('update-banner').style.display = 'flex'; // comment this line when there are no outstanding issues
 }
 function toggleUpdateBanner() {
   const banner = document.getElementById('update-banner');
