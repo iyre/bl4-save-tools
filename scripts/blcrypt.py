@@ -4,8 +4,8 @@
 
 import argparse, sys, zlib, yaml, struct
 from pathlib import Path
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad, unpad
+from Cryptodome.Cipher import AES
+from Cryptodome.Util.Padding import pad, unpad
 
 def unknown_constructor(loader, _tag_suffix, node):
     if isinstance(node, yaml.ScalarNode):
