@@ -8,6 +8,7 @@
 const CHARACTER_LEVEL_XP = {
   50: 3430227,
   60: 5714893,
+  70: 8799286,
 };
 
 function runCharCalc() {

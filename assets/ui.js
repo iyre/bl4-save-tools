@@ -27,7 +27,7 @@ function toggleUpdateBanner() {
 }
 
 // Defines maximum character level globally. Used in other files.
-let MAX_LEVEL = 60;
+let MAX_LEVEL = 70;
 
 /**
  * Defines available preset modifications for save files.
@@ -597,6 +597,10 @@ const CHARACTER_CLASSES = {
   RoboDealer: {
     name: 'C4SH',
     class: 'Rogue (Paid DLC)',
+  },
+  CorpoHacker: {
+    name: 'Loveless',
+    class: 'Hacker (Paid DLC)',
   },
 };
 

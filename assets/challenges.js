@@ -509,6 +509,7 @@ function completeCowbellWorldChallenges() {
         },
         scavsiphons: {
           scavsiphon_1: 1,
+          scavsiphon_2: 1,
         },
       },
     },
@@ -568,10 +569,6 @@ function completeCowbellWorldChallenges() {
       }, // who knows whats listening
     },
     cowbell_misc: {
-      speakeasysafes: {
-        speakeasysafe_1: 1,
-        speakeasysafe_2: 1,
-      },
       clots: {
         clot_1: 1,
         clot_2: 1,
@@ -602,6 +599,7 @@ function completeCowbellWorldChallenges() {
       shuggurathtanks: {
         shuggurathtank_1: 1,
         shuggurathtank_2: 1,
+        shuggurathtank_3: 1,
       },
       kickdowns: {
         wsw_bridge_parent:{
