@@ -131,18 +131,18 @@ function unlockNewGameShortcuts() {
 
 /**
  * Completes all shared collectibles in a profile save.
- * This includes ECHO logs as well as activities.
+ * This includes ECHO logs and excludes activities.
  */
 function completeSharedCollectibles() {
   const data = getYamlDataFromEditor();
   if (!data) return;
   if (!hasProfileUnlockables(data)) return;
 
-  for (const key of ['echo_log_challenges', 'sharedprogress_cello']) {
-    mergeUnlockableEntries(data, key);
-  }
+  mergeUnlockableEntries(data, 'echo_log_challenges');
   mergeUnlockableEntries(data, 'echo_upgrade_challenges', 'echo_upgrade_challenges.collect');
+  mergeUnlockableEntries(data, 'sharedprogress_cello');
   mergeUnlockableEntries(data, 'sharedprogress_cowbell', 'SharedProgress_Cowbell.collectible');
+  mergeUnlockableEntries(data, 'sharedprogress_harmonica', 'SharedProgress_Harmonica.collectible');
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
@@ -184,6 +184,7 @@ function completeAllActivities() {
 
   mergeUnlockableEntries(data, 'echo_upgrade_challenges', 'echo_upgrade_challenges.activity');
   mergeUnlockableEntries(data, 'sharedprogress_cowbell', 'SharedProgress_Cowbell.zoneactivity');
+  mergeUnlockableEntries(data, 'sharedprogress_harmonica', 'SharedProgress_Harmonica.zoneactivity');
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);

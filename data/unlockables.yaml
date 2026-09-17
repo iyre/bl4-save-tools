@@ -12,6 +12,24 @@ echo_log_challenges:
   - echo_log_challenges.collect_echolog_arj_sha_01
   - echo_log_challenges.collect_echolog_arj_sha_02
   - echo_log_challenges.collect_echolog_arj_sha_03
+  - echo_log_challenges.Collect_EchoLog_ERD_01
+  - echo_log_challenges.Collect_EchoLog_ERD_02
+  - echo_log_challenges.Collect_EchoLog_ERD_03
+  - echo_log_challenges.Collect_EchoLog_ERD_04
+  - echo_log_challenges.Collect_EchoLog_ERD_05
+  - echo_log_challenges.Collect_EchoLog_ERD_06
+  - echo_log_challenges.Collect_EchoLog_ERD_07
+  - echo_log_challenges.Collect_EchoLog_ERD_08
+  - echo_log_challenges.Collect_EchoLog_ERD_09
+  - echo_log_challenges.collect_echolog_erd_10
+  - echo_log_challenges.collect_echolog_erd_11
+  - echo_log_challenges.collect_echolog_erd_12
+  - echo_log_challenges.collect_echolog_erd_13
+  - echo_log_challenges.collect_echolog_erd_14
+  - echo_log_challenges.collect_echolog_erd_15
+  - echo_log_challenges.collect_echolog_erd_16
+  - echo_log_challenges.collect_echolog_erd_17
+  - echo_log_challenges.collect_echolog_erd_18
   - echo_log_challenges.collect_echolog_gen_city_01
   - echo_log_challenges.collect_echolog_gen_city_02
   - echo_log_challenges.collect_echolog_gen_city_03
@@ -94,6 +112,7 @@ echo_log_challenges:
   - echo_log_challenges.collect_echolog_gen_mtn_26
   - echo_log_challenges.collect_echolog_gen_mtn_27
   - echo_log_challenges.collect_echolog_gen_mtn_28
+  - echo_log_challenges.collect_echolog_gen_parent
   - echo_log_challenges.collect_echolog_gen_sha_01
   - echo_log_challenges.collect_echolog_gen_sha_02
   - echo_log_challenges.collect_echolog_gen_sha_03
@@ -225,6 +244,7 @@ echo_upgrade_challenges:
   - echo_upgrade_challenges.activity_crawlers_mountains_2
   - echo_upgrade_challenges.activity_crawlers_mountains_3
   - echo_upgrade_challenges.activity_crawlers_mountains_4
+  - echo_upgrade_challenges.Activity_Crawlers_Parent
   - echo_upgrade_challenges.activity_crawlers_shatteredlands_1
   - echo_upgrade_challenges.activity_crawlers_shatteredlands_2
   - echo_upgrade_challenges.activity_crawlers_shatteredlands_3
@@ -483,6 +503,222 @@ sharedprogress_cowbell:
   - SharedProgress_Cowbell.zoneactivity_bunker
   - SharedProgress_Cowbell.zoneactivity_fuelsiphon1
   - SharedProgress_Cowbell.zoneactivity_fuelsiphon2
+sharedprogress_harmonica:
+  entries:
+  - SharedProgress_Harmonica.Collectible_EchoLog1
+  - SharedProgress_Harmonica.Collectible_EchoLog10
+  - SharedProgress_Harmonica.Collectible_EchoLog11
+  - SharedProgress_Harmonica.Collectible_EchoLog12
+  - SharedProgress_Harmonica.Collectible_EchoLog13
+  - SharedProgress_Harmonica.Collectible_EchoLog14
+  - SharedProgress_Harmonica.Collectible_EchoLog15
+  - SharedProgress_Harmonica.Collectible_EchoLog16
+  - SharedProgress_Harmonica.Collectible_EchoLog17
+  - SharedProgress_Harmonica.Collectible_EchoLog18
+  - SharedProgress_Harmonica.Collectible_EchoLog19
+  - SharedProgress_Harmonica.Collectible_EchoLog2
+  - SharedProgress_Harmonica.Collectible_EchoLog20
+  - SharedProgress_Harmonica.Collectible_EchoLog21
+  - SharedProgress_Harmonica.Collectible_EchoLog22
+  - SharedProgress_Harmonica.Collectible_EchoLog23
+  - SharedProgress_Harmonica.Collectible_EchoLog24
+  - SharedProgress_Harmonica.Collectible_EchoLog25
+  - SharedProgress_Harmonica.Collectible_EchoLog26
+  - SharedProgress_Harmonica.Collectible_EchoLog27
+  - SharedProgress_Harmonica.Collectible_EchoLog28
+  - SharedProgress_Harmonica.Collectible_EchoLog29
+  - SharedProgress_Harmonica.Collectible_EchoLog3
+  - SharedProgress_Harmonica.Collectible_EchoLog30
+  - SharedProgress_Harmonica.Collectible_EchoLog31
+  - SharedProgress_Harmonica.Collectible_EchoLog32
+  - SharedProgress_Harmonica.Collectible_EchoLog33
+  - SharedProgress_Harmonica.Collectible_EchoLog34
+  - SharedProgress_Harmonica.Collectible_EchoLog35
+  - SharedProgress_Harmonica.Collectible_EchoLog36
+  - SharedProgress_Harmonica.Collectible_EchoLog37
+  - SharedProgress_Harmonica.Collectible_EchoLog38
+  - SharedProgress_Harmonica.Collectible_EchoLog39
+  - SharedProgress_Harmonica.Collectible_EchoLog4
+  - SharedProgress_Harmonica.Collectible_EchoLog40
+  - SharedProgress_Harmonica.Collectible_EchoLog41
+  - SharedProgress_Harmonica.Collectible_EchoLog42
+  - SharedProgress_Harmonica.Collectible_EchoLog5
+  - SharedProgress_Harmonica.Collectible_EchoLog6
+  - SharedProgress_Harmonica.Collectible_EchoLog7
+  - SharedProgress_Harmonica.Collectible_EchoLog8
+  - SharedProgress_Harmonica.Collectible_EchoLog9
+  - SharedProgress_Harmonica.Collectible_IslandSafe1
+  - SharedProgress_Harmonica.Collectible_IslandSafe2
+  - SharedProgress_Harmonica.Collectible_IslandSafe3
+  - SharedProgress_Harmonica.Collectible_IslandSafe4
+  - SharedProgress_Harmonica.Collectible_IslandSafe5
+  - SharedProgress_Harmonica.collectible_tediore1
+  - SharedProgress_Harmonica.collectible_tediore10
+  - SharedProgress_Harmonica.collectible_tediore2
+  - SharedProgress_Harmonica.collectible_tediore3
+  - SharedProgress_Harmonica.collectible_tediore4
+  - SharedProgress_Harmonica.collectible_tediore5
+  - SharedProgress_Harmonica.collectible_tediore6
+  - SharedProgress_Harmonica.collectible_tediore7
+  - SharedProgress_Harmonica.collectible_tediore8
+  - SharedProgress_Harmonica.collectible_tediore9
+  - SharedProgress_Harmonica.Collectible_TreasureHunt_DoorOpened
+  - SharedProgress_Harmonica.Collectible_TreasureHunt_Switch1
+  - SharedProgress_Harmonica.Collectible_TreasureHunt_Switch2
+  - SharedProgress_Harmonica.Collectible_TreasureHunt_Switch3
+  - SharedProgress_Harmonica.Collectible_TreasureHunt_Switch4
+  - SharedProgress_Harmonica.Collectible_TreasureHunt_Switch5
+  - SharedProgress_Harmonica.ZoneActivity_TedioreGrotto1
+  - SharedProgress_Harmonica.ZoneActivity_TedioreGrotto2
+  - SharedProgress_Harmonica.ZoneActivity_TedioreLockdown1
+  - SharedProgress_Harmonica.ZoneActivity_TedioreLockdown2
+  - SharedProgress_Harmonica.ZoneActivity_TikiBar1
+  - SharedProgress_Harmonica.ZoneActivity_TikiBar2
+  - SharedProgress_Harmonica.ZoneActivity_TikiBar3
+sharedprogress_tuba:
+  entries:
+  - SharedProgress_Tuba.Collectible_EchoLog1
+  - SharedProgress_Tuba.Collectible_EchoLog2
+  - SharedProgress_Tuba.Collectible_EchoLog3
+  - SharedProgress_Tuba.Collectible_EchoLog4
+  - SharedProgress_Tuba.Collectible_EchoLog5
+  - SharedProgress_Tuba.Collectible_EchoLog6
+  - SharedProgress_Tuba.Collectible_EchoLog7
+sharedprogress_viola:
+  entries:
+  - SharedProgress_Viola.Collectible_EchoLog1
+  - SharedProgress_Viola.Collectible_EchoLog2
+  - SharedProgress_Viola.Collectible_EchoLog3
+  - SharedProgress_Viola.Collectible_EchoLog4
+unlockable_corpohacker:
+  entries:
+  - Unlockable_CorpoHacker.Body01_Prison
+  - Unlockable_CorpoHacker.Body02_Premium
+  - Unlockable_CorpoHacker.Head01_Prison
+  - Unlockable_CorpoHacker.Head02_Fresh
+  - Unlockable_CorpoHacker.Head03_TechPunk
+  - Unlockable_CorpoHacker.Head04_Admin
+  - Unlockable_CorpoHacker.Head05_Buccaneer
+  - Unlockable_CorpoHacker.Head06_Contractor
+  - Unlockable_CorpoHacker.Head07_CableManagement
+  - Unlockable_CorpoHacker.Head08_Survivalist
+  - Unlockable_CorpoHacker.Head09_Electi
+  - Unlockable_CorpoHacker.Head10_Transhuman
+  - Unlockable_CorpoHacker.Head11_Ripper
+  - Unlockable_CorpoHacker.Head12_Order
+  - Unlockable_CorpoHacker.Head13_Robot
+  - Unlockable_CorpoHacker.Head14_Thresher
+  - Unlockable_CorpoHacker.Head15_CrimeLord
+  - Unlockable_CorpoHacker.Head16_Premium
+  - Unlockable_CorpoHacker.Head17_Eyeball
+  - Unlockable_CorpoHacker.Head18_Pumpkin
+  - Unlockable_CorpoHacker.Head19_3DZombie
+  - Unlockable_CorpoHacker.Head20_TheHorns
+  - Unlockable_CorpoHacker.Head21_Reindeeer
+  - Unlockable_CorpoHacker.Head23_CrashTestDummy
+  - Unlockable_CorpoHacker.Head24_GetTheHorns
+  - Unlockable_CorpoHacker.Head25_SmilePony
+  - Unlockable_CorpoHacker.Head26_Giftbox
+  - Unlockable_CorpoHacker.Head27_Nutcracker
+  - Unlockable_CorpoHacker.Head28_Krampus
+  - Unlockable_CorpoHacker.Head29_Kalamari
+  - Unlockable_CorpoHacker.Head30_Lizard
+  - Unlockable_CorpoHacker.Head31_TinHead
+  - Unlockable_CorpoHacker.Head32_PowerHelmet
+  - Unlockable_CorpoHacker.Head33_IceHelmet
+  - Unlockable_CorpoHacker.Head34_ArcadeChamp
+  - Unlockable_CorpoHacker.Head35_ScifiWarrior
+  - Unlockable_CorpoHacker.Head36_ProjectorHead
+  - Unlockable_CorpoHacker.Head37_SamuraiWifi
+  - Unlockable_CorpoHacker.Head38_DronePilot
+  - Unlockable_CorpoHacker.Head39_HiddenModem
+  - Unlockable_CorpoHacker.Head41_StarAlien
+  - Unlockable_CorpoHacker.Head42_SpaceDog
+  - Unlockable_CorpoHacker.Head43_Warrior
+  - Unlockable_CorpoHacker.Head44_FishBowl
+  - Unlockable_CorpoHacker.Skin01_Prison
+  - Unlockable_CorpoHacker.Skin02_Order
+  - Unlockable_CorpoHacker.Skin03_Ghost
+  - Unlockable_CorpoHacker.Skin04_Tech
+  - Unlockable_CorpoHacker.Skin05_Ripper
+  - Unlockable_CorpoHacker.Skin06_Amara
+  - Unlockable_CorpoHacker.Skin07_RedHanded
+  - Unlockable_CorpoHacker.Skin08_Corrupted
+  - Unlockable_CorpoHacker.Skin09_Sewer
+  - Unlockable_CorpoHacker.Skin10_Hawaiian
+  - Unlockable_CorpoHacker.Skin11_Astral
+  - Unlockable_CorpoHacker.Skin12_Tediore
+  - Unlockable_CorpoHacker.Skin13_3CatMoon
+  - Unlockable_CorpoHacker.Skin14_Fire
+  - Unlockable_CorpoHacker.Skin15_Survivalist
+  - Unlockable_CorpoHacker.Skin16_Crimson
+  - Unlockable_CorpoHacker.Skin17_Auger
+  - Unlockable_CorpoHacker.Skin18_Electi
+  - Unlockable_CorpoHacker.Skin19_Dirty
+  - Unlockable_CorpoHacker.Skin20_HighRoller
+  - Unlockable_CorpoHacker.Skin21_Graffiti
+  - Unlockable_CorpoHacker.Skin22_Knitted
+  - Unlockable_CorpoHacker.Skin23_GearboxDev
+  - Unlockable_CorpoHacker.Skin24_PreOrder
+  - Unlockable_CorpoHacker.Skin25_Slimed
+  - Unlockable_CorpoHacker.Skin26_Camo
+  - Unlockable_CorpoHacker.Skin27_Space
+  - Unlockable_CorpoHacker.Skin28_Ritual
+  - Unlockable_CorpoHacker.Skin29_Guardian
+  - Unlockable_CorpoHacker.Skin30_Cute
+  - Unlockable_CorpoHacker.Skin31_Koto
+  - Unlockable_CorpoHacker.Skin32_DuctTaped
+  - Unlockable_CorpoHacker.Skin33_Jakobs
+  - Unlockable_CorpoHacker.Skin34_Daedalus
+  - Unlockable_CorpoHacker.Skin35_Vladof
+  - Unlockable_CorpoHacker.Skin36_Torgue
+  - Unlockable_CorpoHacker.Skin37_Maliwan
+  - Unlockable_CorpoHacker.Skin38_CyberPop
+  - Unlockable_CorpoHacker.Skin39_Critters
+  - Unlockable_CorpoHacker.Skin40_Veil
+  - Unlockable_CorpoHacker.Skin41_Monster
+  - Unlockable_CorpoHacker.Skin44_Premium
+  - Unlockable_CorpoHacker.Skin45_BreakFree
+  - Unlockable_CorpoHacker.Skin46_RipWrappings
+  - Unlockable_CorpoHacker.Skin47_HangingLights
+  - Unlockable_CorpoHacker.Skin48_KrampusClaus
+  - Unlockable_CorpoHacker.Skin49_MidCentury
+  - Unlockable_CorpoHacker.Skin51_LoreUnique
+  - Unlockable_CorpoHacker.Skin52_Altas
+  - Unlockable_CorpoHacker.Skin53_Hyperion
+  - Unlockable_CorpoHacker.Skin54_NightSky
+  - Unlockable_CorpoHacker.Skin55_Blizzard
+  - Unlockable_CorpoHacker.Skin56_COV
+  - Unlockable_CorpoHacker.Skin57_MechaRecruit
+  - Unlockable_CorpoHacker.Skin58_CyberChunk
+  - Unlockable_CorpoHacker.Skin59_BeastToad
+  - Unlockable_CorpoHacker.Skin60_OrganicPanic
+  - Unlockable_CorpoHacker.Skin61_FullMetal
+  - Unlockable_CorpoHacker.Skin62_BrokenHeart
+  - Unlockable_CorpoHacker.Skin63_SaintPatrick
+  - Unlockable_CorpoHacker.Skin64_Nightmare
+  - Unlockable_CorpoHacker.Skin65_Frozen
+  - Unlockable_CorpoHacker.Skin66_DahlWinter
+  - Unlockable_CorpoHacker.Skin67_Scav
+  - Unlockable_CorpoHacker.Skin68_Pixel8D
+  - Unlockable_CorpoHacker.Skin69_MallRat
+  - Unlockable_CorpoHacker.Skin70_ScreenTime
+  - Unlockable_CorpoHacker.Skin71_BrokenBinary
+  - Unlockable_CorpoHacker.Skin72_Malwear
+  - Unlockable_CorpoHacker.Skin73_Phishnet
+  - Unlockable_CorpoHacker.Skin74_Salty
+  - Unlockable_CorpoHacker.Skin75_RadiAttractive
+  - Unlockable_CorpoHacker.Skin76_NuclearCool
+  - Unlockable_CorpoHacker.Skin77_TartanSplash
+  - Unlockable_CorpoHacker.Skin78_Alien
+  - Unlockable_CorpoHacker.Skin79_Robot
+  - Unlockable_CorpoHacker.Skin80_Star
+  - Unlockable_CorpoHacker.Skin81_Warp
+  - Unlockable_CorpoHacker.Skin82_Eruption
+  - Unlockable_CorpoHacker.Skin83_Unchained
+  - Unlockable_CorpoHacker.Skin84_Unleashed
+  - Unlockable_CorpoHacker.Skin85_Unbroken
+  - Unlockable_CorpoHacker.Skin86_Providential
 unlockable_darksiren:
   entries:
   - Unlockable_DarkSiren.Body01_Prison
@@ -505,6 +741,8 @@ unlockable_darksiren:
   - Unlockable_DarkSiren.Head16_Premium
   - Unlockable_DarkSiren.Head17_Eyeball
   - Unlockable_DarkSiren.Head18_Pumpkin
+  - Unlockable_DarkSiren.Head19_3DZombie
+  - Unlockable_DarkSiren.Head20_TheHorns
   - Unlockable_DarkSiren.Head21_Reindeeer
   - Unlockable_DarkSiren.Head23_CrashTestDummy
   - Unlockable_DarkSiren.Head26_Giftbox
@@ -515,6 +753,16 @@ unlockable_darksiren:
   - Unlockable_DarkSiren.Head31_Tinhead
   - Unlockable_DarkSiren.Head32_Powerhelmet
   - Unlockable_DarkSiren.Head33_Icehelmet
+  - Unlockable_DarkSiren.Head34_ArcadeChamp
+  - Unlockable_DarkSiren.Head35_ScifiWarrior
+  - Unlockable_DarkSiren.Head36_ProjectorHead
+  - Unlockable_DarkSiren.Head38_DronePilot
+  - Unlockable_DarkSiren.Head39_HiddenModem
+  - Unlockable_DarkSiren.Head40_Infiltrator
+  - Unlockable_DarkSiren.Head41_StarAlien
+  - Unlockable_DarkSiren.Head42_SpaceDog
+  - Unlockable_DarkSiren.Head43_Warrior
+  - Unlockable_DarkSiren.Head44_FishBowl
   - Unlockable_DarkSiren.Skin01_Prison
   - Unlockable_DarkSiren.Skin02_Order
   - Unlockable_DarkSiren.Skin03_Ghost
@@ -556,6 +804,7 @@ unlockable_darksiren:
   - Unlockable_DarkSiren.Skin39_Critters
   - Unlockable_DarkSiren.Skin40_Veil
   - Unlockable_DarkSiren.Skin41_Butterfinger
+  - Unlockable_DarkSiren.Skin41_Monster
   - Unlockable_DarkSiren.Skin42_Legacy
   - Unlockable_DarkSiren.Skin43_Twitch
   - Unlockable_DarkSiren.Skin44_Premium
@@ -582,6 +831,25 @@ unlockable_darksiren:
   - Unlockable_DarkSiren.skin65_frozen
   - Unlockable_DarkSiren.skin66_dahlwinter
   - Unlockable_DarkSiren.Skin67_Scav
+  - Unlockable_DarkSiren.Skin68_Pixel8D
+  - Unlockable_DarkSiren.Skin69_MallRat
+  - Unlockable_DarkSiren.Skin70_ScreenTime
+  - Unlockable_DarkSiren.Skin71_BrokenBinary
+  - Unlockable_DarkSiren.Skin72_Malwear
+  - Unlockable_DarkSiren.Skin73_Phishnet
+  - Unlockable_DarkSiren.Skin74_Salty
+  - Unlockable_DarkSiren.Skin75_RadiAttractive
+  - Unlockable_DarkSiren.Skin76_NuclearCool
+  - Unlockable_DarkSiren.Skin77_TartanSplash
+  - Unlockable_DarkSiren.Skin78_Alien
+  - Unlockable_DarkSiren.Skin79_Robot
+  - Unlockable_DarkSiren.Skin80_Star
+  - Unlockable_DarkSiren.Skin81_Warp
+  - Unlockable_DarkSiren.Skin82_Eruption
+  - Unlockable_DarkSiren.Skin83_Unchained
+  - Unlockable_DarkSiren.Skin84_Unleashed
+  - Unlockable_DarkSiren.Skin85_Unbroken
+  - Unlockable_DarkSiren.Skin86_Providential
 unlockable_echo4:
   entries:
   - Unlockable_Echo4.Attachment01_PartyHat
@@ -604,10 +872,20 @@ unlockable_echo4:
   - Unlockable_Echo4.Attachment18_MutantFlower
   - Unlockable_Echo4.Attachment19_DogTags
   - Unlockable_Echo4.Attachment20_GoreClot
+  - Unlockable_Echo4.Attachment21_VirtualBot
+  - Unlockable_Echo4.Attachment22_CableManagement
+  - Unlockable_Echo4.Attachment23_Wired
+  - Unlockable_Echo4.Attachment24_WarToy
+  - Unlockable_Echo4.Attachment25_SockPuppet
+  - Unlockable_Echo4.Attachment26_PingPongEyes
+  - Unlockable_Echo4.Attachment27_MetalMask
+  - Unlockable_Echo4.Attachment28_ScubaMask
+  - Unlockable_Echo4.Attachment29_TikiHat
   - Unlockable_Echo4.Body01_GeneVIV
   - Unlockable_Echo4.Body02_Order
   - Unlockable_Echo4.Body03_Ripper
   - Unlockable_Echo4.Body05_AlienEcho
+  - Unlockable_Echo4.Body06_Spaceout
   - Unlockable_Echo4.Skin01_Prison
   - Unlockable_Echo4.Skin02_Order
   - Unlockable_Echo4.Skin03_Ghost
@@ -674,6 +952,26 @@ unlockable_echo4:
   - Unlockable_Echo4.skin64_bloody
   - Unlockable_Echo4.Skin65_Hearts
   - Unlockable_Echo4.Skin66_Dahlwinter
+  - Unlockable_Echo4.Skin67_Monster
+  - Unlockable_Echo4.Skin68_Pixel8D
+  - Unlockable_Echo4.Skin69_MallRat
+  - Unlockable_Echo4.Skin70_ScreenTime
+  - Unlockable_Echo4.Skin71_BrokenBinary
+  - Unlockable_Echo4.Skin72_Malwear
+  - Unlockable_Echo4.Skin73_Phishnet
+  - Unlockable_Echo4.Skin74_Salty
+  - Unlockable_Echo4.Skin75_RadiAttractive
+  - Unlockable_Echo4.Skin76_NuclearCool
+  - Unlockable_Echo4.Skin77_TartanSplash
+  - Unlockable_Echo4.Skin78_Alien
+  - Unlockable_Echo4.Skin79_Robot
+  - Unlockable_Echo4.Skin80_Star
+  - Unlockable_Echo4.Skin81_Warp
+  - Unlockable_Echo4.Skin82_Eruption
+  - Unlockable_Echo4.Skin83_Unchained
+  - Unlockable_Echo4.Skin84_Unleashed
+  - Unlockable_Echo4.Skin85_Unbroken
+  - Unlockable_Echo4.Skin86_Providential
 unlockable_exosoldier:
   entries:
   - Unlockable_ExoSoldier.Body01_Prison
@@ -696,6 +994,8 @@ unlockable_exosoldier:
   - Unlockable_ExoSoldier.Head16_Premium
   - Unlockable_ExoSoldier.Head17_eyeball
   - Unlockable_ExoSoldier.Head18_Pumpkin
+  - Unlockable_ExoSoldier.Head19_3DZombie
+  - Unlockable_ExoSoldier.Head20_TheHorns
   - Unlockable_ExoSoldier.Head21_Reindeeer
   - Unlockable_ExoSoldier.Head23_CrushTestDummy
   - Unlockable_ExoSoldier.Head26_Giftbox
@@ -706,6 +1006,16 @@ unlockable_exosoldier:
   - Unlockable_ExoSoldier.Head31_Tinhead
   - Unlockable_ExoSoldier.Head32_Powerhelmet
   - Unlockable_ExoSoldier.Head33_Icehelmet
+  - Unlockable_ExoSoldier.Head34_ArcadeChamp
+  - Unlockable_ExoSoldier.Head35_ScifiWarrior
+  - Unlockable_ExoSoldier.Head36_ProjectorHead
+  - Unlockable_ExoSoldier.Head38_DronePilot
+  - Unlockable_ExoSoldier.Head39_HiddenModem
+  - Unlockable_ExoSoldier.Head40_Shrike
+  - Unlockable_ExoSoldier.Head41_StarAlien
+  - Unlockable_ExoSoldier.Head42_SpaceDog
+  - Unlockable_ExoSoldier.Head43_Warrior
+  - Unlockable_ExoSoldier.Head44_FishBowl
   - Unlockable_ExoSoldier.Skin01_Prison
   - Unlockable_ExoSoldier.Skin02_Order
   - Unlockable_ExoSoldier.Skin03_Ghost
@@ -747,6 +1057,7 @@ unlockable_exosoldier:
   - Unlockable_ExoSoldier.Skin39_Critters
   - Unlockable_ExoSoldier.Skin40_Veil
   - Unlockable_ExoSoldier.Skin41_Butterfinger
+  - Unlockable_ExoSoldier.Skin41_Monster
   - Unlockable_ExoSoldier.Skin42_Legacy
   - Unlockable_ExoSoldier.Skin43_Twitch
   - Unlockable_ExoSoldier.Skin44_Premium
@@ -773,6 +1084,25 @@ unlockable_exosoldier:
   - Unlockable_ExoSoldier.skin65_frozen
   - Unlockable_ExoSoldier.skin66_dahlwinter
   - Unlockable_ExoSoldier.Skin67_Scav
+  - Unlockable_ExoSoldier.Skin68_Pixel8D
+  - Unlockable_ExoSoldier.Skin69_MallRat
+  - Unlockable_ExoSoldier.Skin70_ScreenTime
+  - Unlockable_ExoSoldier.Skin71_BrokenBinary
+  - Unlockable_ExoSoldier.Skin72_Malwear
+  - Unlockable_ExoSoldier.Skin73_Phishnet
+  - Unlockable_ExoSoldier.Skin74_Salty
+  - Unlockable_ExoSoldier.Skin75_RadiAttractive
+  - Unlockable_ExoSoldier.Skin76_NuclearCool
+  - Unlockable_ExoSoldier.Skin77_TartanSplash
+  - Unlockable_ExoSoldier.Skin78_Alien
+  - Unlockable_ExoSoldier.Skin79_Robot
+  - Unlockable_ExoSoldier.Skin80_Star
+  - Unlockable_ExoSoldier.Skin81_Warp
+  - Unlockable_ExoSoldier.Skin82_Eruption
+  - Unlockable_ExoSoldier.Skin83_Unchained
+  - Unlockable_ExoSoldier.Skin84_Unleashed
+  - Unlockable_ExoSoldier.Skin85_Unbroken
+  - Unlockable_ExoSoldier.Skin86_Providential
 unlockable_gravitar:
   entries:
   - Unlockable_Gravitar.Body01_Prison
@@ -795,6 +1125,8 @@ unlockable_gravitar:
   - Unlockable_Gravitar.Head16_Premium
   - Unlockable_Gravitar.Head17_Eyeball
   - Unlockable_Gravitar.Head18_Pumpkin
+  - Unlockable_Gravitar.Head19_3DZombie
+  - Unlockable_Gravitar.Head20_TheHorns
   - Unlockable_Gravitar.Head21_Reindeeer
   - Unlockable_Gravitar.Head23_CrushTestDummy
   - Unlockable_Gravitar.Head26_Giftbox
@@ -805,6 +1137,16 @@ unlockable_gravitar:
   - Unlockable_Gravitar.Head31_Tinhead
   - Unlockable_Gravitar.Head32_Powerhelmet
   - Unlockable_Gravitar.Head33_Icehelmet
+  - Unlockable_Gravitar.Head34_ArcadeChamp
+  - Unlockable_Gravitar.Head35_ScifiWarrior
+  - Unlockable_Gravitar.Head36_ProjectorHead
+  - Unlockable_Gravitar.Head38_DronePilot
+  - Unlockable_Gravitar.Head39_HiddenModem
+  - Unlockable_Gravitar.Head40_ThreadRipper
+  - Unlockable_Gravitar.Head41_StarAlien
+  - Unlockable_Gravitar.Head42_SpaceDog
+  - Unlockable_Gravitar.Head43_Warrior
+  - Unlockable_Gravitar.Head44_FishBowl
   - Unlockable_Gravitar.Skin01_Prison
   - Unlockable_Gravitar.Skin02_Order
   - Unlockable_Gravitar.Skin03_Ghost
@@ -846,6 +1188,7 @@ unlockable_gravitar:
   - Unlockable_Gravitar.Skin39_Critters
   - Unlockable_Gravitar.Skin40_Veil
   - Unlockable_Gravitar.Skin41_Butterfinger
+  - Unlockable_Gravitar.Skin41_Monster
   - Unlockable_Gravitar.Skin42_Legacy
   - Unlockable_Gravitar.Skin43_Twitch
   - Unlockable_Gravitar.Skin44_Premium
@@ -872,6 +1215,25 @@ unlockable_gravitar:
   - Unlockable_Gravitar.skin65_frozen
   - Unlockable_Gravitar.skin66_dahlwinter
   - Unlockable_Gravitar.Skin67_Scav
+  - Unlockable_Gravitar.Skin68_Pixel8D
+  - Unlockable_Gravitar.Skin69_MallRat
+  - Unlockable_Gravitar.Skin70_ScreenTime
+  - Unlockable_Gravitar.Skin71_BrokenBinary
+  - Unlockable_Gravitar.Skin72_Malwear
+  - Unlockable_Gravitar.Skin73_Phishnet
+  - Unlockable_Gravitar.Skin74_Salty
+  - Unlockable_Gravitar.Skin75_RadiAttractive
+  - Unlockable_Gravitar.Skin76_NuclearCool
+  - Unlockable_Gravitar.Skin77_TartanSplash
+  - Unlockable_Gravitar.Skin78_Alien
+  - Unlockable_Gravitar.Skin79_Robot
+  - Unlockable_Gravitar.Skin80_Star
+  - Unlockable_Gravitar.Skin81_Warp
+  - Unlockable_Gravitar.Skin82_Eruption
+  - Unlockable_Gravitar.Skin83_Unchained
+  - Unlockable_Gravitar.Skin84_Unleashed
+  - Unlockable_Gravitar.Skin85_Unbroken
+  - Unlockable_Gravitar.Skin86_Providential
 unlockable_hoverdrives:
   entries:
   - Unlockable_HoverDrives.borg_01
@@ -936,6 +1298,8 @@ unlockable_paladin:
   - Unlockable_Paladin.Head16_Premium
   - Unlockable_Paladin.Head17_Eyeball
   - Unlockable_Paladin.Head18_Pumpkin
+  - Unlockable_Paladin.Head19_3DZombie
+  - Unlockable_Paladin.Head20_TheHorns
   - Unlockable_Paladin.Head21_Reindeeer
   - Unlockable_Paladin.Head23_CrushTestDummy
   - Unlockable_Paladin.Head26_Giftbox
@@ -946,6 +1310,16 @@ unlockable_paladin:
   - Unlockable_Paladin.Head31_Tinhead
   - Unlockable_Paladin.Head32_Powerhelmet
   - Unlockable_Paladin.Head33_Icehelmet
+  - Unlockable_Paladin.Head34_ArcadeChamp
+  - Unlockable_Paladin.Head35_ScifiWarrior
+  - Unlockable_Paladin.Head36_ProjectorHead
+  - Unlockable_Paladin.Head38_DronePilot
+  - Unlockable_Paladin.Head39_HiddenModem
+  - Unlockable_Paladin.Head40_Tungsten
+  - Unlockable_Paladin.Head41_StarAlien
+  - Unlockable_Paladin.Head42_SpaceDog
+  - Unlockable_Paladin.Head43_Warrior
+  - Unlockable_Paladin.Head44_FishBowl
   - Unlockable_Paladin.Skin01_Prison
   - Unlockable_Paladin.Skin02_Order
   - Unlockable_Paladin.Skin03_Ghost
@@ -987,6 +1361,7 @@ unlockable_paladin:
   - Unlockable_Paladin.Skin39_Critters
   - Unlockable_Paladin.Skin40_Veil
   - Unlockable_Paladin.Skin41_Butterfinger
+  - Unlockable_Paladin.Skin41_Monster
   - Unlockable_Paladin.Skin42_Legacy
   - Unlockable_Paladin.Skin43_Twitch
   - Unlockable_Paladin.Skin44_Premium
@@ -1013,6 +1388,25 @@ unlockable_paladin:
   - Unlockable_Paladin.skin65_frozen
   - Unlockable_Paladin.skin66_dahlwinter
   - Unlockable_Paladin.Skin67_Scav
+  - Unlockable_Paladin.Skin68_Pixel8D
+  - Unlockable_Paladin.Skin69_MallRat
+  - Unlockable_Paladin.Skin70_ScreenTime
+  - Unlockable_Paladin.Skin71_BrokenBinary
+  - Unlockable_Paladin.Skin72_Malwear
+  - Unlockable_Paladin.Skin73_Phishnet
+  - Unlockable_Paladin.Skin74_Salty
+  - Unlockable_Paladin.Skin75_RadiAttractive
+  - Unlockable_Paladin.Skin76_NuclearCool
+  - Unlockable_Paladin.Skin77_TartanSplash
+  - Unlockable_Paladin.Skin78_Alien
+  - Unlockable_Paladin.Skin79_Robot
+  - Unlockable_Paladin.Skin80_Star
+  - Unlockable_Paladin.Skin81_Warp
+  - Unlockable_Paladin.Skin82_Eruption
+  - Unlockable_Paladin.Skin83_Unchained
+  - Unlockable_Paladin.Skin84_Unleashed
+  - Unlockable_Paladin.Skin85_Unbroken
+  - Unlockable_Paladin.Skin86_Providential
 unlockable_robodealer:
   entries:
   - Unlockable_RoboDealer.Body01_Prison
@@ -1035,6 +1429,8 @@ unlockable_robodealer:
   - Unlockable_RoboDealer.Head16_Premium
   - Unlockable_RoboDealer.Head17_Eyeball
   - Unlockable_RoboDealer.Head18_Pumpkin
+  - Unlockable_RoboDealer.Head19_3DZombie
+  - Unlockable_RoboDealer.Head20_TheHorns
   - Unlockable_RoboDealer.Head21_Reindeer
   - Unlockable_RoboDealer.Head23_Crashtestdummy
   - Unlockable_RoboDealer.Head24_Gnarbarian
@@ -1047,6 +1443,15 @@ unlockable_robodealer:
   - Unlockable_RoboDealer.Head31_Tinhead
   - Unlockable_RoboDealer.Head32_Powerhelmet
   - Unlockable_RoboDealer.Head33_Icehelmet
+  - Unlockable_RoboDealer.Head34_ArcadeChamp
+  - Unlockable_RoboDealer.Head35_ScifiWarrior
+  - Unlockable_RoboDealer.Head36_ProjectorHead
+  - Unlockable_RoboDealer.Head38_DronePilot
+  - Unlockable_RoboDealer.Head39_HiddenModem
+  - Unlockable_RoboDealer.Head41_StarAlien
+  - Unlockable_RoboDealer.Head42_SpaceDog
+  - Unlockable_RoboDealer.Head43_Warrior
+  - Unlockable_RoboDealer.Head44_FishBowl
   - Unlockable_RoboDealer.Skin01_Prison
   - Unlockable_RoboDealer.Skin02_Order
   - Unlockable_RoboDealer.Skin03_Ghost
@@ -1087,6 +1492,7 @@ unlockable_robodealer:
   - Unlockable_RoboDealer.Skin38_Cyberpop
   - Unlockable_RoboDealer.Skin39_Critters
   - Unlockable_RoboDealer.Skin40_Veil
+  - Unlockable_RoboDealer.Skin41_Monster
   - Unlockable_RoboDealer.Skin44_Premium
   - Unlockable_RoboDealer.Skin45_BreakFree
   - Unlockable_RoboDealer.skin46_ripwrappings
@@ -1110,9 +1516,29 @@ unlockable_robodealer:
   - Unlockable_RoboDealer.skin65_frozen
   - Unlockable_RoboDealer.skin66_dahlwinter
   - Unlockable_RoboDealer.Skin67_Scav
+  - Unlockable_RoboDealer.Skin68_Pixel8D
+  - Unlockable_RoboDealer.Skin69_MallRat
+  - Unlockable_RoboDealer.Skin70_ScreenTime
+  - Unlockable_RoboDealer.Skin71_BrokenBinary
+  - Unlockable_RoboDealer.Skin72_Malwear
+  - Unlockable_RoboDealer.Skin73_Phishnet
+  - Unlockable_RoboDealer.Skin74_Salty
+  - Unlockable_RoboDealer.Skin75_RadiAttractive
+  - Unlockable_RoboDealer.Skin76_NuclearCool
+  - Unlockable_RoboDealer.Skin77_TartanSplash
+  - Unlockable_RoboDealer.Skin78_Alien
+  - Unlockable_RoboDealer.Skin79_Robot
+  - Unlockable_RoboDealer.Skin80_Star
+  - Unlockable_RoboDealer.Skin81_Warp
+  - Unlockable_RoboDealer.Skin82_Eruption
+  - Unlockable_RoboDealer.Skin83_Unchained
+  - Unlockable_RoboDealer.Skin84_Unleashed
+  - Unlockable_RoboDealer.Skin85_Unbroken
+  - Unlockable_RoboDealer.Skin86_Providential
 unlockable_vehicles:
   entries:
   - Unlockable_Vehicles.Borg
+  - Unlockable_Vehicles.CityOrder
   - Unlockable_Vehicles.DarkSiren
   - Unlockable_Vehicles.DarkSiren_Proto
   - Unlockable_Vehicles.ExoSoldier
@@ -1129,6 +1555,16 @@ unlockable_vehicles:
   - Unlockable_Vehicles.Mat07_CuteCat
   - Unlockable_Vehicles.Mat08_EchoBot
   - Unlockable_Vehicles.Mat09_FolkHero
+  - Unlockable_Vehicles.Mat100_ORD_Epic
+  - Unlockable_Vehicles.Mat101_TED_Common
+  - Unlockable_Vehicles.Mat102_TED_Rare
+  - Unlockable_Vehicles.Mat103_TED_Epic
+  - Unlockable_Vehicles.Mat104_TOR_Common
+  - Unlockable_Vehicles.Mat105_TOR_Rare
+  - Unlockable_Vehicles.Mat106_TOR_Epic
+  - Unlockable_Vehicles.Mat107_VLA_Common
+  - Unlockable_Vehicles.Mat108_VLA_Rare
+  - Unlockable_Vehicles.Mat109_VLA_Epic
   - Unlockable_Vehicles.Mat10_Graffiti
   - Unlockable_Vehicles.Mat11_Cupcake
   - Unlockable_Vehicles.Mat12_AnimalPrint
@@ -1182,10 +1618,45 @@ unlockable_vehicles:
   - Unlockable_Vehicles.mat64_angrymaxwell
   - Unlockable_Vehicles.mat65_dahlsballs
   - Unlockable_Vehicles.Mat66_Exnihilo
+  - Unlockable_Vehicles.Mat67_RAM
+  - Unlockable_Vehicles.Mat68_Parallax
+  - Unlockable_Vehicles.Mat69_Retropolis
+  - Unlockable_Vehicles.Mat70_ArcRacer
+  - Unlockable_Vehicles.Mat71_KairosVice
+  - Unlockable_Vehicles.Mat72_Rusty
+  - Unlockable_Vehicles.Mat73_Flock
+  - Unlockable_Vehicles.Mat74_NuclearGlowing
+  - Unlockable_Vehicles.Mat75_Crackling
+  - Unlockable_Vehicles.Mat76_Blasphemists
+  - Unlockable_Vehicles.Mat77_Blackhole
+  - Unlockable_Vehicles.Mat78_Comet
+  - Unlockable_Vehicles.Mat79_Odyssey
+  - Unlockable_Vehicles.Mat80_Alien
+  - Unlockable_Vehicles.Mat81_NASA
+  - Unlockable_Vehicles.Mat82_SlowSmooth
+  - Unlockable_Vehicles.Mat83_Aerodyne
+  - Unlockable_Vehicles.Mat84_UniversalCharger
+  - Unlockable_Vehicles.Mat85_Skilometer
+  - Unlockable_Vehicles.Mat86_BOR_Common
+  - Unlockable_Vehicles.Mat87_BOR_Rare
+  - Unlockable_Vehicles.Mat88_BOR_Epic
+  - Unlockable_Vehicles.Mat89_JAK_Common
+  - Unlockable_Vehicles.Mat90_JAK_Rare
+  - Unlockable_Vehicles.Mat91_JAK_Epic
+  - Unlockable_Vehicles.Mat92_DAD_Common
+  - Unlockable_Vehicles.Mat93_DAD_Rare
+  - Unlockable_Vehicles.Mat94_DAD_Epic
+  - Unlockable_Vehicles.Mat95_MAL_Common
+  - Unlockable_Vehicles.Mat96_MAL_Rare
+  - Unlockable_Vehicles.Mat97_MAL_Epic
+  - Unlockable_Vehicles.Mat98_ORD_Common
+  - Unlockable_Vehicles.Mat99_ORD_Rare
   - Unlockable_Vehicles.Mountain
   - Unlockable_Vehicles.Paladin
   - Unlockable_Vehicles.Paladin_Proto
   - Unlockable_Vehicles.ShatterlandV1
+  - Unlockable_Vehicles.ShatterlandV2
+  - Unlockable_Vehicles.Stingray
 unlockable_weapons:
   entries:
   - Unlockable_Weapons.Mat01_Synthwave
@@ -1242,49 +1713,114 @@ unlockable_weapons:
   - Unlockable_Weapons.Mat52_Ghostly
   - Unlockable_Weapons.mat53_occult
   - Unlockable_Weapons.Mat54_Shipwreck
+  - Unlockable_Weapons.Mat55_TrappedExperiment
+  - Unlockable_Weapons.Mat56_DeepOcean
+  - Unlockable_Weapons.Mat57_UnstableReactor
+  - Unlockable_Weapons.Mat58_KairosVice
+  - Unlockable_Weapons.Mat59_RollerRink
+  - Unlockable_Weapons.Mat60_NightCall
+  - Unlockable_Weapons.Mat61_ArcVector
+  - Unlockable_Weapons.Mat62_TracerBullet
+  - Unlockable_Weapons.Mat63_GoldenHoneycomb
+  - Unlockable_Weapons.Mat64_FancySometimes
+  - Unlockable_Weapons.Mat65_AcridLandscape
+  - Unlockable_Weapons.Mat66_TechRain
+  - Unlockable_Weapons.Mat67_OilCamo
+  - Unlockable_Weapons.Mat68_Bubbles
+  - Unlockable_Weapons.Mat69_EmpireCamo
+  - Unlockable_Weapons.Mat70_ShinyMap
+  - Unlockable_Weapons.Mat71_Corroded
+  - Unlockable_Weapons.Mat72_Destroyer
+  - Unlockable_Weapons.Mat73_Odyssey
+  - Unlockable_Weapons.Mat74_Blackhole
+  - Unlockable_Weapons.Mat75_NASA
+  - Unlockable_Weapons.Mat76_Managerial
+  - Unlockable_Weapons.Mat77_Jungler
+  - Unlockable_Weapons.Mat78_MiaCulpa
+  - Unlockable_Weapons.Mat79_ChewedUp
+  - Unlockable_Weapons.Mat80_Electified
+  - Unlockable_Weapons.Mat81_Harmonious
+  - Unlockable_Weapons.Mat82_Grasslands
+  - Unlockable_Weapons.Mat83_Gravitar
+  - Unlockable_Weapons.Mat84_ExoSoldier
+  - Unlockable_Weapons.Mat85_Paladin
+  - Unlockable_Weapons.Mat86_Ripper
+  - Unlockable_Weapons.Mat87_DarkSiren
+  - Unlockable_Weapons.Mat88_ShatterlandV1
+  - Unlockable_Weapons.Mat89_Mountain
+  - Unlockable_Weapons.Mat90_CityOrder
+  - Unlockable_Weapons.Mat91_ShatterlandV2
+  - Unlockable_Weapons.Mat92_Stingray
+  - Unlockable_Weapons.shiny_accretion
+  - Unlockable_Weapons.Shiny_AeroDramatic
   - Unlockable_Weapons.shiny_anarchy
   - Unlockable_Weapons.Shiny_arctic
   - Unlockable_Weapons.shiny_asher
+  - Unlockable_Weapons.shiny_assembler
   - Unlockable_Weapons.shiny_atlien
+  - Unlockable_Weapons.Shiny_aura
+  - Unlockable_Weapons.shiny_avarice
   - Unlockable_Weapons.shiny_ballista
   - Unlockable_Weapons.shiny_beegun
+  - Unlockable_Weapons.Shiny_blackout
   - Unlockable_Weapons.shiny_bloodstarved
   - Unlockable_Weapons.shiny_bod
   - Unlockable_Weapons.shiny_bonnieclyde
   - Unlockable_Weapons.shiny_boomslang
   - Unlockable_Weapons.shiny_breadth
+  - Unlockable_Weapons.Shiny_brickhouse
   - Unlockable_Weapons.Shiny_bubbles
   - Unlockable_Weapons.shiny_bugbear
   - Unlockable_Weapons.shiny_bully
+  - Unlockable_Weapons.Shiny_Burrow
+  - Unlockable_Weapons.Shiny_cannonbrawl
   - Unlockable_Weapons.shiny_chuck
+  - Unlockable_Weapons.Shiny_Clarity
   - Unlockable_Weapons.shiny_coldshoulder
   - Unlockable_Weapons.shiny_commbd
   - Unlockable_Weapons.shiny_complex_root
   - Unlockable_Weapons.shiny_conglomerate
   - Unlockable_Weapons.shiny_convergence
+  - Unlockable_Weapons.Shiny_Cormano
   - Unlockable_Weapons.Shiny_CrazedEarl
   - Unlockable_Weapons.shiny_crowdsourced
   - Unlockable_Weapons.Shiny_Demo
+  - Unlockable_Weapons.shiny_devourer
+  - Unlockable_Weapons.Shiny_DiscyBusiness
   - Unlockable_Weapons.shiny_dividedfocus
   - Unlockable_Weapons.Shiny_Doeshot
   - Unlockable_Weapons.shiny_dualdamage
+  - Unlockable_Weapons.Shiny_EarlyExcess
+  - Unlockable_Weapons.Shiny_enumeration
+  - Unlockable_Weapons.shiny_exhibition
+  - Unlockable_Weapons.Shiny_Extinction
   - Unlockable_Weapons.Shiny_falke
   - Unlockable_Weapons.Shiny_fearstalker
   - Unlockable_Weapons.shiny_finnty
   - Unlockable_Weapons.shiny_fisheye
+  - Unlockable_Weapons.Shiny_fishward
   - Unlockable_Weapons.Shiny_flashcyclone
+  - Unlockable_Weapons.Shiny_FlashFuel
   - Unlockable_Weapons.Shiny_Fleabag
   - Unlockable_Weapons.Shiny_follower
+  - Unlockable_Weapons.shiny_fourier
   - Unlockable_Weapons.shiny_gmr
   - Unlockable_Weapons.shiny_goalkeeper
   - Unlockable_Weapons.shiny_goldengod
   - Unlockable_Weapons.shiny_goremaster
+  - Unlockable_Weapons.shiny_handfrag
+  - Unlockable_Weapons.Shiny_HardDark
   - Unlockable_Weapons.shiny_heartgun
   - Unlockable_Weapons.shiny_heavyturret
   - Unlockable_Weapons.shiny_hellfire
   - Unlockable_Weapons.shiny_hellwalker
   - Unlockable_Weapons.Shiny_hemorrhage
+  - Unlockable_Weapons.shiny_hippogun
+  - Unlockable_Weapons.shiny_hotmod
+  - Unlockable_Weapons.shiny_infection
   - Unlockable_Weapons.Shiny_Inscriber
+  - Unlockable_Weapons.Shiny_Ishmael
+  - Unlockable_Weapons.Shiny_Jailbroken
   - Unlockable_Weapons.shiny_kaleidosplode
   - Unlockable_Weapons.shiny_kaoson
   - Unlockable_Weapons.shiny_katagawa
@@ -1293,11 +1829,15 @@ unlockable_weapons:
   - Unlockable_Weapons.Shiny_lasercutter
   - Unlockable_Weapons.Shiny_laserdisc
   - Unlockable_Weapons.shiny_leadballoon
+  - Unlockable_Weapons.Shiny_LightGun
   - Unlockable_Weapons.shiny_linebacker
   - Unlockable_Weapons.shiny_loarmaster
+  - Unlockable_Weapons.Shiny_lockjaw
+  - Unlockable_Weapons.Shiny_Locust
   - Unlockable_Weapons.shiny_lucian
   - Unlockable_Weapons.shiny_lumberjack
   - Unlockable_Weapons.shiny_luty
+  - Unlockable_Weapons.Shiny_manifest
   - Unlockable_Weapons.shiny_mantra
   - Unlockable_Weapons.Shiny_mercredi
   - Unlockable_Weapons.Shiny_mercury
@@ -1307,16 +1847,24 @@ unlockable_weapons:
   - Unlockable_Weapons.shiny_ohmigot
   - Unlockable_Weapons.shiny_om
   - Unlockable_Weapons.shiny_onslaught
+  - Unlockable_Weapons.Shiny_outback
+  - Unlockable_Weapons.Shiny_PChonk
+  - Unlockable_Weapons.shiny_petanque
   - Unlockable_Weapons.shiny_phantom_flame
   - Unlockable_Weapons.shiny_plasmacoil
+  - Unlockable_Weapons.Shiny_PlumbBob
   - Unlockable_Weapons.shiny_potatothrower
+  - Unlockable_Weapons.Shiny_pragmate
   - Unlockable_Weapons.shiny_prince
   - Unlockable_Weapons.shiny_queensrest
   - Unlockable_Weapons.shiny_quickdraw
   - Unlockable_Weapons.shiny_rainbowvomit
   - Unlockable_Weapons.shiny_rainmaker
   - Unlockable_Weapons.shiny_rangefinder
+  - Unlockable_Weapons.Shiny_relay
   - Unlockable_Weapons.shiny_reminisce
+  - Unlockable_Weapons.Shiny_Rhythm
+  - Unlockable_Weapons.shiny_ripple
   - Unlockable_Weapons.shiny_roach
   - Unlockable_Weapons.shiny_rocketreload
   - Unlockable_Weapons.shiny_roil
@@ -1328,11 +1876,17 @@ unlockable_weapons:
   - Unlockable_Weapons.shiny_seamstress
   - Unlockable_Weapons.shiny_seventh_sense
   - Unlockable_Weapons.shiny_shalashaska
+  - Unlockable_Weapons.Shiny_Shammy
+  - Unlockable_Weapons.shiny_shardenfreude
+  - Unlockable_Weapons.Shiny_shoals
   - Unlockable_Weapons.shiny_sideshow
+  - Unlockable_Weapons.Shiny_silversliver
+  - Unlockable_Weapons.shiny_sledge
   - Unlockable_Weapons.shiny_slugger
   - Unlockable_Weapons.Shiny_songbird
   - Unlockable_Weapons.Shiny_soulsurvivor
   - Unlockable_Weapons.shiny_star_helix
+  - Unlockable_Weapons.Shiny_Stealth
   - Unlockable_Weapons.shiny_stopgap
   - Unlockable_Weapons.shiny_stray
   - Unlockable_Weapons.Shiny_sunspot
@@ -1340,10 +1894,12 @@ unlockable_weapons:
   - Unlockable_Weapons.shiny_symmetry
   - Unlockable_Weapons.Shiny_tankbuster
   - Unlockable_Weapons.shiny_tkswave
+  - Unlockable_Weapons.Shiny_Triplicate
   - Unlockable_Weapons.shiny_truck
   - Unlockable_Weapons.Shiny_Ultimate
   - Unlockable_Weapons.Shiny_Unstable
   - Unlockable_Weapons.shiny_vamoose
+  - Unlockable_Weapons.Shiny_Verce
   - Unlockable_Weapons.shiny_wf
   - Unlockable_Weapons.shiny_wombocombo
   - Unlockable_Weapons.shiny_zipgun
