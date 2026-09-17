@@ -2,8 +2,8 @@
 
 | codename | type | title | paid |
 |-|-|-|-|
-| `cowbell`, `dlc1` | story pack 1 | vault of the damned      | yes |
-| `harmonica`       | story pack 2 | fl4k and the last resort | yes |
+| `cowbell`, `dlc1`   | story pack 1 | vault of the damned      | yes |
+| `harmonica`, `dlc2` | story pack 2 | fl4k and the last resort | yes |
 |||||
 | `banjo`         | bounty pack 1 | how rush saved mercenary day | yes |
 | `cello`, `dlc2` | bounty pack 2 | legend of the stone demon    | yes |

@@ -53,6 +53,7 @@ function completeUVHChallenges() {
   };
 
   updateStatsCounters(counters);
+  updateStatsCounters({'uvh_7': 1}, 'dlc_challenge');
 }
 
 function completeCombatChallenges() {
@@ -451,13 +452,25 @@ function completePhospheneChallenges() {
   updateStatsCounters(counters, 'shinygear');
 }
 
-function completeCowbellChallenges() {
-  completeCowbellCombatChallenges();
-  completeCowbellWorldChallenges();
-}
+function completeDLCChallenges() {
+  const cello_openworld = {
+    cello_collectibles: {
+      dlc2_echologs: {
+        dlc2_echolog_01: 1,
+        dlc2_echolog_02: 1,
+        dlc2_echolog_03: 1,
+        dlc2_echolog_04: 1,
+        dlc2_echolog_05: 1,
+        dlc2_echolog_06: 1,
+        dlc2_echolog_07: 1,
+        dlc2_echolog_08: 1,
+        dlc2_echolog_09: 1,
+      },
+    },
+  };
+  updateStatsCounters(cello_openworld, 'cello_openworld');
 
-function completeCowbellCombatChallenges() {
-  const counters = {
+  const cowbell_challenges = {
     combat: {
       kraggon_secondwind: 30, // black arrow
       dahl_nightmare_split: 100, // make us wholew
@@ -487,13 +500,9 @@ function completeCowbellCombatChallenges() {
       voodoo: 1,
     }, // the nighttime conglomerate
   };
+  updateStatsCounters(cowbell_challenges, 'cowbell_challenges');
 
-  updateStatsCounters(counters, 'cowbell_challenges');
-  console.info('Completed cowbell combat challenges!');
-}
-
-function completeCowbellWorldChallenges() {
-  const counters = {
+  const cowbell_openworld = {
     cowbell_activities:{
       speakeasyportals:{
         speakeasyportal_1: 1,
@@ -609,9 +618,196 @@ function completeCowbellWorldChallenges() {
       },
     },
   };
+  updateStatsCounters(cowbell_openworld, 'cowbell_openworld');
 
-  updateStatsCounters(counters, 'cowbell_openworld');
-  console.info('Completed cowbell openworld challenges!');
+  const harp_openworld = {
+    harp_collectibles: {
+      harp_echologs: {
+        harp_echolog_1: 1,
+        harp_echolog_2: 1,
+        harp_echolog_3: 1,
+        harp_echolog_4: 1,
+        harp_echolog_5: 1,
+      },
+    },
+  };
+  updateStatsCounters(harp_openworld, 'harp_openworld');
+
+  const tuba_openworld = {
+    tuba_collectibles: {
+      tuba_echologs: {
+        tuba_echolog_1: 1,
+        tuba_echolog_2: 1,
+        tuba_echolog_3: 1,
+        tuba_echolog_4: 1,
+        tuba_echolog_5: 1,
+        tuba_echolog_6: 1,
+        tuba_echolog_7: 1,
+      },
+    },
+  };
+  updateStatsCounters(tuba_openworld, 'tuba_openworld');
+
+  const harmonica_challenges = {
+    dlc2_combat: {
+      stop_frame_regeneration: 30,
+      zipline_kill: 50,
+    },
+    dlc2_enemies: {
+      kill_tediore_frames: 1000,
+      kill_tediore_gliders: 1000,
+      kill_tediore_infantry: 1000,
+      kill_tediore_infantry_replacement: 300,
+      kill_tediore_walker_mechs: 300,
+    },
+    dlc2_world: {
+      managerhands: {
+        hotel: 1,
+        lava: 1,
+        logistics: 1,
+        spa: 1,
+        theater: 1,
+      },
+      complete_rifts: 10,
+      defeat_volcano_bosses: 5,
+    },
+    dlc2_characters: {
+      corpohacker_levelup: 60,
+      corpohacker_contagion_single: 1,
+      corpohacker_contagion_tiered: 1000,
+      corpohacker_manifestation_single: 1,
+      corpohacker_manifestation_tiered: 1000,
+      corpohacker_vpn_single: 1,
+      corpohacker_vpn_tiered: 1000,
+    },
+  };
+  updateStatsCounters(harmonica_challenges, 'harmonica_challenges');
+
+  const harmonica_openworld = {
+    dlc2_activities: {
+      tikibar: {
+        tikibar_1: 1,
+        tikibar_2: 1,
+        tikibar_3: 1,
+      },
+      tedioregrotto: {
+        tedioregrotto_1: 1,
+        tedioregrotto_2: 1,
+      },
+      tediorelockdown: {
+        tediorelockdown_1: 1,
+        tediorelockdown_2: 1,
+      },
+      treasurehunt: {
+        treasurehunt_switch_parent: {
+          treasurehunt_switch_01: 1,
+          treasurehunt_switch_02: 1,
+          treasurehunt_switch_03: 1,
+          treasurehunt_switch_04: 1,
+          treasurehunt_switch_05: 1,
+        },
+        treasurehunt_dooropened: 1,
+        treasurehunt_bosskilled: 1,
+      },
+    },
+    dlc2_collectibles: {
+      tediore: {
+        tediore_1: 1,
+        tediore_2: 1,
+        tediore_3: 1,
+        tediore_4: 1,
+        tediore_5: 1,
+        tediore_6: 1,
+        tediore_7: 1,
+        tediore_8: 1,
+        tediore_9: 1,
+        tediore_10: 1,
+      },
+      islandsafes: {
+        islandsafe_1: 1,
+        islandsafe_2: 1,
+        islandsafe_3: 1,
+        islandsafe_4: 1,
+        islandsafe_5: 1,
+      },
+      harmonica_echologs: {
+        harmonica_echolog_1: 1,
+        harmonica_echolog_2: 1,
+        harmonica_echolog_3: 1,
+        harmonica_echolog_4: 1,
+        harmonica_echolog_5: 1,
+        harmonica_echolog_6: 1,
+        harmonica_echolog_7: 1,
+        harmonica_echolog_8: 1,
+        harmonica_echolog_9: 1,
+        harmonica_echolog_10: 1,
+        harmonica_echolog_11: 1,
+        harmonica_echolog_12: 1,
+        harmonica_echolog_13: 1,
+        harmonica_echolog_14: 1,
+        harmonica_echolog_15: 1,
+        harmonica_echolog_16: 1,
+        harmonica_echolog_17: 1,
+        harmonica_echolog_18: 1,
+        harmonica_echolog_19: 1,
+        harmonica_echolog_20: 1,
+        harmonica_echolog_21: 1,
+        harmonica_echolog_22: 1,
+        harmonica_echolog_23: 1,
+        harmonica_echolog_24: 1,
+        harmonica_echolog_25: 1,
+        harmonica_echolog_26: 1,
+        harmonica_echolog_27: 1,
+        harmonica_echolog_28: 1,
+        harmonica_echolog_29: 1,
+        harmonica_echolog_30: 1,
+        harmonica_echolog_31: 1,
+        harmonica_echolog_32: 1,
+        harmonica_echolog_33: 1,
+        harmonica_echolog_34: 1,
+        harmonica_echolog_35: 1,
+        harmonica_echolog_36: 1,
+        harmonica_echolog_37: 1,
+        harmonica_echolog_38: 1,
+        harmonica_echolog_39: 1,
+        harmonica_echolog_40: 1,
+        harmonica_echolog_41: 1,
+        harmonica_echolog_42: 1,
+      },
+    },
+    dlc2_misc: {
+      ziplineshortcuts: {
+        ziplineshortcut_1: 1,
+        ziplineshortcut_2: 1,
+        ziplineshortcut_3: 1,
+        ziplineshortcut_4: 1,
+        ziplineshortcut_5: 1,
+        ziplineshortcut_6: 1,
+        ziplineshortcut_7: 1,
+      },
+      dlc2_digigunk: {
+        dlc2_digigunk_1: 1,
+        dlc2_digigunk_2: 1,
+        dlc2_digigunk_3: 1,
+        dlc2_digigunk_4: 1,
+        dlc2_digigunk_5: 1,
+        dlc2_digigunk_6: 1,
+      },
+    },
+  };
+  updateStatsCounters(harmonica_openworld, 'harmonica_openworld');
+
+  const viola_openworld = {
+    viola_collectibles: {
+      viola_echologs: {
+        viola_echolog_1: 1,
+        viola_echolog_2: 1,
+        viola_echolog_3: 1,
+        viola_echolog_4: 1,
+      },
+    },
+  };
+  updateStatsCounters(viola_openworld, 'viola_openworld');
 }
 
 /**
@@ -684,7 +880,7 @@ function completeDiscoveryAchievements() {
 
 function completeDLCAchievements() {
   // bounty pack 2 (stone demon) - codename cello
-  const cello = {
+  const cello_achievements = {
     '35_cello_enemies_defeat': 50, // ordont you glad i didnt say eridium
     '36_cello_boss_defeat': {
       'pangolin': 1, // stone demon
@@ -694,10 +890,10 @@ function completeDLCAchievements() {
     }, // fist of the mountain
     '37_cello_missions_main': 1, // the demons domain
   };
-  updateStatsCounters(cello, 'cello_achievements');
+  updateStatsCounters(cello_achievements, 'cello_achievements');
 
   // story pack 1 (vault of the damned) - codename cowbell
-  const cowbell = {
+  const cowbell_achievements = {
     // 38 - "dahl cleanup crew" - complete all activities (based on completed missions)
     '39_cowbell_side_missions': 11, // looking for work at the top of the world
     '40_cowbell_defeat_rift_boss': 1, // find me in the rift
@@ -707,7 +903,64 @@ function completeDLCAchievements() {
     '44_cowbell_complete_mission_04_colonyship': 1, // hull froze over
     '45_cowbell_complete_mission_05_vaultstorm': 1, // he loved you
   };
-  updateStatsCounters(cowbell, 'cowbell_achievements');
+  updateStatsCounters(cowbell_achievements, 'cowbell_achievements');
+
+  // bounty pack 3 (a zane to kill for) - codename mandolin
+  const mandolin_achievements = {
+    '46_mandolin_coin_chest': 1, // pay to win
+    '47_mandolin_boss_defeat': { // ai psychosis
+      'cleaner': 1,
+      'fixer': 1,
+      'main': 1,
+    },
+    '48_mandolin_missions_main': 1, // bane of zane
+  }
+  updateStatsCounters(mandolin_achievements, 'mandolin_achievements');
+
+  // bounty pack 4 (murders and acquisitions) - codename harp
+  const harp_achievements = {
+    '49_harp_responses_all': { // the full flock
+      'skankeyes1': 1,
+      'skankeyes2': 1,
+      'dave1': 1,
+      'dave2': 1,
+      'william1': 1,
+      'william2': 1,
+    },
+    '50_harp_boss_defeat': { // detoxed and ready to rock
+      'infamousdave': 1,
+      'maxxxsupreme': 1,
+      'skankeyes': 1,
+      'betamaxxx': 1,
+    },
+    '51_harp_missions_main': 1, // murdered + acquired
+  }
+  updateStatsCounters(harp_achievements, 'harp_achievements');
+
+  // story pack 2 (fl4k and the last resort) - codename harmonica
+  const harmonica_achievements = {
+    'dlc2_activityachievement': 4, // vacation from my vacation
+    // "tourism and duty" - complete all side missions
+    'dlc2_riftboss': 1, // rift and tear
+    // "substation satisfaction"
+    // "does the skag die?"
+    // "gimme a hand(s)"
+    'dlc2_unlockvolcanofortress': 1, // harmony awaits
+    // "wild at heart"
+  }
+  updateStatsCounters(harmonica_achievements, 'harmonica_achievements');
+
+  // bounty pack 5 (amara and the vile shadows) - codename viola
+  const viola_achievements = {
+    '52_viola_discover_treasure': 1, // thief in the night
+    '53_viola_boss_defeat': { // came back wrong
+      testzero: 1,
+      hybridthresher: 1,
+      viledave: 1,
+    },
+    '54_viola_missions_main': 1, // reach exceeded
+  }
+  updateStatsCounters(viola_achievements, 'viola_achievements');
 }
 
 /**
