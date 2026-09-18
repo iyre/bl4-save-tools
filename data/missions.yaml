@@ -20,6 +20,7 @@ missionset_main_city1:
         talktolilith_endstate: completed
         entercity_visible_endstate: deactivated
         inv_enter_the_city_bc5_endstate: completed
+        capture_safehouse_endstate: completed
 missionset_main_city1_b:
   status: completed
   missions:
@@ -137,6 +138,8 @@ missionset_main_mountains1:
     mission_main_mountains1:
       ui_flags: 1
       status: completed
+      final:
+        mtn1_enter_the_mountain_zone_endstate: completed
 missionset_main_mountains2a:
   status: completed
   missions:
@@ -204,6 +207,11 @@ missionset_main_shatteredlands1:
     mission_main_shatteredlands1:
       ui_flags: 1
       status: completed
+      final:
+        head_to_the_shatteredlands_endstate: completed
+        head_to_the_shatteredlands_0_endstate: completed
+        head_to_the_shatteredlands_grasslands_endstate: completed
+        head_to_the_shatteredlands_mountains_endstate: completed
     mission_main_shatteredlands1b:
       ui_flags: 1
       status: completed
@@ -235,6 +243,7 @@ missionset_main_shatteredlands3:
   status: completed
   missions:
     mission_main_shatteredlands3:
+      ui_flags: 1
       status: completed
       final:
         killrip_fortfrontbadass_endstate: completed
@@ -244,6 +253,7 @@ missionset_main_shatteredlands3:
         turnonramp_endstate: completed
         enterfortress_endstate: completed
         killboss_endstate: completed
+        gotocrater_endstate: completed
 missionset_micro_citya:
   missions:
     mission_micro_blackmarket:
@@ -579,9 +589,11 @@ missionset_side_mountainsc:
 missionset_side_mountainsd:
   missions:
     mission_side_planetaryescape:
+      ui_flags: 1
       status: completed
+      exit: Exit
       final:
-        punch_wrapup_endstate: deactivated
+        punch_wrapup_endstate: completed
         break_open_machine_3_endstate: completed
         break_open_machine_2_endstate: completed
         break_open_machine_1_endstate: completed
@@ -591,6 +603,12 @@ missionset_side_mountainsd:
     mission_side_planetaryescape_intro2:
       status: completed
     mission_side_planetaryescape_conmancorpseachievement:
+      status: completed
+    mission_side_planetaryescape_intro4:
+      status: completed
+    mission_side_planetaryescape_intro3:
+      status: completed
+    mission_side_planetaryescape_intro:
       status: completed
 missionset_side_postgame:
   status: completed
@@ -871,6 +889,8 @@ missionset_dlc_cello:
     mission_dlc_cello:
       ui_flags: 1
       status: completed
+      final:
+        cello_unlock_door_power_cell_1_endstate: completed
 missionset_dlc_cello_pearl_gear_gen:
   status: completed
   missions:
@@ -928,6 +948,10 @@ missionset_micro_cowbell:
         shoot_node_5_endstate: deactivated
     mission_micro_whodidit:
       status: completed
+    mission_micro_icefishing:
+      ui_flags: 1
+      status: completed
+  status: completed
 missionset_side_cowbell:
   status: completed
   missions:
@@ -986,3 +1010,293 @@ missionset_zoneactivity_dlc1_bunker:
     zoneactivity_dlc1_bunker:
       ui_flags: 1
       status: completed
+missionset_dlc_tuba:
+  missions:
+    mission_dlc_tuba:
+      ui_flags: 1
+      status: completed
+      final:
+        tuba_reach_map_load_endstate: completed
+        newobjective_endstate: completed
+missionset_dlc_viola:
+  status: completed
+  missions:
+    mission_dlc_viola:
+      ui_flags: 1
+      status: completed
+      final:
+        viola_boss_test_zero_endstate: completed
+        viola_boss_dave_endstate: completed
+        viola_travel_slide_endstate: completed
+        viola_custom_disable_rift_barrier_cove_endstate: completed
+        viola_destroy_rift_core_cove_2_endstate: completed
+        viola_custom_disable_rift_barrier_first_endstate: completed
+        viola_custom_elpisvile_disable_second_rift_endstate: completed
+        viola_custom_deposit_siphon_1_endstate: completed
+        viola_custom_deposit_siphon_2_endstate: completed
+        viola_destroy_rift_core_first_3_endstate: completed
+        viola_destroy_rift_core_first_1_endstate: completed
+        viola_destroy_rift_core_first_2_endstate: completed
+        viola_boss_thresher_endstate: completed
+        viola_damage_elpisvile_second_rift_core_3_endstate: completed
+        viola_damage_elpisvile_second_rift_core_2_endstate: completed
+missionset_dlc_raid2:
+  missions:
+    mission_dlc_raid2:
+      ui_flags: 1
+      status: completed
+      final:
+        raid2_reach_raid2_map_endstate: completed
+        raid2_dropship_flyby_endstate: completed
+missionset_dlc_harp:
+  status: completed
+  missions:
+    mission_dlc_harp:
+      ui_flags: 1
+      status: completed
+      final:
+        listenmaxlog_endstate: completed
+        flockercage1: B
+        flockercage2: B
+        flockercage3: B
+        flockercage4: B
+        flockercage5: B
+        flockercage6: B
+        flockercage7: B
+        newobjective_endstate: completed
+        skankeyesbefriended: true
+        skankeyesfollow_endstate: completed
+        skankeyesfixgenerator_endstate: deactivated
+        findtrippyabove_endstate: true
+        infamousdavebefriended: true
+        breakintodavesvault_endstate: deactivated
+        collectfirstingredient_endstate: completed
+        collectradablasthead_endstate: completed
+        collectkratchblood_endstate: completed
+        collectfertilizer_endstate: completed
+        weewilliambefriended: true
+missionset_dlc_mandolin:
+  status: completed
+  missions:
+    mission_dlc_mandolin:
+      ui_flags: 1
+      status: completed
+      final:
+        mandolin_talk_zane_post_tower_endstate: completed
+        mandolin_silent_crisis_enter_endstate: completed
+        mandolin_talk_zane_post_cos_endstate: completed
+        mandolin_recreate_crime_endstate: completed
+        mandolin_kill_murder_endstate: completed
+        mandolin_digistruct_to_arcade_post_cos_endstate: completed
+        mandolin_follow_zane_endstate: completed
+        mandolin_cos_scan_weapon_endstate: completed
+missionset_main_harmonica0:
+  status: completed
+  missions:
+    mission_main_harmonica0:
+      ui_flags: 1
+      status: completed
+missionset_main_harmonica1:
+  status: completed
+  missions:
+    mission_main_harmonica1:
+      ui_flags: 1
+      status: completed
+      final:
+        findfl4k_endstate: completed
+        takeziplinedevice_endstate: completed
+missionset_main_harmonica2:
+  status: completed
+  missions:
+    mission_main_harmonica2:
+      ui_flags: 1
+      status: completed
+      final:
+        obj_invis_useflakcomputer_endstate: completed
+        obj_enterfl4ksblind_endstate: completed
+missionset_main_harmonica2b:
+  status: completed
+  missions:
+    mission_main_harmonica2b:
+      ui_flags: 1
+      status: completed
+      final:
+        activate_zipline_endstate: completed
+missionset_main_harmonica3:
+  missions:
+    mission_main_harmonica3:
+      ui_flags: 1
+      status: completed
+  status: completed
+missionset_main_harmonica3_managers:
+  missions:
+    mission_main_harmonica3_theatre:
+      ui_flags: 1
+      status: completed
+      final:
+        clear_out_digi_gunk_endstate: completed
+    mission_main_harmonica3_logistics:
+      ui_flags: 1
+      status: completed
+      final:
+        placehand_endstate: completed
+    mission_main_harmonica3_spa:
+      ui_flags: 1
+      status: completed
+    mission_main_harmonica3_lava:
+      ui_flags: 1
+      status: completed
+      final:
+        lavaadministered: completed
+    mission_main_harmonica3_hotel:
+      ui_flags: 1
+      status: completed
+      final:
+        touch_fake_plant_endstate: completed
+        bad_captcha_5_endstate: deactivated
+        bad_captcha_1_endstate: deactivated
+        bad_captcha_6_endstate: deactivated
+        bad_captcha_3_endstate: completed
+        bad_captcha_4_endstate: deactivated
+        find_good_plants_endstate: failed
+        touch_fake_plant_2_endstate: deactivated
+        find_all_the_pictures_without_buildings2_endstate: completed
+        protectflag2_endstate: completed
+        chairs_lie: deactivated
+        bottle_truth: deactivated
+        clocks_truth: completed
+  status: completed
+missionset_main_harmonica4_handcounter:
+  missions:
+    mission_main_harmonica3_handycounter:
+      status: completed
+      final:
+        1sthandcollected_endstate: completed
+        2ndhandcollected_endstate: completed
+        3rdhandcollected_endstate: completed
+        4thhandcollected_endstate: completed
+        5thhandcollected_endstate: completed
+        collectextrahands_endstate: completed
+  status: completed
+missionset_side_harmonica2:
+  missions:
+    mission_side_harmonica_microplastics:
+      ui_flags: 1
+      status: completed
+    mission_side_harmonica_spatialawareness1:
+      ui_flags: 1
+      status: completed
+      final:
+        enableshrinkpad_endstate: completed
+        leavemidgichamber_endstate: completed
+        kill_ai_node_creeps_endstate: completed
+    mission_side_harmonica_spatialawareness2:
+      ui_flags: 1
+      status: completed
+    mission_side_harmonica_spatialawarenessreward:
+      ui_flags: 1
+      status: completed
+    mission_side_harmonica_tradingup:
+      ui_flags: 1
+      status: completed
+      final:
+        obj_leavecreaturecell_endstate: completed
+    mission_side_harmonica_novacancy:
+      ui_flags: 1
+      status: completed
+missionset_harmonica_zoneactivity_safehouse:
+  missions:
+    zoneactivity_intro_safehouse_horde:
+      ui_flags: 1
+      status: completed
+    zoneactivity_jungle_safehouse_horde:
+      ui_flags: 1
+      status: completed
+    zoneactivity_lava_safehouse_horde:
+      ui_flags: 1
+      status: completed
+    zoneactivity_harmonica_treasurehunt:
+      status: completed
+  status: completed
+missionset_harmonica_zoneactivity_grotto:
+  missions:
+    zoneactivity_grotto_lava:
+      ui_flags: 1
+      status: completed
+    zoneactivity_grotto_jungle:
+      ui_flags: 1
+      status: completed
+  status: completed
+missionset_harmonica_zoneactivity_lockdown:
+  missions:
+    zoneactivity_lockdown_lava:
+      ui_flags: 1
+      status: completed
+    zoneactivity_lockdown_jungle:
+      ui_flags: 1
+      status: completed
+  status: completed
+missionset_micro_harmonica1:
+  status: completed
+  missions:
+    mission_micro_catchingfire:
+      ui_flags: 1
+      status: completed
+    mission_micro_harmonica_guarded:
+      ui_flags: 1
+      status: completed
+      final:
+        guardhatch_endstate: deactivated
+        openhatch_endstate: completed
+    mission_micro_harmonica_guardedending:
+      ui_flags: 1
+      status: completed
+missionset_micro_harmonica2:
+  status: completed
+  missions:
+    mission_micro_snowcone:
+      ui_flags: 1
+      status: completed
+    mission_micro_managerhand2_tediore:
+      ui_flags: 1
+      status: completed
+    mission_micro_managerhand1_pangolin:
+      ui_flags: 1
+      status: completed
+missionset_side_harmonica1:
+  status: completed
+  missions:
+    mission_side_verymerryunfestival:
+      ui_flags: 1
+      status: completed
+      final:
+        canpickupposter: completed
+        canmicdrop: completed
+    mission_side_harmonica_rescuerangers:
+      ui_flags: 1
+      status: completed
+missionset_main_harmonica4:
+  status: completed
+  missions:
+    mission_main_harmonica4:
+      ui_flags: 1
+      status: completed
+      final:
+        placehands_endstate: completed
+        enteroffice_endstate: completed
+        tokillornotdecisionmade: completed
+        rescuefl4k: completed
+        killedbossfightharmony: completed
+        sparedharmony: completed
+        killedltharmony: completed
+        pickupguantlet_endstate: completed
+        lowerfl4k_endstate: completed
+        mainmission4complete: completed
+missionset_side_harmonica3:
+  status: completed
+  missions:
+    mission_side_sasaenginvasion:
+      ui_flags: 1
+      status: completed
+      final:
+        find_projector_endstate: completed

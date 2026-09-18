@@ -57,6 +57,7 @@ function completeAllStoryMissions() {
 function completeAllSafehouseMissions() {
   mergeMissionsetsWithPrefix('missionset_zoneactivity_safehouse');
   mergeMissionsetsWithPrefix('missionset_zoneactivity_silo');
+  mergeMissionsetsWithPrefix('missionset_harmonica_zoneactivity_safehouse');
   if (typeof discoverSafehouseLocations === 'function') discoverSafehouseLocations();
 }
 

@@ -21,7 +21,7 @@ function completeAllChallenges() {
   completePhospheneChallenges();
   completeAllCollectibles();
 
-  completeCowbellChallenges(); // story pack 1
+  completeDLCChallenges();
 }
 
 function completeUVHChallenges() {
@@ -52,7 +52,7 @@ function completeUVHChallenges() {
     uvh_5_finalchallenge: 1,
   };
 
-  updateStatsCounters(counters);
+  updateStatsCounters(counters, 'challenge');
   updateStatsCounters({'uvh_7': 1}, 'dlc_challenge');
 }
 
@@ -73,7 +73,7 @@ function completeCombatChallenges() {
     secondwindbadassboss: 60,
   };
 
-  updateStatsCounters(counters);
+  updateStatsCounters(counters, 'challenge');
 }
 
 function completeCharacterChallenges() {
@@ -111,7 +111,7 @@ function completeCharacterChallenges() {
     paladin_levelup: 50,
   };
 
-  updateStatsCounters(counters);
+  updateStatsCounters(counters, 'challenge');
 }
 
 function completeEnemiesChallenges() {
@@ -139,7 +139,7 @@ function completeEnemiesChallenges() {
     general_kill_corrupted: 200,
   };
 
-  updateStatsCounters(counters);
+  updateStatsCounters(counters, 'challenge');
 }
 
 function completeLootChallenges() {
@@ -161,7 +161,7 @@ function completeLootChallenges() {
     loot_enhancements: 200,
   };
 
-  updateStatsCounters(counters);
+  updateStatsCounters(counters, 'challenge');
 }
 
 // Doesn't complete Timekeeper's Oath main mission
@@ -200,7 +200,7 @@ function completeEconomyChallenges() {
     economy_firmware_set: 1,
   };
 
-  updateStatsCounters(counters);
+  updateStatsCounters(counters, 'challenge');
 }
 
 function completeElementalChallenges() {
@@ -213,7 +213,7 @@ function completeElementalChallenges() {
     kill_2_status: 5,
   };
 
-  updateStatsCounters(counters);
+  updateStatsCounters(counters, 'challenge');
 }
 
 function completeWeaponChallenges() {
@@ -260,7 +260,7 @@ function completeWeaponChallenges() {
     sniper_bigshot: 1,
   };
 
-  updateStatsCounters(counters);
+  updateStatsCounters(counters, 'challenge');
 }
 
 function completeEquipmentChallenges() {
@@ -296,7 +296,7 @@ function completeEquipmentChallenges() {
     repkit_healothers: 400000,
   };
 
-  updateStatsCounters(counters);
+  updateStatsCounters(counters, 'challenge');
 }
 
 function completeManufacturerChallenges() {
@@ -357,7 +357,7 @@ function completeManufacturerChallenges() {
     manufacturer_order_killorder: 750,
   };
 
-  updateStatsCounters(counters);
+  updateStatsCounters(counters, 'challenge');
 }
 
 function completeLicensedPartsChallenges() {
@@ -371,7 +371,7 @@ function completeLicensedPartsChallenges() {
     spareparts_hyperion_reflect_shield: 100,
   };
 
-  updateStatsCounters(counters);
+  updateStatsCounters(counters, 'challenge');
 }
 
 function completePhospheneChallenges() {
@@ -937,40 +937,49 @@ function completeDLCAchievements() {
   }
   updateStatsCounters(harp_achievements, 'harp_achievements');
 
-  // story pack 2 (fl4k and the last resort) - codename harmonica
-  const harmonica_achievements = {
-    'dlc2_activityachievement': 4, // vacation from my vacation
-    // "tourism and duty" - complete all side missions
-    'dlc2_riftboss': 1, // rift and tear
-    // "substation satisfaction"
-    // "does the skag die?"
-    // "gimme a hand(s)"
-    'dlc2_unlockvolcanofortress': 1, // harmony awaits
-    // "wild at heart"
-  }
-  updateStatsCounters(harmonica_achievements, 'harmonica_achievements');
-
   // bounty pack 5 (amara and the vile shadows) - codename viola
   const viola_achievements = {
     '52_viola_discover_treasure': 1, // thief in the night
     '53_viola_boss_defeat': { // came back wrong
-      testzero: 1,
-      hybridthresher: 1,
-      viledave: 1,
+      'testzero': 1,
+      'hybridthresher': 1,
+      'viledave': 1,
     },
     '54_viola_missions_main': 1, // reach exceeded
   }
   updateStatsCounters(viola_achievements, 'viola_achievements');
+
+  // story pack 2 (fl4k and the last resort) - codename harmonica
+  const harmonica_achievements = {
+    'dlc2_activityachievement': 7, // vacation from my vacation
+    'dlc2_sidemissions': 15, // tourism and duty
+    'dlc2_riftboss': 1, // rift and tear
+    // "substation satisfaction" - triggered by substation openworld collectibles
+    'dlc2_mission01': 1, // does the skag die?
+    'dlc2_mission02b': 1, // gimme a hand(s)
+    'dlc2_unlockvolcanofortress': 1, // harmony awaits
+    'dlc2_mission04': 1, // wild at heart
+  }
+  updateStatsCounters(harmonica_achievements, 'harmonica_achievements');
 }
 
 /**
- * Updates challenge counters in the save file.
+ * Updates statistics counters in the save file.
  * Only updates counters if the new value is higher than the existing value.
  *
  * @param {Object<string, number>} counters - Object mapping counter names to their target values
- * @param {string} [category='challenge'] - The category of counters to update ('challenge' or 'achievements')
+ * @param {string} [category] - The category of counters to update ('challenge' or 'achievements').
+ *   If omitted, each top-level property of `counters` is treated as its own category and its
+ *   value is passed to a recursive call with that property name as the category.
  */
-function updateStatsCounters(counters, category = 'challenge') {
+function updateStatsCounters(counters, category) {
+  if (category === undefined) {
+    for (const [key, value] of Object.entries(counters)) {
+      updateStatsCounters(value, key);
+    }
+    return;
+  }
+
   const data = getYamlDataFromEditor();
   if (!data) return;
 

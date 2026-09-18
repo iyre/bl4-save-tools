@@ -24,6 +24,16 @@ const levelnames = [
   'Cello_P',
   'Cowbell_P',
   'VaultoftheDamned_P',
+  'Raid2_P',
+  'Mandolin1_P',
+  'Mandolin_MissionCoS_P',
+  'Mandolin_CoS_P',
+  'Harp_P',
+  'Tuba_P',
+  'Viola_P',
+  'Viola_ElpisVile_P',
+  'Harmonica_P',
+  'VolcanoFortress_P',
 ];
 
 /**
@@ -49,16 +59,16 @@ function clearMapFog() {
   data.domains.local.gbx_discovery_pc_shared = data.domains.local.gbx_discovery_pc_shared || {};
   let pc = data.domains.local.gbx_discovery_pc_shared;
 
-  // Update foddatas: replace or append
+  // Update foddatas: add missing levelnames, and refresh foddata on every entry
   pc.foddatas = pc.foddatas || [];
   for (const levelname of levelnames) {
-    const newEntry = { levelname, ...commonFields };
     const idx = pc.foddatas.findIndex((e) => e.levelname === levelname);
-    if (idx !== -1) {
-      pc.foddatas[idx] = newEntry;
-    } else {
-      pc.foddatas.push(newEntry);
+    if (idx === -1) {
+      pc.foddatas.push({ levelname, ...commonFields });
     }
+  }
+  for (const entry of pc.foddatas) {
+    entry.foddata = commonFields.foddata;
   }
 
   // Update editor
@@ -114,6 +124,20 @@ function visitAllWorlds(data) {
     'Cowbell_WindsweptWastes',
     'Cowbell_Feuermann',
     'Cowbell_VaultOfTheDamned',
+    'Raid2',
+    'Mandolin',
+    'Mandolin_CoS',
+    'Mandolin_PrivateDick',
+    'Tuba',
+    'Harp',
+    'Viola',
+    'Viola_ElpisVile',
+    'Harmonica',
+    'Harmonica_VinechokedCanopy',
+    'Harmonica_BagheeraRange',
+    'Harmonica_UpperCrust',
+    'Harmonica_LavaField',
+    'Harmonica_VolcanoFortress',
   ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 
   // Ensure gbx_discovery_pc exists
