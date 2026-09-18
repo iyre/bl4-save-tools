@@ -31,7 +31,7 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Unlock cosmetics
   - Add item serials to bank
   - Set all items in bank to max level
-- All DLC content through story pack 1 is included
+- All DLC content through story pack 2 is included
 
 I don't plan to implement item editing beyond basic preset manipulations.
 
@@ -133,7 +133,7 @@ These run JavaScript functions which apply pre-configured edits to save files qu
 - **Add item serials to bank**
   - Adds a user-provided list of serials into a profile save (bank).
 - **Set all items in bank to max level**
-  - Updates all item serials in bank to have max level (60).
+  - Updates all item serials in bank to have max level.
 
 ## Where Are My Saves?
 **Windows:**
