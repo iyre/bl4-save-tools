@@ -91,6 +91,13 @@ const PRESETS = [
     group: 'Character',
   },
   {
+    handler: 'completeAllBaseGameMissions',
+    title: 'Complete All Base Game Missions',
+    desc: 'Completes all base game main and side missions (excludes DLC content).',
+    saveType: 'character',
+    group: 'Character',
+  },
+  {
     handler: 'completeAllMissions',
     title: 'Complete All Missions',
     desc: 'Completes all main and side missions (including activities).',

@@ -54,10 +54,51 @@ function completeAllStoryMissions() {
   if (typeof setStoryValues === 'function') setStoryValues();
 }
 
-function completeAllSafehouseMissions() {
+// Missionset keywords that indicate DLC content rather than base game content.
+// missionset keys for DLC missions don't share a single common prefix (they're
+// mixed into missionset_main_/side_/micro_/zoneactivity_ alongside base game
+// content), so DLC sets are identified by these codename/keyword substrings
+// instead. This list may need to be updated as new DLCs are added.
+const DLC_MISSIONSET_KEYWORDS = ['_dlc', '_banjo', '_cello', '_cowbell', '_harp', '_tuba', '_viola', '_harmonica'];
+
+function isBaseGameMissionset(key) {
+  return DLC_MISSIONSET_KEYWORDS.every((keyword) => !key.includes(keyword));
+}
+
+// Merge all base-game (non-DLC) missionsets into the save file
+function mergeBaseGameMissionsets() {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+
+  if (!data.missions) data.missions = {};
+  if (!data.missions.local_sets) data.missions.local_sets = {};
+  const target = data.missions.local_sets;
+  for (const key in MISSIONSETS) {
+    if (key.startsWith('missionset_') && isBaseGameMissionset(key)) {
+      target[key] = MISSIONSETS[key];
+    }
+  }
+
+  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
+  editor.setValue(newYaml);
+}
+
+function completeAllBaseGameMissions() {
+  mergeBaseGameMissionsets();
+  stageEpilogueMission();
+
+  if (typeof setStoryValues === 'function') setStoryValues();
+  if (typeof openAllVaultDoors === 'function') openAllVaultDoors();
+  if (typeof discoverSafehouseLocations === 'function') discoverSafehouseLocations();
+  if (typeof completeAllSafehouseMissions === 'function') completeAllSafehouseMissions(false);
+}
+
+function completeAllSafehouseMissions(includeDlc = true) {
   mergeMissionsetsWithPrefix('missionset_zoneactivity_safehouse');
   mergeMissionsetsWithPrefix('missionset_zoneactivity_silo');
-  mergeMissionsetsWithPrefix('missionset_harmonica_zoneactivity_safehouse');
+  if (includeDlc) {
+    mergeMissionsetsWithPrefix('missionset_harmonica_zoneactivity_safehouse');
+  }
   if (typeof discoverSafehouseLocations === 'function') discoverSafehouseLocations();
 }
 
