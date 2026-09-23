@@ -29,255 +29,378 @@ function toggleUpdateBanner() {
 // Defines maximum character level globally. Used in other files.
 let MAX_LEVEL = 70;
 
+const CONTENT_SCOPES = [
+  { key: 'base', label: 'Base Game' },
+  { key: 'dlc', label: 'DLC' },
+  { key: 'all', label: 'All' },
+];
+
+function capitalize(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 /**
- * Defines available preset modifications for save files.
- * Each preset contains:
- * - handler: Function name to execute
- * - title: Display name in UI
- * - desc: Detailed description of the modification
- * - saveType: Whether it applies to 'character' or 'profile' saves
- * - group: UI grouping category
+ * Preset cards shown in the presets panel. Only cards matching the loaded save type are shown.
+ * Scoped cards show a Base Game / DLC / All switch and build their presets from the chosen scope.
+ * Preset shape:
+ * - title, desc: tile title and description
+ * - apply: function that edits the YAML; may return a string used as the feedback message
+ * - remove: optional { title, desc, apply } that undoes the preset in remove mode
+ * - popup: true when apply opens a modal rather than editing directly
  * @type {Array<Object>}
  */
-const PRESETS = [
-  // character
+const PRESET_CARDS = [
   {
-    handler: 'setCharacterToMaxLevel',
-    title: `Max Level (${MAX_LEVEL})`,
-    desc: `Sets character level to the maximum (${MAX_LEVEL}).`,
+    id: 'character',
+    title: 'Character',
     saveType: 'character',
-    group: 'Character',
+    presets: [
+      {
+        title: `Max Level (${MAX_LEVEL})`,
+        desc: `Sets character level to the maximum (${MAX_LEVEL}).`,
+        apply: () => setCharacterToMaxLevel(),
+      },
+      {
+        title: 'Change Class',
+        desc: 'Changes character class (select from list).',
+        apply: () => showChangeClassPopup(),
+        popup: true,
+      },
+      {
+        title: 'Complete Challenges',
+        desc: "Completes all challenges (doesn't grant rewards).",
+        apply: () => completeAllChallenges(),
+      },
+      {
+        title: 'Complete Achievements',
+        desc: 'Completes all achievements.',
+        apply: () => completeAllAchievements(),
+      },
+      {
+        title: 'Unlock All Specializations',
+        desc: 'Unlocks the specialization system and all skills.',
+        apply: () => unlockAllSpecialization(),
+      },
+      {
+        title: 'Unlock UVHM / Postgame',
+        desc: 'Sets flags to unlock UVH mode and post-game activities.',
+        apply: () => unlockPostgame(),
+      },
+      {
+        title: 'Set All Items to Character Level',
+        desc: 'Updates serials for all backpack items to match current character level.',
+        apply: () => updateAllSerialLevels(),
+      },
+      {
+        title: 'Add Item Serials to Backpack',
+        desc: 'Adds specified item serials to backpack.',
+        apply: () => showAddItemsPopup(),
+        popup: true,
+      },
+    ],
   },
   {
-    handler: 'showChangeClassPopup',
-    title: `Change Class`,
-    desc: `Changes character class (select from list).`,
+    id: 'missions',
+    title: 'Missions',
     saveType: 'character',
-    group: 'Character',
+    scoped: true,
+    presets: (scope) =>
+      [
+        ['story', 'Story Missions'],
+        ['side', 'Side Missions'],
+        ['activity', 'Activity Missions'],
+        ['all', 'All Missions'],
+      ].map(([kind, noun]) => {
+        const what = describeMissions(kind, scope);
+        const extra =
+          (kind === 'story' || kind === 'all') && scope !== 'dlc'
+            ? ' Stages the epilogue so specializations unlock.'
+            : '';
+        return {
+          title: `Complete ${noun}`,
+          desc: `Completes ${what}.${extra}`,
+          apply: () => completeMissions(kind, scope),
+          remove: {
+            title: `Remove ${noun}`,
+            desc: `Resets ${what} to not started.`,
+            apply: () => removeMissions(kind, scope),
+          },
+        };
+      }),
   },
   {
-    handler: 'completeAllChallenges',
-    title: 'Complete Challenges',
-    desc: "Completes all challenges (doesn't grant rewards).",
-    saveType: 'character',
-    group: 'Character',
-  },
-  {
-    handler: 'completeAllAchievements',
-    title: 'Complete Achievements',
-    desc: 'Completes all achievements.',
-    saveType: 'character',
-    group: 'Character',
-  },
-  {
-    handler: 'unlockAllSpecialization',
-    title: 'Unlock All Specializations',
-    desc: 'Unlocks the specialization system and all skills.',
-    saveType: 'character',
-    group: 'Character',
-  },
-  {
-    handler: 'unlockPostgame',
-    title: 'Unlock UVHM / Postgame',
-    desc: 'Sets flags to unlock UVH mode and post-game activities.',
-    saveType: 'character',
-    group: 'Character',
-  },
-  {
-    handler: 'completeAllStoryMissions',
-    title: 'Complete Story Missions',
-    desc: 'Completes all main story missions.',
-    saveType: 'character',
-    group: 'Character',
-  },
-  {
-    handler: 'completeAllBaseGameMissions',
-    title: 'Complete All Base Game Missions',
-    desc: 'Completes all base game main and side missions (excludes DLC content).',
-    saveType: 'character',
-    group: 'Character',
-  },
-  {
-    handler: 'completeAllMissions',
-    title: 'Complete All Missions',
-    desc: 'Completes all main and side missions (including activities).',
-    saveType: 'character',
-    group: 'Character',
-  },
-  {
-    handler: 'updateAllSerialLevels',
-    title: 'Set All Items to Character Level',
-    desc: 'Updates serials for all backpack items to match current character level.',
-    saveType: 'character',
-    group: 'Character',
-  },
-  {
-    handler: 'showAddItemsPopup',
-    title: 'Add Item Serials to Backpack',
-    desc: 'Adds specified item serials to backpack.',
-    saveType: 'character',
-    group: 'Character',
-  },
-
-  // shared
-  {
-    handler: 'clearMapFog',
-    title: 'Remove Map Fog',
-    desc: 'Removes fog of war from all maps.',
+    id: 'world',
+    title: 'World',
     saveType: 'profile',
-    group: 'Profile (shared)',
+    presets: [
+      {
+        title: 'Remove Map Fog',
+        desc: 'Removes fog of war from all maps.',
+        apply: () => clearMapFog(),
+        remove: {
+          title: 'Re-add Map Fog',
+          desc: 'Restores fog of war on all maps.',
+          apply: () => addMapFog(),
+        },
+      },
+      {
+        title: 'Discover Locations',
+        desc: 'Adds all location and collectible markers to the map.',
+        apply: () => discoverAllLocations(),
+        remove: {
+          title: 'Un-discover Locations',
+          desc: 'Removes all known location and collectible markers from the map.',
+          apply: () => undiscoverAllLocations(),
+        },
+      },
+      {
+        title: 'Unlock Fast Travel',
+        desc: 'Completes all safehouse and silo activities, unlocking them as fast travel destinations.',
+        apply: () => unlockFastTravel(),
+        remove: {
+          title: 'Lock Fast Travel',
+          desc: 'Un-completes all safehouse and silo activities on the profile.',
+          apply: () => removeFastTravel(),
+        },
+      },
+    ],
   },
   {
-    handler: 'discoverAllLocations',
-    title: 'Discover Locations',
-    desc: 'Adds all location and collectible markers to the map.',
+    id: 'progress',
+    title: 'Collectibles & Activities',
     saveType: 'profile',
-    group: 'Profile (shared)',
+    scoped: true,
+    presets: (scope) => {
+      const collectibles = describeSharedProgress('collectible', scope);
+      const activities = describeSharedProgress('activity', scope);
+      return [
+        {
+          title: 'Unlock Collectibles',
+          desc: `Marks ${collectibles} as found (echo logs, capsules, vault keys, etc.) for all characters.`,
+          apply: () => completeSharedProgress('collectible', scope),
+          remove: {
+            title: 'Remove Collectibles',
+            desc: `Marks ${collectibles} as not found.`,
+            apply: () => removeSharedProgress('collectible', scope),
+          },
+        },
+        {
+          title: 'Complete Activities',
+          desc: `Marks ${activities} complete on the profile, counting toward shared Echo token progress.`,
+          apply: () => completeSharedProgress('activity', scope),
+          remove: {
+            title: 'Remove Activities',
+            desc: `Marks ${activities} as not completed on the profile.`,
+            apply: () => removeSharedProgress('activity', scope),
+          },
+        },
+      ];
+    },
   },
   {
-    handler: 'unlockFastTravel',
-    title: 'Unlock Fast Travel',
-    desc: 'Completes all safehouse and silo activities, unlocking them as fast travel destinations.',
+    id: 'unlocks',
+    title: 'Unlocks & Items',
     saveType: 'profile',
-    group: 'Profile (shared)',
-  },
-  {
-    handler: 'completeAllActivities',
-    title: 'Complete All Activities',
-    desc: 'Completes all activities.',
-    saveType: 'profile',
-    group: 'Profile (shared)',
-  },
-  {
-    handler: 'completeSharedCollectibles',
-    title: 'Unlock Collectibles',
-    desc: 'Unlocks all collectibles such as echo logs, propaganda towers, and vault keys, activities shared across characters.',
-    saveType: 'profile',
-    group: 'Profile (shared)',
-  },
-  {
-    handler: 'setMaxSDU',
-    title: 'Max SDU',
-    desc: 'Purchases all SDU upgrades, granting additional Echo tokens if needed.',
-    saveType: 'profile',
-    group: 'Profile (shared)',
-  },
-  {
-    handler: 'completeSharedVaultUnlocks',
-    title: 'Unlock Vault Powers',
-    desc: 'Unlocks all powerups from completing vaults.',
-    saveType: 'profile',
-    group: 'Profile (shared)',
-  },
-  {
-    handler: 'unlockNewGameShortcuts',
-    title: 'Unlock New Game Shortcuts',
-    desc: 'Unlocks all new game shortcuts (skip prologue, skip story, specialization system).',
-    saveType: 'profile',
-    group: 'Profile (shared)',
-  },
-  {
-    handler: 'unlockAllHoverDrives',
-    title: 'Unlock Hover Drives',
-    desc: 'Unlocks all hover drive manufacturers and tiers.',
-    saveType: 'profile',
-    group: 'Profile (shared)',
-  },
-  {
-    handler: 'unlockAllCosmetics',
-    title: 'Unlock Cosmetics',
-    desc: 'Unlocks (almost) all cosmetic items.',
-    saveType: 'profile',
-    group: 'Profile (shared)',
-  },
-  {
-    handler: 'updateAllSerialLevels',
-    title: `Set All Bank Items to Max Level (${MAX_LEVEL})`,
-    desc: `Updates serials for all bank items to have max level (${MAX_LEVEL}).`,
-    saveType: 'profile',
-    group: 'Profile (shared)',
-  },
-  {
-    handler: 'showAddItemsPopup',
-    title: 'Add Item Serials to Bank',
-    desc: 'Adds specified item serials to bank.',
-    saveType: 'profile',
-    group: 'Profile (shared)',
+    presets: [
+      {
+        title: 'Max SDU',
+        desc: 'Purchases all SDU upgrades, granting additional Echo tokens if needed.',
+        apply: () => setMaxSDU(),
+      },
+      {
+        title: 'Unlock Vault Powers',
+        desc: 'Unlocks all powerups from completing vaults.',
+        apply: () => completeSharedVaultUnlocks(),
+      },
+      {
+        title: 'Unlock New Game Shortcuts',
+        desc: 'Unlocks all new game shortcuts (skip prologue, skip story, specialization system).',
+        apply: () => unlockNewGameShortcuts(),
+      },
+      {
+        title: 'Unlock Hover Drives',
+        desc: 'Unlocks all hover drive manufacturers and tiers.',
+        apply: () => unlockAllHoverDrives(),
+      },
+      {
+        title: 'Unlock Cosmetics',
+        desc: 'Unlocks (almost) all cosmetic items.',
+        apply: () => unlockAllCosmetics(),
+      },
+      {
+        title: `Set All Bank Items to Max Level (${MAX_LEVEL})`,
+        desc: `Updates serials for all bank items to have max level (${MAX_LEVEL}).`,
+        apply: () => updateAllSerialLevels(),
+      },
+      {
+        title: 'Add Item Serials to Bank',
+        desc: 'Adds specified item serials to bank.',
+        apply: () => showAddItemsPopup(),
+        popup: true,
+      },
+    ],
   },
 ];
 
+let presetMode = 'apply';
+let saveLoaded = false;
+// preset id -> 'applied' | 'removed', reset on import
+const presetStatus = new Map();
+// card id -> selected content scope for scoped cards
+const cardScopes = {};
+
+function createElement(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+
 /**
- * Renders all preset buttons in the UI, organized by category.
- * - Groups presets by their defined categories
- * - Handles character class change buttons separately
- * - Applies proper button states based on save type
- * - Sets up click handlers for each preset
+ * Renders preset cards for the loaded save type (all cards before a save is loaded).
  */
 function renderPresets() {
-  const presetSection = document.getElementById('preset-buttons');
-  presetSection.innerHTML = '';
+  const container = document.getElementById('preset-cards');
+  container.innerHTML = '';
+  const activeSaveType = isProfileSave ? 'profile' : 'character';
 
-  // Build list of groups present, but enforce preferred ordering so Misc is last
-  const presentGroups = new Set();
-  PRESETS.forEach((p) => presentGroups.add(p.group));
+  for (const card of PRESET_CARDS) {
+    if (saveLoaded && card.saveType !== activeSaveType) continue;
 
-  Array.from(presentGroups).forEach((groupName) => {
-    const groupDiv = document.createElement('div');
-    groupDiv.className = 'preset-category';
+    const cardEl = createElement('div', 'preset-card');
+    const header = createElement('div', 'preset-group-header');
+    header.appendChild(createElement('span', 'preset-card-title', card.title));
+    if (!saveLoaded) {
+      header.appendChild(createElement('span', 'preset-card-tag', `${card.saveType} save`));
+    }
+    const scope = card.scoped ? cardScopes[card.id] || 'all' : null;
+    if (card.scoped) header.appendChild(createScopeToggle(card.id, scope));
+    cardEl.appendChild(header);
 
-    const header = document.createElement('div');
-    header.className = 'preset-group-header';
-    header.textContent = groupName;
-    groupDiv.appendChild(header);
-
-    const grid = document.createElement('div');
-    grid.className = 'preset-grid';
-
-    PRESETS.filter((p) => (p.group || 'Misc') === groupName).forEach((preset) => {
-      const row = document.createElement('div');
-      row.className = 'preset-row';
-
-      const btn = document.createElement('button');
-      btn.className = 'secondary';
-      btn.style.position = 'relative';
-
-      // Compute display metadata without mutating PRESETS
-      const display = {
-        title: preset.title,
-        desc: preset.desc,
-        saveType: preset.saveType,
-      };
-      btn.textContent = display.title;
-
-      // Determine disabled state based on computed saveType (no mutation)
-      if (
-        (isProfileSave && display.saveType === 'character') ||
-        (!isProfileSave && display.saveType === 'profile')
-      ) {
-        btn.disabled = true;
-        btn.title = isProfileSave
-          ? 'This preset only applies to character saves.'
-          : 'This preset only applies to profile saves.';
-      } else {
-        btn.title = display.desc;
-        btn.onclick = function () {
-          // call handler by name if present
-          if (typeof window[preset.handler] === 'function') {
-            window[preset.handler]();
-            btn.classList.add('preset-applied');
-          } else {
-            console.warn(`Handler not found: ${preset.handler}`);
-          }
-        };
-      }
-
-      row.appendChild(btn);
-      grid.appendChild(row);
+    const presets = card.scoped ? card.presets(scope) : card.presets;
+    const grid = createElement('div', 'preset-grid');
+    presets.forEach((preset, i) => {
+      const id = card.scoped ? `${card.id}:${i}:${scope}` : `${card.id}:${i}`;
+      grid.appendChild(createPresetButton(preset, id));
     });
+    cardEl.appendChild(grid);
 
-    groupDiv.appendChild(grid);
-    presetSection.appendChild(groupDiv);
-  });
+    container.appendChild(cardEl);
+  }
+}
+
+function createScopeToggle(cardId, selected) {
+  const toggle = createElement('div', 'scope-toggle');
+  toggle.setAttribute('role', 'group');
+  toggle.setAttribute('aria-label', 'Content');
+  for (const { key, label } of CONTENT_SCOPES) {
+    const btn = createElement('button', 'scope-btn', label);
+    btn.classList.toggle('active', key === selected);
+    btn.setAttribute('aria-pressed', String(key === selected));
+    btn.onclick = () => {
+      cardScopes[cardId] = key;
+      renderPresets();
+    };
+    toggle.appendChild(btn);
+  }
+  return toggle;
+}
+
+/**
+ * Creates a tile button (title + description) for a preset in the current mode.
+ */
+function createPresetButton(preset, id) {
+  const removing = presetMode === 'remove';
+  const action = removing ? preset.remove : preset;
+
+  const btn = createElement('button', 'secondary preset-btn');
+  btn.appendChild(createElement('span', 'preset-title', action ? action.title : preset.title));
+  btn.appendChild(
+    createElement('span', 'preset-desc', action ? action.desc : "Can't be undone.")
+  );
+
+  const status = presetStatus.get(id);
+  if (status) btn.classList.add(status === 'applied' ? 'preset-applied' : 'preset-removed');
+
+  if (!action) {
+    btn.disabled = true;
+    return btn;
+  }
+
+  btn.onclick = () => runPreset(id, action, removing);
+  return btn;
+}
+
+function runPreset(id, action, removing) {
+  if (action.popup) {
+    action.apply();
+    return;
+  }
+
+  const before = editor.getValue();
+  let result;
+  try {
+    result = action.apply();
+  } catch (e) {
+    console.error(e);
+    showToast(`${capitalize(action.title)} failed: ${e.message}`, 'error');
+    return;
+  }
+
+  const changed = editor.getValue() !== before;
+  const message = typeof result === 'string' ? result : `${capitalize(action.title)} done.`;
+  if (!changed) {
+    showToast(`${message} No changes were needed.`, 'info');
+    return;
+  }
+  showToast(message, removing ? 'remove' : 'apply');
+  presetStatus.set(id, removing ? 'removed' : 'applied');
+  renderPresets();
+}
+
+function setPresetMode(mode) {
+  presetMode = mode;
+  const removing = mode === 'remove';
+  document.body.classList.toggle('remove-mode', removing);
+  document.getElementById('preset-heading').textContent = removing ? 'Remove Presets' : 'Apply Presets';
+  document.getElementById('remove-mode-banner').hidden = !removing;
+  for (const [btnId, btnMode] of [
+    ['modeApplyBtn', 'apply'],
+    ['modeRemoveBtn', 'remove'],
+  ]) {
+    const btn = document.getElementById(btnId);
+    btn.classList.toggle('active', btnMode === mode);
+    btn.setAttribute('aria-pressed', String(btnMode === mode));
+  }
+  renderPresets();
+}
+
+const EDITOR_COLLAPSED_KEY = 'bl4_editor_collapsed';
+
+function setEditorCollapsed(collapsed) {
+  document.body.classList.toggle('editor-open', !collapsed);
+  const btn = document.getElementById('editorToggleBtn');
+  btn.textContent = collapsed ? 'Show YAML' : 'Hide YAML';
+  btn.setAttribute('aria-pressed', String(!collapsed));
+  localStorage.setItem(EDITOR_COLLAPSED_KEY, collapsed ? '1' : '0');
+}
+
+function toggleEditor() {
+  setEditorCollapsed(document.body.classList.contains('editor-open'));
+}
+
+/**
+ * Shows a short-lived notification. kind: 'apply' | 'remove' | 'info' | 'error'
+ */
+function showToast(message, kind = 'info') {
+  const area = document.getElementById('toast-area');
+  const toast = createElement('div', `toast toast-${kind}`, message);
+  area.appendChild(toast);
+  while (area.children.length > 4) area.firstChild.remove();
+  setTimeout(() => {
+    toast.classList.add('toast-hide');
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
 }
 
 // Initialize Monaco Editor
@@ -301,6 +424,8 @@ let importFilename = 'imported';
 function enableSections() {
   document.getElementById('presetSectionOverlay').style.display = 'none';
   document.getElementById('editorSectionOverlay').style.display = 'none';
+  document.getElementById('exportSavBtn').disabled = false;
+  document.getElementById('exportYamlBtn').disabled = false;
 }
 
 /**
@@ -331,7 +456,11 @@ async function importFile() {
     yamlText = decryptSav(arrayBuffer);
   }
   editor.setValue(yamlText);
-  clearPresetApplied();
+  saveLoaded = true;
+  presetStatus.clear();
+  document.getElementById('loaded-save-info').textContent =
+    `Loaded ${file.name} (${isProfileSave ? 'profile' : 'character'} save)`;
+  setPresetMode('apply');
   enableSections();
 }
 
@@ -396,7 +525,7 @@ window.addEventListener('DOMContentLoaded', function () {
     document.getElementById('userIdInput').value = previousUserId;
   }
 
-  // Render preset buttons
+  setEditorCollapsed(localStorage.getItem(EDITOR_COLLAPSED_KEY) !== '0');
   renderPresets();
 });
 
@@ -423,12 +552,6 @@ function checkIfProfileSave(yamlData) {
     yamlData.domains.local.shared
   );
   renderPresets();
-}
-
-function clearPresetApplied() {
-  document.querySelectorAll('.preset-applied').forEach((btn) => {
-    btn.classList.remove('preset-applied');
-  });
 }
 
 /**
@@ -561,6 +684,7 @@ function showAddItemsPopup() {
       .filter(Boolean);
     try {
       if (typeof insertSerials === 'function') insertSerials(serials);
+      showToast(`Added ${serials.length} item serial${serials.length === 1 ? '' : 's'}.`, 'apply');
     } finally {
       close();
     }
@@ -668,6 +792,7 @@ function showChangeClassPopup() {
       return;
     }
     setCharacterClass(key, CHARACTER_CLASSES[key].name);
+    showToast(`Changed class to ${CHARACTER_CLASSES[key].class} (${CHARACTER_CLASSES[key].name}).`, 'apply');
     close();
   };
 

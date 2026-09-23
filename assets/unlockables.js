@@ -27,18 +27,99 @@ function hasProfileUnlockables(data) {
  * Merges entries from UNLOCKABLES[key] into data.domains.local.unlockables[key].entries,
  * deduplicating and sorting the result.
  */
+function entryHasPrefix(entry, prefix) {
+  return entry.toLowerCase().startsWith(prefix.toLowerCase());
+}
+
 function mergeUnlockableEntries(data, key, prefix = '') {
   data.domains.local.unlockables[key] = data.domains.local.unlockables[key] || {};
   const existing = data.domains.local.unlockables[key].entries || [];
   const merged = new Set(existing);
   for (const entry of UNLOCKABLES[key].entries) {
-    if (entry.startsWith(prefix)) {
+    if (entryHasPrefix(entry, prefix)) {
       merged.add(entry);
     }
   }
   data.domains.local.unlockables[key].entries = Array.from(merged).sort((a, b) =>
     a.toLowerCase().localeCompare(b.toLowerCase())
   );
+  return merged.size - existing.length;
+}
+
+/**
+ * Removes entries matching prefix from data.domains.local.unlockables[key].entries.
+ * Returns the number of entries removed.
+ */
+function removeUnlockableEntries(data, key, prefix = '') {
+  const group = data.domains.local.unlockables[key];
+  if (!group?.entries) return 0;
+  const before = group.entries.length;
+  group.entries = group.entries.filter((entry) => !entryHasPrefix(entry, prefix));
+  return before - group.entries.length;
+}
+
+// [unlockables key, entry prefix] pairs for shared progress, split by content scope
+const SHARED_PROGRESS_SOURCES = {
+  collectible: {
+    base: [
+      ['echo_log_challenges', ''],
+      ['echo_upgrade_challenges', 'echo_upgrade_challenges.collect'],
+    ],
+    dlc: [
+      ['sharedprogress_cello', 'SharedProgress_Cello.collectible'],
+      ['sharedprogress_cowbell', 'SharedProgress_Cowbell.collectible'],
+      ['sharedprogress_harmonica', 'SharedProgress_Harmonica.collectible'],
+      ['sharedprogress_tuba', 'SharedProgress_Tuba.collectible'],
+      ['sharedprogress_viola', 'SharedProgress_Viola.collectible'],
+    ],
+  },
+  activity: {
+    base: [['echo_upgrade_challenges', 'echo_upgrade_challenges.activity']],
+    dlc: [
+      ['sharedprogress_cowbell', 'SharedProgress_Cowbell.zoneactivity'],
+      ['sharedprogress_harmonica', 'SharedProgress_Harmonica.zoneactivity'],
+    ],
+  },
+};
+
+function getSharedProgressSources(kind, scope) {
+  const sources = SHARED_PROGRESS_SOURCES[kind];
+  return scope === 'all' ? [...sources.base, ...sources.dlc] : sources[scope];
+}
+
+function describeSharedProgress(kind, scope) {
+  const noun = kind === 'collectible' ? 'collectibles' : 'activities';
+  return scope === 'all' ? `all ${noun}` : `${CONTENT_SCOPE_LABELS[scope]} ${noun}`;
+}
+
+/**
+ * Completes shared (profile) collectibles or activities for the given scope ('base' | 'dlc' | 'all').
+ */
+function completeSharedProgress(kind, scope) {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+  if (!hasProfileUnlockables(data)) return;
+
+  let count = 0;
+  for (const [key, prefix] of getSharedProgressSources(kind, scope)) {
+    count += mergeUnlockableEntries(data, key, prefix);
+  }
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+  updateEchoPoints();
+  return `Completed ${describeSharedProgress(kind, scope)} (${count} new entries).`;
+}
+
+function removeSharedProgress(kind, scope) {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+  if (!hasProfileUnlockables(data)) return;
+
+  let count = 0;
+  for (const [key, prefix] of getSharedProgressSources(kind, scope)) {
+    count += removeUnlockableEntries(data, key, prefix);
+  }
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+  return `Removed ${describeSharedProgress(kind, scope)} (${count} entries).`;
 }
 
 /**
@@ -130,27 +211,6 @@ function unlockNewGameShortcuts() {
 }
 
 /**
- * Completes all shared collectibles in a profile save.
- * This includes ECHO logs and excludes activities.
- */
-function completeSharedCollectibles() {
-  const data = getYamlDataFromEditor();
-  if (!data) return;
-  if (!hasProfileUnlockables(data)) return;
-
-  mergeUnlockableEntries(data, 'echo_log_challenges');
-  mergeUnlockableEntries(data, 'echo_upgrade_challenges', 'echo_upgrade_challenges.collect');
-  mergeUnlockableEntries(data, 'sharedprogress_cello');
-  mergeUnlockableEntries(data, 'sharedprogress_cowbell', 'SharedProgress_Cowbell.collectible');
-  mergeUnlockableEntries(data, 'sharedprogress_harmonica', 'SharedProgress_Harmonica.collectible');
-
-  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
-  editor.setValue(newYaml);
-  console.info('All shared collectibles completed!');
-  updateEchoPoints();
-}
-
-/**
  * Completes all shared vault unlocks in a profile save.
  */
 function completeSharedVaultUnlocks() {
@@ -170,22 +230,32 @@ function unlockFastTravel() {
   if (!data) return;
   if (!isProfileSave) return;
 
-  mergeUnlockableEntries(data, 'echo_upgrade_challenges', 'echo_upgrade_challenges.activity_safehouses');
-  mergeUnlockableEntries(data, 'echo_upgrade_challenges', 'echo_upgrade_challenges.activity_silos');
+  let count = 0;
+  for (const prefix of FAST_TRAVEL_PREFIXES) {
+    count += mergeUnlockableEntries(data, 'echo_upgrade_challenges', prefix);
+  }
 
-  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
-  editor.setValue(newYaml);
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+  updateEchoPoints();
+  discoverSafehouseLocations();
+  return `Unlocked ${count} fast travel points.`;
 }
 
-function completeAllActivities() {
+function removeFastTravel() {
   const data = getYamlDataFromEditor();
   if (!data) return;
-  if (!isProfileSave) return;
+  if (!hasProfileUnlockables(data)) return;
 
-  mergeUnlockableEntries(data, 'echo_upgrade_challenges', 'echo_upgrade_challenges.activity');
-  mergeUnlockableEntries(data, 'sharedprogress_cowbell', 'SharedProgress_Cowbell.zoneactivity');
-  mergeUnlockableEntries(data, 'sharedprogress_harmonica', 'SharedProgress_Harmonica.zoneactivity');
+  let count = 0;
+  for (const prefix of FAST_TRAVEL_PREFIXES) {
+    count += removeUnlockableEntries(data, 'echo_upgrade_challenges', prefix);
+  }
 
-  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
-  editor.setValue(newYaml);
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+  return `Removed ${count} fast travel points.`;
 }
+
+const FAST_TRAVEL_PREFIXES = [
+  'echo_upgrade_challenges.activity_safehouses',
+  'echo_upgrade_challenges.activity_silos',
+];

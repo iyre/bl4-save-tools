@@ -41,7 +41,19 @@ const levelnames = [
  * Updates fog of discovery (FOD) data for all game levels using zlib compression.
  * Also marks all worlds and regions as visited.
  */
+// zlib + base64 of a 128x128 fog grid: all 0xFF bytes (revealed) or all 0x00 bytes (fogged)
+const FOD_REVEALED = 'eJztwTEBAAAAwqD+qWcMH6AAAAAAAAAAAAAAAAAAAACAtwGw2cOy';
+const FOD_FOGGED = 'eJztwTEBAAAAwqD1T20MH6AAAAAAAAAAAAAAAAAAAACAtwFAAAAB';
+
 function clearMapFog() {
+  return setMapFog(FOD_REVEALED);
+}
+
+function addMapFog() {
+  return setMapFog(FOD_FOGGED);
+}
+
+function setMapFog(foddata) {
   const data = getYamlDataFromEditor();
   if (!data) return;
   if (!isProfileSave) return;
@@ -50,7 +62,7 @@ function clearMapFog() {
     foddimensionx: 128,
     foddimensiony: 128,
     compressiontype: 'Zlib',
-    foddata: 'eJztwTEBAAAAwqD+qWcMH6AAAAAAAAAAAAAAAAAAAACAtwGw2cOy',
+    foddata,
   };
 
   // Ensure gbx_discovery_pc exists
@@ -201,6 +213,23 @@ function discoverAllLocations() {
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
+}
+
+function undiscoverAllLocations() {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+  if (!isProfileSave) return;
+
+  const pg = data.domains?.local?.gbx_discovery_pg_shared;
+  if (!pg?.dlblob) return 'No discovered locations found.';
+
+  const known = new Set(LOCATIONS);
+  const existing = pg.dlblob.split(/:\d:/).filter(Boolean);
+  const kept = existing.filter((line) => !known.has(line));
+  pg.dlblob = kept.length ? kept.join(':2:') + ':2:' : '';
+
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+  return `Removed ${existing.length - kept.length} discovered locations.`;
 }
 
 function discoverSafehouseLocations() {
