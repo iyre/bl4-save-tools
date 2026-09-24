@@ -16,6 +16,7 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Unlock UVHM & post-game activities
   - Complete story / side missions (base game, DLC, or both)
   - Complete activities by type (crawlers, safehouses, silos, etc.) or all at once
+  - Complete collectibles by type (echo logs, caches, safes, etc.) or all at once (base game, DLC, or both)
   - Add item serials to backpack
   - Set all items in backpack to character level
   - Enable / disable shared progression

@@ -342,7 +342,7 @@ function unlockMaxEverything() {
     if (typeof maxCurrency === 'function') maxCurrency();
 
     // Collectibles / counters
-    if (typeof completeAllCollectibles === 'function') completeAllCollectibles();
+    if (typeof completeCollectibles === 'function') completeCollectibles('all', 'all');
     if (typeof completeAllAchievements === 'function') completeAllAchievements();
 
     // Missions / progression

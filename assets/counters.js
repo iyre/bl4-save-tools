@@ -1,59 +1,235 @@
 /**
  * Counter and progression system module.
  * Handles various game progression elements including:
- * - Collectibles completion
+ * - Collectibles completion and reset, by type and content scope
  * - Vault powers unlocking
  * - Ultra Vault Hunter mode unlocking
  * - Story progression flags
  */
 
 /**
- * Completes all collectibles in the game.
- * Updates the following:
- * - All openworld collectibles categories from COLLECTIBLES template
- * - Eridian/Nyriad ECHO logs (sets to 262143)
- * - Updates SDU points display
+ * Collectible types shown as separate presets in character saves.
+ * - base / dlc: dotted paths from the save root. Values come from the same path in COLLECTIBLES.
+ * Vault doors, locks, keys, and powers are handled by the vault presets instead.
+ * Types after Tediore Collectibles are DLC openworld counters that may not be collectibles as such.
  */
-function completeAllCollectibles() {
+const CHARACTER_COLLECTIBLE_TYPES = [
+  {
+    key: 'echolog',
+    label: 'Echo Logs',
+    base: [
+      'stats.openworld.collectibles.echologs_arjay',
+      'stats.openworld.collectibles.echologs_general',
+      'stats.openworld.collectibles.echologs_vaulthunter',
+    ],
+    dlc: [
+      'stats.cello_openworld.cello_collectibles.dlc2_echologs',
+      'stats.cowbell_openworld.cowbell_collectibles.dlc1_echologs',
+      'stats.harmonica_openworld.dlc2_collectibles.harmonica_echologs',
+      'stats.harp_openworld.harp_collectibles.harp_echologs',
+      'stats.tuba_openworld.tuba_collectibles.tuba_echologs',
+      'stats.viola_openworld.viola_collectibles.viola_echologs',
+    ],
+  },
+  {
+    key: 'eridianlog',
+    label: 'Eridian Logs',
+    desc: 'Eridian/Nyriad echo logs.',
+    base: ['state.seen_eridium_logs'],
+  },
+  {
+    key: 'vaultsymbol',
+    label: 'Vault Symbols',
+    base: ['stats.openworld.collectibles.vaultsymbols'],
+    dlc: ['stats.cowbell_openworld.cowbell_collectibles.dlc1_vaultsymbols'],
+  },
+  {
+    key: 'cache',
+    label: 'Caches',
+    base: ['stats.openworld.collectibles.caches'],
+    dlc: ['stats.cowbell_openworld.cowbell_collectibles.dahlcaches'],
+  },
+  { key: 'capsule', label: 'Capsules', base: ['stats.openworld.collectibles.capsules'] },
+  { key: 'evocarium', label: 'Evocariums', base: ['stats.openworld.collectibles.evocariums'] },
+  { key: 'speaker', label: 'Propaganda Speakers', base: ['stats.openworld.collectibles.propaspeakers'] },
+  {
+    key: 'safe',
+    label: 'Safes',
+    base: ['stats.openworld.collectibles.safes'],
+    dlc: ['stats.harmonica_openworld.dlc2_collectibles.islandsafes'],
+  },
+  {
+    key: 'shrine',
+    label: 'Shrines',
+    base: ['stats.openworld.collectibles.shrines'],
+  },
+  {
+    key: 'clot',
+    label: 'Clots',
+    dlc: ['stats.cowbell_openworld.cowbell_misc.clots'],
+  },
+  {
+    key: 'kickdown',
+    label: 'Kick-down Shortcuts',
+    dlc: ['stats.cowbell_openworld.cowbell_misc.kickdowns'],
+  },
+  {
+    key: 'recordplayer',
+    label: 'Record Players',
+    dlc: ['stats.cowbell_openworld.cowbell_collectibles.recordplayers'],
+  },
+  {
+    key: 'shuggurathtank',
+    label: 'Shuggurath Tanks',
+    dlc: ['stats.cowbell_openworld.cowbell_misc.shuggurathtanks'],
+  },
+  {
+    key: 'speakeasyportal',
+    label: 'Speakeasy Portals',
+    dlc: ['stats.cowbell_openworld.cowbell_activities.speakeasyportals'],
+  },
+  {
+    key: 'spookystories',
+    label: 'Spooky Stories',
+    dlc: ['stats.cowbell_challenges.spooky_story'],
+  },
+  {
+    key: 'digigunk',
+    label: 'Digigunk',
+    dlc: ['stats.harmonica_openworld.dlc2_misc.dlc2_digigunk'],
+  },
+  {
+    key: 'substation',
+    label: 'Substation Switches',
+    dlc: ['stats.harmonica_openworld.dlc2_activities.treasurehunt'],
+  },
+  {
+    key: 'tediore',
+    label: 'Tediore Guns',
+    dlc: ['stats.harmonica_openworld.dlc2_collectibles.tediore'],
+  },
+  {
+    key: 'zipline',
+    label: 'Zipline Shortcuts',
+    dlc: ['stats.harmonica_openworld.dlc2_misc.ziplineshortcuts'],
+  },
+];
+
+/**
+ * Returns the save paths for a collectible type ('all' or a CHARACTER_COLLECTIBLE_TYPES key)
+ * in scope ('base' | 'dlc' | 'all').
+ */
+function getCollectiblePaths(type, scope) {
+  const types = type === 'all' ? CHARACTER_COLLECTIBLE_TYPES : [getCollectibleType(type)];
+  const scopes = scope === 'all' ? ['base', 'dlc'] : [scope];
+  return types.flatMap((t) => scopes.flatMap((s) => t[s] || []));
+}
+
+function getCollectibleType(type) {
+  return CHARACTER_COLLECTIBLE_TYPES.find((t) => t.key === type);
+}
+
+function describeCollectibles(type, scope) {
+  const noun = type === 'all' ? 'collectibles' : getCollectibleType(type).label.toLowerCase();
+  return scope === 'all' ? `all ${noun}` : `${CONTENT_SCOPE_LABELS[scope]} ${noun}`;
+}
+
+function getPathValue(obj, path) {
+  return path.split('.').reduce((node, key) => node?.[key], obj);
+}
+
+/**
+ * Copies every leaf of source into target, keeping existing keys that aren't in source.
+ * Numeric leaves are only raised, never lowered. Returns the number of leaves changed.
+ */
+function mergeCounterLeaves(target, source) {
+  let count = 0;
+  for (const [key, value] of Object.entries(source)) {
+    if (value && typeof value === 'object') {
+      if (!target[key] || typeof target[key] !== 'object') target[key] = {};
+      count += mergeCounterLeaves(target[key], value);
+    } else if (!(typeof target[key] === 'number' && target[key] >= value)) {
+      target[key] = value;
+      count++;
+    }
+  }
+  return count;
+}
+
+/**
+ * Removes every leaf of template from target, then any maps left empty.
+ * Returns the number of leaves removed.
+ */
+function removeCounterLeaves(target, template) {
+  let count = 0;
+  for (const [key, value] of Object.entries(template)) {
+    if (!(key in target)) continue;
+    if (value && typeof value === 'object' && target[key] && typeof target[key] === 'object') {
+      count += removeCounterLeaves(target[key], value);
+      if (Object.keys(target[key]).length === 0) delete target[key];
+    } else {
+      delete target[key];
+      count++;
+    }
+  }
+  return count;
+}
+
+/**
+ * Completes character save collectibles of a type ('all' or a CHARACTER_COLLECTIBLE_TYPES key)
+ * in scope ('base' | 'dlc' | 'all').
+ */
+function completeCollectibles(type, scope) {
   const data = getYamlDataFromEditor();
   if (!data) return;
 
-  // Ensure the path exists
-  data.stats = data.stats || {};
-  data.stats.openworld = data.stats.openworld || {};
-  data.stats.openworld.collectibles = data.stats.openworld.collectibles || {};
+  // Wrap each path's template in its parent keys so it can be merged from the save root
+  let count = 0;
+  for (const path of getCollectiblePaths(type, scope)) {
+    const source = path
+      .split('.')
+      .reduceRight((value, key) => ({ [key]: value }), getPathValue(COLLECTIBLES, path));
+    count += mergeCounterLeaves(data, source);
+  }
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+  return `Completed ${describeCollectibles(type, scope)} (${count} counters).`;
+}
 
-  // For each top-level key in the template,
-  // add/overwrite child keys individually to avoid removing unexpected keys.
-  for (const [category, values] of Object.entries(COLLECTIBLES)) {
-    data.stats.openworld.collectibles[category] = data.stats.openworld.collectibles[category] || {};
-    // If the value is an object, copy keys individually
-    if (typeof values === 'object' && values !== null && !Array.isArray(values)) {
-      for (const [k, v] of Object.entries(values)) {
-        // If nested object (e.g., echologs_general), handle one more level
-        if (typeof v === 'object' && v !== null && !Array.isArray(v)) {
-          data.stats.openworld.collectibles[category][k] =
-            data.stats.openworld.collectibles[category][k] || {};
-          for (const [kk, vv] of Object.entries(v)) {
-            data.stats.openworld.collectibles[category][k][kk] = vv;
-          }
-        } else {
-          data.stats.openworld.collectibles[category][k] = v;
-        }
-      }
-    } else {
-      // For non-object values, just assign
-      data.stats.openworld.collectibles[category] = values;
+/**
+ * Removes the counters completeCollectibles sets for the same type and scope.
+ */
+function resetCollectibles(type, scope) {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+
+  let count = 0;
+  for (const path of getCollectiblePaths(type, scope)) {
+    const keys = path.split('.');
+    const leaf = keys.pop();
+    const parent = getPathValue(data, keys.join('.'));
+    if (!parent || typeof parent !== 'object') continue;
+    count += removeCounterLeaves(parent, { [leaf]: getPathValue(COLLECTIBLES, path) });
+
+    // Remove ancestors left empty, keeping top-level sections like stats and state
+    while (keys.length > 1) {
+      const key = keys.pop();
+      const node = getPathValue(data, keys.join('.'));
+      if (Object.keys(node[key]).length > 0) break;
+      delete node[key];
     }
   }
-
-  // Eridian/Nyriad ECHO logs
-  data.state.seen_eridium_logs = 262143;
-
-  // Update the editor with the new YAML
-  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
-  editor.setValue(newYaml);
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+  return `Reset ${describeCollectibles(type, scope)} (${count} counters).`;
 }
+
+// Base game collectible categories for vault doors, along with the locks and keys that open them
+const VAULT_DOOR_CATEGORIES = [
+  'vaultdoor',
+  'vaultlock',
+  'vaultkey_grasslands',
+  'vaultkey_mountains',
+  'vaultkey_shatteredlands',
+];
 
 /**
  * Opens all vault doors, removing their "search" circles from the map.
@@ -66,12 +242,13 @@ function openAllVaultDoors() {
   data.stats.openworld = data.stats.openworld || {};
   data.stats.openworld.collectibles = data.stats.openworld.collectibles || {};
 
-  for (const category of ['vaultdoor', 'vaultlock']) {
-    if (typeof COLLECTIBLES !== 'object' || typeof COLLECTIBLES[category] !== 'object') {
+  const template = COLLECTIBLES?.stats?.openworld?.collectibles || {};
+  for (const category of VAULT_DOOR_CATEGORIES) {
+    if (typeof template[category] !== 'object') {
       console.error('unable to open vault doors - COLLECTIBLES data missing or invalid');
       continue;
     }
-    data.stats.openworld.collectibles[category] = COLLECTIBLES[category];
+    data.stats.openworld.collectibles[category] = template[category];
   }
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
@@ -83,7 +260,7 @@ function openAllVaultDoors() {
  * Closes all vault doors by removing their collectible keys.
  */
 function closeAllVaultDoors() {
-  removeCollectibleKeys(['vaultdoor', 'vaultlock']);
+  removeCollectibleKeys(VAULT_DOOR_CATEGORIES);
 }
 
 /**

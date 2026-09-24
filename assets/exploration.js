@@ -98,97 +98,89 @@ function setMapFog(foddata) {
   for (const entry of pc.foddatas) {
     entry.foddata = commonFields.foddata;
   }
+  // Seen lists are always at the root gbx_discovery_pc, in both save types
+  data.gbx_discovery_pc = data.gbx_discovery_pc || {};
+  setWorldsSeen(data.gbx_discovery_pc, foddata === FOD_REVEALED);
 
   // Update editor
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
 }
 
+// Regions marked as seen in discovery metrics alongside the levels above
+const regionnames = [
+  'KairosGeneric',
+  'grasslands_Prison',
+  'grasslands_RegionA',
+  'grasslands_RegionB',
+  'grasslands_RegionC',
+  'grasslands_RegionD',
+  'grasslands_RegionE',
+  'Grasslands_Fortress',
+  'Grasslands_Vault',
+  'shatteredlands_RegionA',
+  'shatteredlands_RegionB',
+  'shatteredlands_RegionC',
+  'shatteredlands_RegionD',
+  'shatteredlands_RegionE',
+  'shatteredlands_Fortress',
+  'shatteredlands_Vault',
+  'mountains_RegionA',
+  'mountains_RegionB',
+  'mountains_RegionC',
+  'mountains_RegionD',
+  'mountains_RegionE',
+  'Mountains_Fortress',
+  'Mountains_Vault',
+  'elpis_elevator',
+  'elpis',
+  'city_RegionA',
+  'city_RegionB',
+  'city_RegionC',
+  'city_Upper',
+  'Loader',
+  'Banjo',
+  'Raid1',
+  'Cello',
+  'Cowbell',
+  'Cowbell_CrookedTeeth',
+  'Cowbell_Speakeasy',
+  'Cowbell_BloodstainedHollow',
+  'Cowbell_WindsweptWastes',
+  'Cowbell_Feuermann',
+  'Cowbell_VaultOfTheDamned',
+  'Raid2',
+  'Mandolin',
+  'Mandolin_CoS',
+  'Mandolin_PrivateDick',
+  'Tuba',
+  'Harp',
+  'Viola',
+  'Viola_ElpisVile',
+  'Harmonica',
+  'Harmonica_VinechokedCanopy',
+  'Harmonica_BagheeraRange',
+  'Harmonica_UpperCrust',
+  'Harmonica_LavaField',
+  'Harmonica_VolcanoFortress',
+];
+
 /**
- * Marks all worlds and regions as visited in the game's discovery metrics.
- * This affects map markers, fast travel points, and region completion tracking.
- * @param {Object} data - The parsed save file data
+ * Adds or removes every known level and region in the seen lists of the discovery metrics.
+ * Entries not in levelnames/regionnames are left alone.
+ * @param {Object} pc - The root gbx_discovery_pc (not the profile's _shared copy)
+ * @param {boolean} seen
  */
-function visitAllWorlds(data) {
-  if (!isProfileSave) return;
-  const regionlist = [
-    'KairosGeneric',
-    'grasslands_Prison',
-    'grasslands_RegionA',
-    'grasslands_RegionB',
-    'grasslands_RegionC',
-    'grasslands_RegionD',
-    'grasslands_RegionE',
-    'Grasslands_Fortress',
-    'Grasslands_Vault',
-    'shatteredlands_RegionA',
-    'shatteredlands_RegionB',
-    'shatteredlands_RegionC',
-    'shatteredlands_RegionD',
-    'shatteredlands_RegionE',
-    'shatteredlands_Fortress',
-    'shatteredlands_Vault',
-    'mountains_RegionA',
-    'mountains_RegionB',
-    'mountains_RegionC',
-    'mountains_RegionD',
-    'mountains_RegionE',
-    'Mountains_Fortress',
-    'Mountains_Vault',
-    'elpis_elevator',
-    'elpis',
-    'city_RegionA',
-    'city_RegionB',
-    'city_RegionC',
-    'city_Upper',
-    'Loader',
-    'Banjo',
-    'Raid1',
-    'Cello',
-    'Cowbell',
-    'Cowbell_CrookedTeeth',
-    'Cowbell_Speakeasy',
-    'Cowbell_BloodstainedHollow',
-    'Cowbell_WindsweptWastes',
-    'Cowbell_Feuermann',
-    'Cowbell_VaultOfTheDamned',
-    'Raid2',
-    'Mandolin',
-    'Mandolin_CoS',
-    'Mandolin_PrivateDick',
-    'Tuba',
-    'Harp',
-    'Viola',
-    'Viola_ElpisVile',
-    'Harmonica',
-    'Harmonica_VinechokedCanopy',
-    'Harmonica_BagheeraRange',
-    'Harmonica_UpperCrust',
-    'Harmonica_LavaField',
-    'Harmonica_VolcanoFortress',
-  ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
-
-  // Ensure gbx_discovery_pc exists
-  data.gbx_discovery_pc = data.gbx_discovery_pc || {};
-  let pc = data.gbx_discovery_pc;
+function setWorldsSeen(pc, seen) {
   pc.metrics = pc.metrics || {};
-
-  pc.metrics.hasseenworldlist = pc.metrics.hasseenworldlist || [];
-  for (const levelname of levelnames) {
-    if (!pc.metrics.hasseenworldlist.includes(levelname)) {
-      pc.metrics.hasseenworldlist.push(levelname);
-    }
-  }
-
-  pc.metrics.hasseenregionlist = pc.metrics.hasseenregionlist || [];
-  for (const r of regionlist) {
-    if (!pc.metrics.hasseenregionlist.includes(r)) {
-      pc.metrics.hasseenregionlist.push(r);
-    }
-  }
-  pc.metrics.hasseenregionlist.sort((a, b) =>
-    a.toLowerCase().localeCompare(b.toLowerCase())
-  );
+  const update = (key, names) => {
+    const list = pc.metrics[key] || [];
+    const known = new Set(names);
+    const kept = list.filter((name) => !known.has(name));
+    pc.metrics[key] = seen ? [...kept, ...names] : kept;
+  };
+  update('hasseenworldlist', levelnames);
+  update('hasseenregionlist', regionnames);
 }
 
 /**

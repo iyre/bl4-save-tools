@@ -67,7 +67,12 @@ def extract_missionsets(data, no_sort=False):
 
 
 def extract_collectibles(data):
-    return data.get('stats', {}).get('openworld', {}).get('collectibles', {})
+    """
+    Returns the base game openworld collectibles, nested under their path from the save root
+    to match collectibles.yaml. DLC sections and state values in that file are kept by the merge.
+    """
+    collectibles = data.get('stats', {}).get('openworld', {}).get('collectibles', {})
+    return {'stats': {'openworld': {'collectibles': collectibles}}}
 
 
 def extract_global_unlockables(data):
@@ -290,7 +295,7 @@ Examples:
             blobs_js_path=args.blobs_js,
             no_sort=args.no_sort
         )
-        print(f"Extracted {len(collectibles)} collectible categories.")
+        print(f"Extracted {len(collectibles['stats']['openworld']['collectibles'])} collectible categories.")
 
     if args.unlockables_out:
         unlockables = sort_dict(extract_global_unlockables(data), args.no_sort)

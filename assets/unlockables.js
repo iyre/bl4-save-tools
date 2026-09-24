@@ -150,13 +150,13 @@ const COLLECTIBLE_TYPES = [
     profile: [['sharedprogress_cowbell', 'SharedProgress_Cowbell.collectible_recordplayer']],
   },
   {
-    key: 'treasurehunt',
-    label: 'Treasure Hunts',
+    key: 'substation',
+    label: 'Substation Switches',
     profile: [['sharedprogress_harmonica', 'SharedProgress_Harmonica.collectible_treasurehunt']],
   },
   {
     key: 'tediore',
-    label: 'Tediore Collectibles',
+    label: 'Tediore Guns',
     profile: [['sharedprogress_harmonica', 'SharedProgress_Harmonica.collectible_tediore']],
   },
 ];

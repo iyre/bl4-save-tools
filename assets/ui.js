@@ -54,7 +54,8 @@ function capitalize(text) {
  *   in the card, so it's shown full width and marks the presets it includes when run
  * - granular: true for per-type presets, only shown when the card's "By type" toggle is on
  * - id: unscoped cards only; stable id (`${card.id}:${id}`) instead of the preset's index
- * - marks: unscoped cards only; ids of other presets also marked applied when this one is applied
+ * - marks: unscoped cards only; ids of other presets also marked applied when this one is applied.
+ *   A scoped id (`${card.id}:${key}:${scope}`) also marks the presets it covers
  * Cards with typed: true show the "By type" toggle.
  * @type {Array<Object>}
  */
@@ -77,8 +78,9 @@ const PRESET_CARDS = [
       },
       {
         title: 'Complete Challenges',
-        desc: "All challenges. Rewards aren't granted.",
+        desc: "All challenges, including collectibles and vault powers. Rewards aren't granted.",
         apply: () => completeAllChallenges(),
+        marks: ['character-collectibles:all:all', 'character:vault-powers'],
       },
       {
         title: 'Complete Achievements',
@@ -134,7 +136,7 @@ const PRESET_CARDS = [
     presets: [
       {
         title: 'Remove Map Fog',
-        desc: 'Fog of war on every map.',
+        desc: 'Fog of war on every map, and the seen worlds and regions lists.',
         get unavailable() {
           return sharedProgressionUnavailable();
         },
@@ -167,7 +169,7 @@ const PRESET_CARDS = [
       },
       {
         title: 'Complete Vaults',
-        desc: 'Vault missions, doors, and locks. Also unlocks vault powers, which are reset separately.',
+        desc: 'Vault missions, doors, locks, and keys. Also unlocks vault powers, which are reset separately.',
         apply: () => completeVaults(),
         marks: ['character:vault-powers'],
         reset: {
@@ -176,6 +178,29 @@ const PRESET_CARDS = [
         },
       },
     ],
+  },
+  {
+    id: 'character-collectibles',
+    title: 'Collectibles',
+    saveType: 'character',
+    scoped: true,
+    typed: true,
+    presets: (scope) =>
+      [
+        { key: 'all', label: 'All Collectibles', desc: 'Every collectible type. Vault doors and powers are separate.' },
+        ...CHARACTER_COLLECTIBLE_TYPES,
+      ].map(({ key, label, desc }) => ({
+        key,
+        granular: key !== 'all',
+        title: key === 'all' ? `Complete ${label}` : label,
+        desc: desc || `${label}.`,
+        unavailable: getCollectiblePaths(key, scope).length === 0,
+        apply: () => completeCollectibles(key, scope),
+        reset: {
+          title: key === 'all' ? `Reset ${label}` : label,
+          apply: () => resetCollectibles(key, scope),
+        },
+      })),
   },
   {
     id: 'missions',
@@ -227,7 +252,7 @@ const PRESET_CARDS = [
     presets: [
       {
         title: 'Remove Map Fog',
-        desc: 'Fog of war on every map.',
+        desc: 'Fog of war on every map, and the seen worlds and regions lists.',
         apply: () => clearMapFog(),
         reset: {
           title: 'Restore Map Fog',
@@ -395,7 +420,7 @@ function renderPresets() {
         ? (status) => markScopedStatus(card, preset.key, scope, status)
         : (status) => {
             presetStatus.set(id, status);
-            if (status === 'applied') for (const other of preset.marks || []) presetStatus.set(other, status);
+            if (status === 'applied') for (const other of preset.marks || []) markPresetStatus(other, status);
           };
       const btn = createPresetButton(preset, id, onRun);
       if (preset.key === 'all') btn.classList.add('preset-btn-wide');
@@ -405,6 +430,17 @@ function renderPresets() {
 
     container.appendChild(cardEl);
   }
+}
+
+/**
+ * Records a status for a preset id from another preset's marks. Scoped ids
+ * (`${card.id}:${key}:${scope}`) also mark the presets they cover.
+ */
+function markPresetStatus(id, status) {
+  const [cardId, key, scope] = id.split(':');
+  const card = PRESET_CARDS.find((c) => c.id === cardId);
+  if (card?.scoped) markScopedStatus(card, key, scope, status);
+  else presetStatus.set(id, status);
 }
 
 /**
