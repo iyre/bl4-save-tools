@@ -56,29 +56,40 @@ function isBaseGameMissionset(key) {
   return DLC_MISSIONSET_KEYWORDS.every((keyword) => !key.includes(keyword));
 }
 
-const MISSION_KIND_LABELS = { story: 'story', side: 'side', activity: 'activity', all: '' };
+const MISSION_KIND_LABELS = { main: 'main', prologue: 'prologue', tutorial: 'tutorial', side: 'side', all: '' };
 const CONTENT_SCOPE_LABELS = { base: 'base game', dlc: 'DLC', all: 'all' };
+// Kinds that cover a single main missionset
+const SINGLE_MISSIONSETS = {
+  prologue: 'missionset_main_prisonprologue',
+  tutorial: 'missionset_main_beach',
+};
 
 /**
- * Classifies a missionset key as 'story', 'side', or 'activity' (null if unrecognized).
- * missionset_dlc_* sets hold each smaller DLC's main mission, so they count as story.
+ * Classifies a missionset key as 'main', 'side', or 'activity' (null if unrecognized).
+ * missionset_dlc_* sets hold each smaller DLC's main mission, but count as side.
  */
 function getMissionsetKind(key) {
   if (key.includes('zoneactivity_')) return 'activity';
-  if (key.startsWith('missionset_main_') || key.startsWith('missionset_dlc_')) return 'story';
-  if (/^missionset_(side|micro|vault)_/.test(key)) return 'side';
+  if (key.startsWith('missionset_main_')) return 'main';
+  if (/^missionset_(dlc|side|micro|vault)_/.test(key)) return 'side';
   return null;
 }
 
 /**
- * kind: 'story' | 'side' | 'activity', or 'all' for story and side (activities are managed separately).
+ * kind: 'main' | 'prologue' | 'tutorial' | 'side', or 'all' for main and side.
+ * Activity missionsets never match; they're managed by the activities module.
+ * 'prologue' and 'tutorial' are single main missionsets, which 'main' also includes.
  */
 function missionsetMatches(key, kind, scope) {
   const setKind = getMissionsetKind(key);
-  if (!setKind) return false;
-  if (kind === 'all' ? setKind === 'activity' : kind !== setKind) return false;
-  if (scope === 'all') return true;
-  return (scope === 'base') === isBaseGameMissionset(key);
+  if (!setKind || setKind === 'activity') return false;
+  const single = SINGLE_MISSIONSETS[kind];
+  if (single ? key !== single : kind !== 'all' && kind !== setKind) return false;
+  return inScope(isBaseGameMissionset(key), scope);
+}
+
+function missionsHaveContent(kind, scope) {
+  return Object.keys(MISSIONSETS).some((key) => missionsetMatches(key, kind, scope));
 }
 
 function describeMissions(kind, scope) {
@@ -86,7 +97,7 @@ function describeMissions(kind, scope) {
 }
 
 /**
- * Completes missionsets filtered by kind ('story' | 'side' | 'activity' | 'all')
+ * Completes missionsets filtered by kind ('main' | 'prologue' | 'tutorial' | 'side' | 'all')
  * and scope ('base' | 'dlc' | 'all').
  */
 function completeMissions(kind, scope) {
@@ -105,7 +116,7 @@ function completeMissions(kind, scope) {
   }
   editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
 
-  const includesBaseStory = (kind === 'story' || kind === 'all') && scope !== 'dlc';
+  const includesBaseStory = (kind === 'main' || kind === 'all') && scope !== 'dlc';
   if (includesBaseStory) {
     stageEpilogueMission();
     if (typeof setStoryValues === 'function') setStoryValues();

@@ -92,8 +92,9 @@ function activityHasContent(type, scope, profile) {
 }
 
 function activityMissionsetMatches(key, type, scope) {
-  if (type === 'all') return missionsetMatches(key, 'activity', scope);
-  return getActivityType(type).missionsets.includes(key) && inScope(isBaseGameMissionset(key), scope);
+  const typeMatches =
+    type === 'all' ? getMissionsetKind(key) === 'activity' : getActivityType(type).missionsets.includes(key);
+  return typeMatches && inScope(isBaseGameMissionset(key), scope);
 }
 
 function describeActivities(type, scope) {

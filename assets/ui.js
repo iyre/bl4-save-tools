@@ -120,7 +120,7 @@ const PRESET_CARDS = [
       },
       {
         title: 'Disable Shared Progression',
-        desc: 'Map fog and discovered locations are stored per character instead of in the profile save. Re-enabling removes the per-character data.',
+        desc: 'Control whether shared progression applies to this character. Enabling removes map fog and location progress for this character.',
         apply: () => setSharedProgression(false),
         reset: {
           title: 'Enable Shared Progression',
@@ -160,7 +160,7 @@ const PRESET_CARDS = [
       },
       {
         title: 'Unlock Fast Travel',
-        desc: 'Safehouse and silo activities, which gate fast travel points. Also discovers their map markers when shared progression is disabled.',
+        desc: 'Safehouse and silo activities, which gate fast travel points. Also discovers their map markers when shared progression is disabled. This does not complete missions required to access certain areas.',
         apply: () => unlockCharacterFastTravel(),
         reset: {
           title: 'Reset Fast Travel',
@@ -180,70 +180,77 @@ const PRESET_CARDS = [
     ],
   },
   {
-    id: 'character-collectibles',
-    title: 'Collectibles',
+    id: 'missions',
+    title: 'Missions',
     saveType: 'character',
     scoped: true,
     typed: true,
     presets: (scope) =>
       [
-        { key: 'all', label: 'All Collectibles', desc: 'Every collectible type. Vault doors and powers are separate.' },
-        ...CHARACTER_COLLECTIBLE_TYPES,
-      ].map(({ key, label, desc }) => ({
-        key,
-        granular: key !== 'all',
-        title: key === 'all' ? `Complete ${label}` : label,
-        desc: desc || `${label}.`,
-        unavailable: getCollectiblePaths(key, scope).length === 0,
-        apply: () => completeCollectibles(key, scope),
-        reset: {
-          title: key === 'all' ? `Reset ${label}` : label,
-          apply: () => resetCollectibles(key, scope),
-        },
-      })),
-  },
-  {
-    id: 'missions',
-    title: 'Missions',
-    saveType: 'character',
-    scoped: true,
-    presets: (scope) =>
-      [
-        ['all', 'All Missions', 'Story and side missions. Activities are separate.'],
-        ['story', 'Story Missions', 'Main story missions. Completing base game story also stages the epilogue so specializations unlock.'],
-        ['side', 'Side Missions', 'Side, micro, and vault missions.'],
+        ['all', 'All Missions', 'Main and side missions. Activities are separate.'],
+        ['prologue', 'Prologue', 'The prison prologue mission.'],
+        ['tutorial', 'Tutorial', 'The beach tutorial mission.'],
+        ['main', 'Main', 'Main story missions, including the prologue and tutorial. Completing base game story also stages the epilogue so specializations unlock.'],
+        ['side', 'Side', 'Side, micro, and vault missions.'],
       ].map(([kind, noun, desc]) => ({
         key: kind,
-        title: `Complete ${noun}`,
+        granular: kind !== 'all',
+        title: kind === 'all' ? `Complete ${noun}` : noun,
         desc,
+        unavailable: !missionsHaveContent(kind, scope),
         apply: () => completeMissions(kind, scope),
         reset: {
-          title: `Reset ${noun}`,
+          title: kind === 'all' ? `Reset ${noun}` : noun,
           apply: () => removeMissions(kind, scope),
         },
       })),
   },
   {
-    id: 'activities',
-    title: 'Activities',
-    saveType: 'any',
-    scoped: true,
-    typed: true,
-    presets: (scope) =>
-      [{ key: 'all', label: 'All Activities', desc: 'Every activity type.' }, ...ACTIVITY_TYPES].map(
-        ({ key, label, desc }) => ({
-          key,
-          granular: key !== 'all',
-          title: key === 'all' ? `Complete ${label}` : label,
-          desc: desc || `${label}. Profile saves track these as shared progress toward Echo tokens.`,
-          unavailable: !activityHasContent(key, scope, isProfileSave),
-          apply: () => completeActivities(key, scope),
-          reset: {
-            title: key === 'all' ? `Reset ${label}` : label,
-            apply: () => resetActivities(key, scope),
-          },
-        })
-      ),
+    id: 'unlocks',
+    title: 'Unlocks & Bank',
+    saveType: 'profile',
+    presets: [
+      {
+        title: 'Max SDU',
+        desc: 'Purchases all SDU upgrades, granting Echo tokens if needed.',
+        apply: () => setMaxSDU(),
+      },
+      {
+        title: 'Unlock Vault Powers',
+        desc: 'Powerups from completing vaults. Vault missions are separate.',
+        apply: () => completeVaultObjects('powers'),
+        reset: {
+          title: 'Reset Vault Powers',
+          apply: () => resetVaultObjects('powers'),
+        },
+      },
+      {
+        title: 'Unlock New Game Shortcuts',
+        desc: 'Skip prologue, skip story, and specialization system options.',
+        apply: () => unlockNewGameShortcuts(),
+      },
+      {
+        title: 'Unlock Hover Drives',
+        desc: 'All hover drive manufacturers and tiers.',
+        apply: () => unlockAllHoverDrives(),
+      },
+      {
+        title: 'Unlock Cosmetics',
+        desc: '(Almost) all cosmetic items.',
+        apply: () => unlockAllCosmetics(),
+      },
+      {
+        title: `Bank Items to Level ${MAX_LEVEL}`,
+        desc: `Re-levels every bank item serial to ${MAX_LEVEL}.`,
+        apply: () => updateAllSerialLevels(),
+      },
+      {
+        title: 'Add Items to Bank',
+        desc: 'Paste item serials to add.',
+        apply: () => showAddItemsPopup(),
+        popup: true,
+      },
+    ],
   },
   {
     id: 'world',
@@ -278,15 +285,60 @@ const PRESET_CARDS = [
         },
       },
       {
-        title: 'Unlock Vault Doors',
+        title: 'Unlock Vaults',
         desc: 'Vault doors, locks, and keys. Vault powers are separate.',
         apply: () => completeVaultObjects('doors'),
         reset: {
-          title: 'Reset Vault Doors',
+          title: 'Reset Vaults',
           apply: () => resetVaultObjects('doors'),
         },
       },
     ],
+  },
+  {
+    id: 'activities',
+    title: 'Activities',
+    saveType: 'any',
+    scoped: true,
+    typed: true,
+    presets: (scope) =>
+      [{ key: 'all', label: 'All Activities', desc: 'Every activity type.' }, ...ACTIVITY_TYPES].map(
+        ({ key, label, desc }) => ({
+          key,
+          granular: key !== 'all',
+          title: key === 'all' ? `Complete ${label}` : label,
+          desc: desc || `${label}. Profile saves track these as shared progress toward Echo tokens.`,
+          unavailable: !activityHasContent(key, scope, isProfileSave),
+          apply: () => completeActivities(key, scope),
+          reset: {
+            title: key === 'all' ? `Reset ${label}` : label,
+            apply: () => resetActivities(key, scope),
+          },
+        })
+      ),
+  },
+  {
+    id: 'character-collectibles',
+    title: 'Collectibles',
+    saveType: 'character',
+    scoped: true,
+    typed: true,
+    presets: (scope) =>
+      [
+        { key: 'all', label: 'All Collectibles', desc: 'Every collectible type. Vault doors and powers are separate.' },
+        ...CHARACTER_COLLECTIBLE_TYPES,
+      ].map(({ key, label, desc }) => ({
+        key,
+        granular: key !== 'all',
+        title: key === 'all' ? `Complete ${label}` : label,
+        desc: desc || `${label}.`,
+        unavailable: getCollectiblePaths(key, scope).length === 0,
+        apply: () => completeCollectibles(key, scope),
+        reset: {
+          title: key === 'all' ? `Reset ${label}` : label,
+          apply: () => resetCollectibles(key, scope),
+        },
+      })),
   },
   {
     id: 'progress',
@@ -309,53 +361,6 @@ const PRESET_CARDS = [
           },
         })
       ),
-  },
-  {
-    id: 'unlocks',
-    title: 'Unlocks & Items',
-    saveType: 'profile',
-    presets: [
-      {
-        title: 'Max SDU',
-        desc: 'Purchases all SDU upgrades, granting Echo tokens if needed.',
-        apply: () => setMaxSDU(),
-      },
-      {
-        title: 'Unlock Vault Powers',
-        desc: 'Powerups from completing vaults. Vault doors are separate.',
-        apply: () => completeVaultObjects('powers'),
-        reset: {
-          title: 'Reset Vault Powers',
-          apply: () => resetVaultObjects('powers'),
-        },
-      },
-      {
-        title: 'Unlock New Game Shortcuts',
-        desc: 'Skip prologue, skip story, and specialization system options.',
-        apply: () => unlockNewGameShortcuts(),
-      },
-      {
-        title: 'Unlock Hover Drives',
-        desc: 'All hover drive manufacturers and tiers.',
-        apply: () => unlockAllHoverDrives(),
-      },
-      {
-        title: 'Unlock Cosmetics',
-        desc: '(Almost) all cosmetic items.',
-        apply: () => unlockAllCosmetics(),
-      },
-      {
-        title: `Bank Items to Level ${MAX_LEVEL}`,
-        desc: `Re-levels every bank item serial to ${MAX_LEVEL}.`,
-        apply: () => updateAllSerialLevels(),
-      },
-      {
-        title: 'Add Items to Bank',
-        desc: 'Paste item serials to add.',
-        apply: () => showAddItemsPopup(),
-        popup: true,
-      },
-    ],
   },
 ];
 
