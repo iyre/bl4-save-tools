@@ -150,6 +150,37 @@ function setCharacterToMaxLevel() {
 }
 
 /**
+ * Turns shared progression on or off for a character save.
+ * When off, the game reads map fog and discovered locations from the character save's root
+ * (gbx_discovery_pc / gbx_discovery_pg) instead of the profile save.
+ * Disabling only flips the flag; the game fills in the per-character data itself.
+ * Enabling also removes the per-character data, which the game no longer uses.
+ * @param {boolean} enabled
+ */
+function setSharedProgression(enabled) {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+  if (isProfileSave) return;
+
+  data.state = data.state || {};
+  data.state.using_shared_progression = enabled;
+
+  if (enabled) {
+    // gbx_discovery_pc stays for seen worlds/regions; only the fog fields are per-character
+    const pc = data.gbx_discovery_pc;
+    if (pc) {
+      delete pc.saveid;
+      delete pc.fodsaveversion;
+      delete pc.foddatas;
+    }
+    data.gbx_discovery_pg = null;
+  }
+
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+  return `Shared progression ${enabled ? 'enabled' : 'disabled'}.`;
+}
+
+/**
  * Sets the character level to a specified value.
  * Also calculates and updates experience points accordingly.
  * @param {number} level - The target character level
@@ -311,7 +342,7 @@ function unlockMaxEverything() {
     if (typeof maxCurrency === 'function') maxCurrency();
 
     // Collectibles / counters
-    if (typeof completeAllCollectibles === 'function') completeAllCollectibles();
+    if (typeof completeCollectibles === 'function') completeCollectibles('all', 'all');
     if (typeof completeAllAchievements === 'function') completeAllAchievements();
 
     // Missions / progression

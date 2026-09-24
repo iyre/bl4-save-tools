@@ -37,27 +37,55 @@ const levelnames = [
 ];
 
 /**
- * Clears the fog of war from all game maps in profile save.
+ * Returns the discovery data for 'pc' (map fog) or 'pg' (discovered locations), creating it if missing.
+ * Profile saves keep it under domains.local as gbx_discovery_*_shared. Character saves keep it at
+ * the root as gbx_discovery_*, which the game only uses when state.using_shared_progression is false.
+ * @param {Object} data - The parsed save file data
+ * @param {'pc'|'pg'} kind
+ * @returns {Object}
+ */
+function getDiscoveryData(data, kind) {
+  if (!isProfileSave) {
+    const key = `gbx_discovery_${kind}`;
+    data[key] = data[key] || {};
+    return data[key];
+  }
+  const key = `gbx_discovery_${kind}_shared`;
+  data.domains = data.domains || {};
+  data.domains.local = data.domains.local || {};
+  data.domains.local[key] = data.domains.local[key] || {};
+  return data.domains.local[key];
+}
+
+/**
+ * Clears the fog of war from all game maps.
  * Updates fog of discovery (FOD) data for all game levels using zlib compression.
  * Also marks all worlds and regions as visited.
  */
+// zlib + base64 of a 128x128 fog grid: all 0xFF bytes (revealed) or all 0x00 bytes (fogged)
+const FOD_REVEALED = 'eJztwTEBAAAAwqD+qWcMH6AAAAAAAAAAAAAAAAAAAACAtwGw2cOy';
+const FOD_FOGGED = 'eJztwTEBAAAAwqD1T20MH6AAAAAAAAAAAAAAAAAAAACAtwFAAAAB';
+
 function clearMapFog() {
+  return setMapFog(FOD_REVEALED);
+}
+
+function addMapFog() {
+  return setMapFog(FOD_FOGGED);
+}
+
+function setMapFog(foddata) {
   const data = getYamlDataFromEditor();
   if (!data) return;
-  if (!isProfileSave) return;
 
   const commonFields = {
     foddimensionx: 128,
     foddimensiony: 128,
     compressiontype: 'Zlib',
-    foddata: 'eJztwTEBAAAAwqD+qWcMH6AAAAAAAAAAAAAAAAAAAACAtwGw2cOy',
+    foddata,
   };
 
-  // Ensure gbx_discovery_pc exists
-  data.domains = data.domains || {};
-  data.domains.local = data.domains.local || {};
-  data.domains.local.gbx_discovery_pc_shared = data.domains.local.gbx_discovery_pc_shared || {};
-  let pc = data.domains.local.gbx_discovery_pc_shared;
+  const pc = getDiscoveryData(data, 'pc');
 
   // Update foddatas: add missing levelnames, and refresh foddata on every entry
   pc.foddatas = pc.foddatas || [];
@@ -70,109 +98,98 @@ function clearMapFog() {
   for (const entry of pc.foddatas) {
     entry.foddata = commonFields.foddata;
   }
+  // Seen lists are always at the root gbx_discovery_pc, in both save types
+  data.gbx_discovery_pc = data.gbx_discovery_pc || {};
+  setWorldsSeen(data.gbx_discovery_pc, foddata === FOD_REVEALED);
 
   // Update editor
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);
 }
 
+// Regions marked as seen in discovery metrics alongside the levels above
+const regionnames = [
+  'KairosGeneric',
+  'grasslands_Prison',
+  'grasslands_RegionA',
+  'grasslands_RegionB',
+  'grasslands_RegionC',
+  'grasslands_RegionD',
+  'grasslands_RegionE',
+  'Grasslands_Fortress',
+  'Grasslands_Vault',
+  'shatteredlands_RegionA',
+  'shatteredlands_RegionB',
+  'shatteredlands_RegionC',
+  'shatteredlands_RegionD',
+  'shatteredlands_RegionE',
+  'shatteredlands_Fortress',
+  'shatteredlands_Vault',
+  'mountains_RegionA',
+  'mountains_RegionB',
+  'mountains_RegionC',
+  'mountains_RegionD',
+  'mountains_RegionE',
+  'Mountains_Fortress',
+  'Mountains_Vault',
+  'elpis_elevator',
+  'elpis',
+  'city_RegionA',
+  'city_RegionB',
+  'city_RegionC',
+  'city_Upper',
+  'Loader',
+  'Banjo',
+  'Raid1',
+  'Cello',
+  'Cowbell',
+  'Cowbell_CrookedTeeth',
+  'Cowbell_Speakeasy',
+  'Cowbell_BloodstainedHollow',
+  'Cowbell_WindsweptWastes',
+  'Cowbell_Feuermann',
+  'Cowbell_VaultOfTheDamned',
+  'Raid2',
+  'Mandolin',
+  'Mandolin_CoS',
+  'Mandolin_PrivateDick',
+  'Tuba',
+  'Harp',
+  'Viola',
+  'Viola_ElpisVile',
+  'Harmonica',
+  'Harmonica_VinechokedCanopy',
+  'Harmonica_BagheeraRange',
+  'Harmonica_UpperCrust',
+  'Harmonica_LavaField',
+  'Harmonica_VolcanoFortress',
+];
+
 /**
- * Marks all worlds and regions as visited in the game's discovery metrics.
- * This affects map markers, fast travel points, and region completion tracking.
- * @param {Object} data - The parsed save file data
+ * Adds or removes every known level and region in the seen lists of the discovery metrics.
+ * Entries not in levelnames/regionnames are left alone.
+ * @param {Object} pc - The root gbx_discovery_pc (not the profile's _shared copy)
+ * @param {boolean} seen
  */
-function visitAllWorlds(data) {
-  if (!isProfileSave) return;
-  const regionlist = [
-    'KairosGeneric',
-    'grasslands_Prison',
-    'grasslands_RegionA',
-    'grasslands_RegionB',
-    'grasslands_RegionC',
-    'grasslands_RegionD',
-    'grasslands_RegionE',
-    'Grasslands_Fortress',
-    'Grasslands_Vault',
-    'shatteredlands_RegionA',
-    'shatteredlands_RegionB',
-    'shatteredlands_RegionC',
-    'shatteredlands_RegionD',
-    'shatteredlands_RegionE',
-    'shatteredlands_Fortress',
-    'shatteredlands_Vault',
-    'mountains_RegionA',
-    'mountains_RegionB',
-    'mountains_RegionC',
-    'mountains_RegionD',
-    'mountains_RegionE',
-    'Mountains_Fortress',
-    'Mountains_Vault',
-    'elpis_elevator',
-    'elpis',
-    'city_RegionA',
-    'city_RegionB',
-    'city_RegionC',
-    'city_Upper',
-    'Loader',
-    'Banjo',
-    'Raid1',
-    'Cello',
-    'Cowbell',
-    'Cowbell_CrookedTeeth',
-    'Cowbell_Speakeasy',
-    'Cowbell_BloodstainedHollow',
-    'Cowbell_WindsweptWastes',
-    'Cowbell_Feuermann',
-    'Cowbell_VaultOfTheDamned',
-    'Raid2',
-    'Mandolin',
-    'Mandolin_CoS',
-    'Mandolin_PrivateDick',
-    'Tuba',
-    'Harp',
-    'Viola',
-    'Viola_ElpisVile',
-    'Harmonica',
-    'Harmonica_VinechokedCanopy',
-    'Harmonica_BagheeraRange',
-    'Harmonica_UpperCrust',
-    'Harmonica_LavaField',
-    'Harmonica_VolcanoFortress',
-  ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
-
-  // Ensure gbx_discovery_pc exists
-  data.gbx_discovery_pc = data.gbx_discovery_pc || {};
-  let pc = data.gbx_discovery_pc;
+function setWorldsSeen(pc, seen) {
   pc.metrics = pc.metrics || {};
-
-  pc.metrics.hasseenworldlist = pc.metrics.hasseenworldlist || [];
-  for (const levelname of levelnames) {
-    if (!pc.metrics.hasseenworldlist.includes(levelname)) {
-      pc.metrics.hasseenworldlist.push(levelname);
-    }
-  }
-
-  pc.metrics.hasseenregionlist = pc.metrics.hasseenregionlist || [];
-  for (const r of regionlist) {
-    if (!pc.metrics.hasseenregionlist.includes(r)) {
-      pc.metrics.hasseenregionlist.push(r);
-    }
-  }
-  pc.metrics.hasseenregionlist.sort((a, b) =>
-    a.toLowerCase().localeCompare(b.toLowerCase())
-  );
+  const update = (key, names) => {
+    const list = pc.metrics[key] || [];
+    const known = new Set(names);
+    const kept = list.filter((name) => !known.has(name));
+    pc.metrics[key] = seen ? [...kept, ...names] : kept;
+  };
+  update('hasseenworldlist', levelnames);
+  update('hasseenregionlist', regionnames);
 }
 
 /**
- * Adds locations to the discovered locations list in a profile save.
+ * Adds locations to the discovered locations list.
  * @param {Object} data - The parsed save file data
  * @param {string[]} locationSubstrings - Array of substrings to match against location names
  */
 function addDiscoveredLocations(data, locationSubstrings) {
-  data.domains = data.domains || {};
-  data.domains.local = data.domains.local || {};
-  data.domains.local.gbx_discovery_pg_shared = data.domains.local.gbx_discovery_pg_shared || {};
-  let pg = data.domains.local.gbx_discovery_pg_shared;
+  const pg = getDiscoveryData(data, 'pg');
   let existingBlob = pg.dlblob || '';
   let existing = existingBlob.split(/:\d:/).filter(Boolean);
 
@@ -194,7 +211,6 @@ function addDiscoveredLocations(data, locationSubstrings) {
 function discoverAllLocations() {
   const data = getYamlDataFromEditor();
   if (!data) return;
-  if (!isProfileSave) return;
 
   const locationSubstrings = [''];
   addDiscoveredLocations(data, locationSubstrings);
@@ -203,10 +219,25 @@ function discoverAllLocations() {
   editor.setValue(newYaml);
 }
 
+function undiscoverAllLocations() {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+
+  const pg = getDiscoveryData(data, 'pg');
+  if (!pg.dlblob) return 'No discovered locations found.';
+
+  const known = new Set(LOCATIONS);
+  const existing = pg.dlblob.split(/:\d:/).filter(Boolean);
+  const kept = existing.filter((line) => !known.has(line));
+  pg.dlblob = kept.length ? kept.join(':2:') + ':2:' : '';
+
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+  return `Removed ${existing.length - kept.length} discovered locations.`;
+}
+
 function discoverSafehouseLocations() {
   const data = getYamlDataFromEditor();
   if (!data) return;
-  if (!isProfileSave) return;
 
   const prefix = 'DLMD_World_P_PoAActor_UAID_';
   const locationSubstrings = SAFEHOUSE_SILO_LOCATIONS.map((id) => prefix + id);

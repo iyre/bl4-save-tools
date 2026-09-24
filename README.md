@@ -14,16 +14,20 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Unlock achievements
   - Unlock all specializations
   - Unlock UVHM & post-game activities
-  - Complete story missions
-  - Complete all missions
+  - Complete story / side missions (base game, DLC, or both)
+  - Complete activities by type (crawlers, safehouses, silos, etc.) or all at once
+  - Complete collectibles by type (echo logs, caches, safes, etc.) or all at once (base game, DLC, or both)
   - Add item serials to backpack
   - Set all items in backpack to character level
+  - Enable / disable shared progression
+  - Remove map fog & discover locations (used when shared progression is disabled)
 - Apply preset modifications to profile saves (shared between characters)
   - Remove map fog
   - Discover locations
   - Unlock fast travel
-  - Complete activities
-  - Unlock collectibles
+  - Unlock vault doors & keys
+  - Complete collectibles by type (echo logs, capsules, safes, etc.) or all at once (base game, DLC, or both)
+  - Complete activities by type or all at once (shared progress)
   - Max SDU
   - Unlock vault powers
   - Unlock new game shortcuts
@@ -31,6 +35,7 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Unlock cosmetics
   - Add item serials to bank
   - Set all items in bank to max level
+- Remove mode to undo supported presets (missions, activities, map fog, locations, fast travel, vault doors & powers, collectibles)
 - All DLC content through story pack 2 is included
 
 I don't plan to implement item editing beyond basic preset manipulations.
@@ -45,7 +50,9 @@ I don't plan to implement item editing beyond basic preset manipulations.
 4. Click **Import** - This will decrypt the save and place the YAML text in the integrated editor.
 5. **Export your original save as a backup.** Keep these timestamped files in case something goes wrong.
 6. Edit your save as desired - refer to [docs](docs/README.md) for basic info about the structure
-   - Apply presets to automatically make common changes that are relatively safe & reliable. These are applied in the editor immediately when clicked. No undo button for now.
+   - Apply presets to automatically make common changes that are relatively safe & reliable. These are applied immediately when clicked.
+   - Switch the presets panel to **Remove** to undo supported presets. The panel is outlined in red while remove mode is on. Hover a preset for details.
+   - The YAML editor is shown by default. Click **Hide YAML** in the toolbar to give the presets the full width.
 7. Download as `.sav`
 8. Rename or delete your original save and replace it with the new one, removing the timestamp.
    - Recommended to keep a copy of the new save with the timestamp as a backup (in addition to the pre-edit backup).
@@ -90,14 +97,12 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Doesn't complete any other missions, so you could theoretically play the story from level 1 in UVHM difficulty which isn't otherwise possible.
   - Loading a save with this & story completion will enable starting at level 30 (flag is automatically added to `profile.sav`).
   - Completes all UVH challenges.
-- **Complete story missions**
-  - Completes all missions related to the main story. Doesn't modify any other missions.
-  - Functionally equivalent to starting a new save with the in-game story skip option. (Does not unlock that option)
-  - Enables the specialization system.
-- **Complete all missions**
-  - Completes all missions including the main story, vaults, and activities like drill sites.
-  - Enables the specialization system.
-  - Re-calculates SDU points, applying the new total if it's higher.
+- **Missions** (Story / Side / Activity / All, with a Base Game / DLC / All switch)
+  - Completes the selected missions. Doesn't modify any other missions.
+  - Story includes each smaller DLC's main mission. Side includes vault and micro missions.
+  - Completing base game story missions is functionally equivalent to starting a new save with the in-game story skip option (does not unlock that option), and enables the specialization system.
+  - All missions (base game or all) also opens all vault doors.
+  - In remove mode, the selected missions are removed from the save so they return to not started.
 - **Add item serials to backpack**
   - Adds a user-provided list of serials into a character save (backpack).
 - **Set all items in backpack to character level**
@@ -114,10 +119,14 @@ These run JavaScript functions which apply pre-configured edits to save files qu
   - Unlocks fast travel to all safehouses and silos by completing related mission (activities).
   - Re-calculates SDU points, applying the new total if it's higher.
   - Unlocks safehouse, silo, and town PoI markers.
-- **Unlock collectibles**
+- **Collectibles** (Base Game / DLC / All)
   - Marks all* collectibles as found. ECHO logs, capsules, etc. (bobble heads aren't included)
   - Re-calculates SDU points, applying the new total if it's higher.
   - Does not add PoI markers. See "Discover locations".
+- **Activities** (Base Game / DLC / All)
+  - Marks activities complete on the profile, counting toward shared Echo token progress. Separate from character activity missions.
+  - Re-calculates SDU points, applying the new total if it's higher.
+- **Remove mode** supports re-adding map fog, un-discovering locations, locking fast travel, and removing collectibles / activities.
 - **Max SDU**
   - Purchases all SDU upgrades, adding points if necessary.
 - **Unlock vault powers**

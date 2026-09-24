@@ -41,17 +41,8 @@ function mergeMissionsetsWithPrefix(prefix) {
 }
 
 function completeAllMissions() {
-  mergeMissionsetsWithPrefix('missionset_');
-  stageEpilogueMission();
-  if (typeof setStoryValues === 'function') setStoryValues();
-  if (typeof openAllVaultDoors === 'function') openAllVaultDoors();
-  if (typeof discoverSafehouseLocations === 'function') discoverSafehouseLocations();
-}
-
-function completeAllStoryMissions() {
-  mergeMissionsetsWithPrefix('missionset_main_');
-  stageEpilogueMission();
-  if (typeof setStoryValues === 'function') setStoryValues();
+  completeMissions('all', 'all');
+  completeActivities('all', 'all');
 }
 
 // Missionset keywords that indicate DLC content rather than base game content.
@@ -65,41 +56,94 @@ function isBaseGameMissionset(key) {
   return DLC_MISSIONSET_KEYWORDS.every((keyword) => !key.includes(keyword));
 }
 
-// Merge all base-game (non-DLC) missionsets into the save file
-function mergeBaseGameMissionsets() {
+const MISSION_KIND_LABELS = { main: 'main', prologue: 'prologue', tutorial: 'tutorial', side: 'side', all: '' };
+const CONTENT_SCOPE_LABELS = { base: 'base game', dlc: 'DLC', all: 'all' };
+// Kinds that cover a single main missionset
+const SINGLE_MISSIONSETS = {
+  prologue: 'missionset_main_prisonprologue',
+  tutorial: 'missionset_main_beach',
+};
+
+/**
+ * Classifies a missionset key as 'main', 'side', or 'activity' (null if unrecognized).
+ * missionset_dlc_* sets hold each smaller DLC's main mission, but count as side.
+ */
+function getMissionsetKind(key) {
+  if (key.includes('zoneactivity_')) return 'activity';
+  if (key.startsWith('missionset_main_')) return 'main';
+  if (/^missionset_(dlc|side|micro|vault)_/.test(key)) return 'side';
+  return null;
+}
+
+/**
+ * kind: 'main' | 'prologue' | 'tutorial' | 'side', or 'all' for main and side.
+ * Activity missionsets never match; they're managed by the activities module.
+ * 'prologue' and 'tutorial' are single main missionsets, which 'main' also includes.
+ */
+function missionsetMatches(key, kind, scope) {
+  const setKind = getMissionsetKind(key);
+  if (!setKind || setKind === 'activity') return false;
+  const single = SINGLE_MISSIONSETS[kind];
+  if (single ? key !== single : kind !== 'all' && kind !== setKind) return false;
+  return inScope(isBaseGameMissionset(key), scope);
+}
+
+function missionsHaveContent(kind, scope) {
+  return Object.keys(MISSIONSETS).some((key) => missionsetMatches(key, kind, scope));
+}
+
+function describeMissions(kind, scope) {
+  return [CONTENT_SCOPE_LABELS[scope], MISSION_KIND_LABELS[kind], 'missions'].filter(Boolean).join(' ');
+}
+
+/**
+ * Completes missionsets filtered by kind ('main' | 'prologue' | 'tutorial' | 'side' | 'all')
+ * and scope ('base' | 'dlc' | 'all').
+ */
+function completeMissions(kind, scope) {
   const data = getYamlDataFromEditor();
   if (!data) return;
 
-  if (!data.missions) data.missions = {};
-  if (!data.missions.local_sets) data.missions.local_sets = {};
+  data.missions = data.missions || {};
+  data.missions.local_sets = data.missions.local_sets || {};
   const target = data.missions.local_sets;
+  let count = 0;
   for (const key in MISSIONSETS) {
-    if (key.startsWith('missionset_') && isBaseGameMissionset(key)) {
+    if (missionsetMatches(key, kind, scope)) {
       target[key] = MISSIONSETS[key];
+      count++;
     }
   }
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
 
-  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
-  editor.setValue(newYaml);
-}
-
-function completeAllBaseGameMissions() {
-  mergeBaseGameMissionsets();
-  stageEpilogueMission();
-
-  if (typeof setStoryValues === 'function') setStoryValues();
-  if (typeof openAllVaultDoors === 'function') openAllVaultDoors();
-  if (typeof discoverSafehouseLocations === 'function') discoverSafehouseLocations();
-  if (typeof completeAllSafehouseMissions === 'function') completeAllSafehouseMissions(false);
-}
-
-function completeAllSafehouseMissions(includeDlc = true) {
-  mergeMissionsetsWithPrefix('missionset_zoneactivity_safehouse');
-  mergeMissionsetsWithPrefix('missionset_zoneactivity_silo');
-  if (includeDlc) {
-    mergeMissionsetsWithPrefix('missionset_harmonica_zoneactivity_safehouse');
+  const includesBaseStory = (kind === 'main' || kind === 'all') && scope !== 'dlc';
+  if (includesBaseStory) {
+    stageEpilogueMission();
+    if (typeof setStoryValues === 'function') setStoryValues();
   }
-  if (typeof discoverSafehouseLocations === 'function') discoverSafehouseLocations();
+  if (kind === 'all' && scope !== 'dlc' && typeof openAllVaultDoors === 'function') {
+    openAllVaultDoors();
+  }
+  return `Completed ${describeMissions(kind, scope)} (${count} mission sets).`;
+}
+
+/**
+ * Removes missionsets filtered by kind and scope, returning them to a not-started state.
+ */
+function removeMissions(kind, scope) {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+
+  const sets = data.missions?.local_sets || {};
+  let count = 0;
+  for (const key of Object.keys(sets)) {
+    if (missionsetMatches(key, kind, scope)) {
+      delete sets[key];
+      count++;
+    }
+  }
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+  return `Removed ${describeMissions(kind, scope)} (${count} mission sets).`;
 }
 
 /**

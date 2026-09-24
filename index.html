@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="./assets/style.css" />
     <link rel="icon" type="image/png" href="./assets/favicon.png" />
   </head>
-  <body>
+  <body class="app">
     <h1>Borderlands 4 - Online Save Editor</h1>
     <div class="header-links">
       <a href="https://github.com/iyre/bl4-save-tools" target="_blank" rel="noopener"
@@ -29,55 +29,58 @@
       </div>
       <button class="update-banner-minimize" onclick="toggleUpdateBanner()" aria-label="Close">&#x2715;</button>
     </div>
-    <div class="main-content">
-      <div class="controls-group">
-        <div id="input-section" class="section">
-          <div class="section-header editor-header">
-            <h2>Import Save</h2>
-            <button class="secondary help-btn" onclick="showUsageModal()" title="How to use this editor">?</button>
-          </div>
-          <div id="input-controls">
-            <label>Select .sav or .yaml file: <input type="file" id="fileInput" /></label>
-            <label>
-              <span class="tooltip">
-                Steam/Epic user ID:
-                <span class="tooltiptext">
-                  Required to decrypt/encrypt saves.<br />
-                  Steam ID is 17 digits.<br />
-                  Epic ID is 32 characters.
-                </span>
-              </span>
-              <input type="text" id="userIdInput" placeholder="7656119..." />
-            </label>
-            <button onclick="importFile()">Import</button>
-          </div>
-        </div>
+    <div class="app-shell">
+      <div id="toolbar" class="toolbar">
+        <button class="secondary help-btn" onclick="showUsageModal()" title="How to use this editor">?</button>
+        <label class="toolbar-field">
+          <span>Save file</span>
+          <input type="file" id="fileInput" />
+        </label>
+        <label class="toolbar-field">
+          <span class="tooltip">
+            Steam/Epic ID
+            <span class="tooltiptext">
+              Required to decrypt/encrypt saves.<br />
+              Steam ID is 17 digits.<br />
+              Epic ID is 32 characters.
+            </span>
+          </span>
+          <input type="text" id="userIdInput" placeholder="7656119..." />
+        </label>
+        <button onclick="importFile()">Import</button>
+        <span id="save-type-badge" class="save-type-badge">No save loaded</span>
+        <span class="toolbar-spacer"></span>
+        <button id="exportSavBtn" onclick="encryptSav()" disabled>Export .sav</button>
+        <button id="exportYamlBtn" class="secondary" onclick="downloadYaml()" disabled>Export .yaml</button>
+        <span class="toolbar-divider"></span>
+        <button id="editorToggleBtn" class="secondary" onclick="toggleEditor()" aria-pressed="true">Hide YAML</button>
+      </div>
+      <div class="main-content">
         <div id="preset-section" class="section">
           <div class="disabled-overlay" id="presetSectionOverlay">
             <div class="overlay-message">Import a save file first.</div>
           </div>
-          <div class="section-header">
-            <h2>Apply Presets</h2>
+          <div class="section-header preset-header">
+            <h2 id="preset-heading">Presets</h2>
+            <div class="mode-toggle" role="group" aria-label="Preset mode">
+              <button id="modeApplyBtn" class="mode-btn active" onclick="setPresetMode('apply')" aria-pressed="true">Add</button>
+              <button id="modeResetBtn" class="mode-btn" onclick="setPresetMode('reset')" aria-pressed="false">Remove</button>
+            </div>
           </div>
-          <div id="preset-buttons"></div>
+          <div id="preset-cards"></div>
         </div>
-      </div>
-      <div class="editor-group">
         <div id="editor-section" class="section">
           <div class="disabled-overlay" id="editorSectionOverlay">
             <div class="overlay-message">Import a save file first.</div>
           </div>
-          <div class="section-header editor-header">
+          <div class="section-header">
             <h2>Edit YAML (Advanced)</h2>
-            <div class="editor-actions">
-              <button onclick="encryptSav()">Export .sav</button>
-              <button class="secondary" onclick="downloadYaml()">Export .yaml</button>
-            </div>
           </div>
-          <div id="editor" style="width: 800px; height: 500px; border: 1px solid #ccc"></div>
+          <div id="editor"></div>
         </div>
       </div>
     </div>
+    <div id="toast-area" class="toast-area" aria-live="polite"></div>
     <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
@@ -90,6 +93,7 @@
     <script src="./assets/unlockables.js"></script>
     <script src="./assets/exploration.js"></script>
     <script src="./assets/missions.js"></script>
+    <script src="./assets/activities.js"></script>
     <script src="./assets/calculators.js"></script>
     <script src="./assets/progression.js"></script>
     <script src="./assets/challenges.js"></script>
