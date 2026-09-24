@@ -80,6 +80,41 @@ function openAllVaultDoors() {
 }
 
 /**
+ * Closes all vault doors by removing their collectible keys.
+ */
+function closeAllVaultDoors() {
+  removeCollectibleKeys(['vaultdoor', 'vaultlock']);
+}
+
+/**
+ * Completes all vaults: vault missions, doors, and powers.
+ */
+function completeVaults() {
+  if (!getYamlDataFromEditor()) return;
+  mergeMissionsetsWithPrefix('missionset_vault_');
+  openAllVaultDoors();
+  unlockVaultPowers();
+  return 'Completed vault missions, doors, and powers.';
+}
+
+/**
+ * Resets vault missions and doors. Vault powers are left in place and reset separately.
+ */
+function resetVaults() {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+
+  const sets = data.missions?.local_sets || {};
+  for (const key of Object.keys(sets)) {
+    if (key.startsWith('missionset_vault_')) delete sets[key];
+  }
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+
+  closeAllVaultDoors();
+  return 'Reset vault missions and doors. Vault powers are unchanged.';
+}
+
+/**
  * Unlocks all Vault Powers across all areas.
  * Sets the vault power flags for:
  * - Grasslands
@@ -97,6 +132,28 @@ function unlockVaultPowers() {
   data.stats.openworld.collectibles.vaultpower_grasslands = 1;
   data.stats.openworld.collectibles.vaultpower_shatteredlands = 1;
   data.stats.openworld.collectibles.vaultpower_mountains = 1;
+
+  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
+  editor.setValue(newYaml);
+}
+
+/**
+ * Removes the vault power flags set by unlockVaultPowers.
+ */
+function resetVaultPowers() {
+  removeCollectibleKeys(['vaultpower_grasslands', 'vaultpower_shatteredlands', 'vaultpower_mountains']);
+}
+
+/**
+ * Deletes the given keys from stats.openworld.collectibles, if present.
+ */
+function removeCollectibleKeys(keys) {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+
+  const collectibles = data.stats?.openworld?.collectibles;
+  if (!collectibles) return;
+  for (const key of keys) delete collectibles[key];
 
   const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
   editor.setValue(newYaml);

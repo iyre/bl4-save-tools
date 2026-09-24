@@ -196,7 +196,7 @@ button.secondary {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 0px 1px #000;
 }
 button.secondary:hover,
-button.secondary:focus {
+button.secondary:focus-visible {
   background: #666;
 }
 
@@ -284,11 +284,6 @@ body.app {
   width: 1px;
   align-self: stretch;
   background: #3a4046;
-}
-
-#editorToggleBtn[aria-pressed='true'] {
-  background: #3a4a5a;
-  box-shadow: inset 0 0 0 1px #5d7690;
 }
 
 .save-type-badge {

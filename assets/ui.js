@@ -48,10 +48,13 @@ function capitalize(text) {
  * - apply: function that edits the YAML; may return a string used as the feedback message
  * - reset: optional { title, apply } that undoes the preset in reset mode
  * - popup: true when apply opens a modal rather than editing directly
- * - unavailable: true when the selected scope has no content for it (shown disabled)
+ * - unavailable: true when the selected scope has no content for it, or a string giving another
+ *   reason (shown disabled, reason as hover text). Use a getter when it depends on the save's contents
  * - key: scoped cards only; identifies the preset across scopes. 'all' covers every other key
  *   in the card, so it's shown full width and marks the presets it includes when run
  * - granular: true for per-type presets, only shown when the card's "By type" toggle is on
+ * - id: unscoped cards only; stable id (`${card.id}:${id}`) instead of the preset's index
+ * - marks: unscoped cards only; ids of other presets also marked applied when this one is applied
  * Cards with typed: true show the "By type" toggle.
  * @type {Array<Object>}
  */
@@ -93,6 +96,16 @@ const PRESET_CARDS = [
         apply: () => unlockPostgame(),
       },
       {
+        id: 'vault-powers',
+        title: 'Unlock Vault Powers',
+        desc: 'Powerups from completing vaults. Vault doors are separate.',
+        apply: () => unlockVaultPowers(),
+        reset: {
+          title: 'Reset Vault Powers',
+          apply: () => resetVaultPowers(),
+        },
+      },
+      {
         title: 'Items to Character Level',
         desc: 'Sets every backpack item serial to the current character level.',
         apply: () => updateAllSerialLevels(),
@@ -102,6 +115,65 @@ const PRESET_CARDS = [
         desc: 'Paste item serials to add.',
         apply: () => showAddItemsPopup(),
         popup: true,
+      },
+      {
+        title: 'Disable Shared Progression',
+        desc: 'Map fog and discovered locations are stored per character instead of in the profile save. Re-enabling removes the per-character data.',
+        apply: () => setSharedProgression(false),
+        reset: {
+          title: 'Enable Shared Progression',
+          apply: () => setSharedProgression(true),
+        },
+      },
+    ],
+  },
+  {
+    id: 'character-world',
+    title: 'World',
+    saveType: 'character',
+    presets: [
+      {
+        title: 'Remove Map Fog',
+        desc: 'Fog of war on every map.',
+        get unavailable() {
+          return sharedProgressionUnavailable();
+        },
+        apply: () => clearMapFog(),
+        reset: {
+          title: 'Restore Map Fog',
+          apply: () => addMapFog(),
+        },
+      },
+      {
+        title: 'Discover Locations',
+        desc: 'Location and collectible markers on the map.',
+        get unavailable() {
+          return sharedProgressionUnavailable();
+        },
+        apply: () => discoverAllLocations(),
+        reset: {
+          title: 'Reset Locations',
+          apply: () => undiscoverAllLocations(),
+        },
+      },
+      {
+        title: 'Unlock Fast Travel',
+        desc: 'Safehouse and silo activities, which gate fast travel points. Also discovers their map markers when shared progression is disabled.',
+        apply: () => unlockCharacterFastTravel(),
+        reset: {
+          title: 'Reset Fast Travel',
+          apply: () => removeCharacterFastTravel(),
+        },
+      },
+      {
+        title: 'Complete Vaults',
+        desc: 'Vault missions, doors, and locks. Also unlocks vault powers, which are reset separately.',
+        apply: () => completeVaults(),
+        marks: ['character:vault-powers'],
+        reset: {
+          title: 'Reset Vaults',
+          apply: () => resetVaults(),
+        },
       },
     ],
   },
@@ -318,10 +390,13 @@ function renderPresets() {
     const grid = createElement('div', 'preset-grid');
     presets.forEach((preset, i) => {
       if (preset.granular && !expanded) return;
-      const id = card.scoped ? `${card.id}:${preset.key}:${scope}` : `${card.id}:${i}`;
+      const id = card.scoped ? `${card.id}:${preset.key}:${scope}` : `${card.id}:${preset.id ?? i}`;
       const onRun = card.scoped
         ? (status) => markScopedStatus(card, preset.key, scope, status)
-        : (status) => presetStatus.set(id, status);
+        : (status) => {
+            presetStatus.set(id, status);
+            if (status === 'applied') for (const other of preset.marks || []) presetStatus.set(other, status);
+          };
       const btn = createPresetButton(preset, id, onRun);
       if (preset.key === 'all') btn.classList.add('preset-btn-wide');
       grid.appendChild(btn);
@@ -398,7 +473,9 @@ function createPresetButton(preset, id, onRun) {
   const btn = createElement('button', 'secondary preset-btn');
   btn.appendChild(createElement('span', 'preset-title', action ? action.title : preset.title));
   btn.title = preset.desc;
-  if (preset.unavailable) btn.title += '\nNo content in the selected scope.';
+  if (preset.unavailable) {
+    btn.title += '\n' + (typeof preset.unavailable === 'string' ? preset.unavailable : 'No content in the selected scope.');
+  }
   else if (!action) btn.title += "\nCan't be reset.";
 
   const status = presetStatus.get(id);
@@ -454,7 +531,8 @@ function setPresetMode(mode) {
   renderPresets();
 }
 
-const EDITOR_COLLAPSED_KEY = 'bl4_editor_collapsed';
+// Renamed from bl4_editor_collapsed when the default flipped to shown, since that key was written on every load
+const EDITOR_COLLAPSED_KEY = 'bl4_editor_hidden';
 
 function setEditorCollapsed(collapsed) {
   document.body.classList.toggle('editor-open', !collapsed);
@@ -496,7 +574,36 @@ require(['vs/editor/editor.main'], function () {
     tabSize: 2,
     stickyScroll: { enabled: true },
   });
+
+  // Re-render presets when a manual edit changes state they depend on
+  let lastSharedProgression = isSharedProgressionEnabled();
+  let changeTimer;
+  editor.onDidChangeModelContent(() => {
+    clearTimeout(changeTimer);
+    changeTimer = setTimeout(() => {
+      const shared = isSharedProgressionEnabled();
+      if (shared === lastSharedProgression) return;
+      lastSharedProgression = shared;
+      renderPresets();
+    }, 300);
+  });
 });
+
+/**
+ * Unavailable reason for character presets that only apply without shared progression.
+ */
+function sharedProgressionUnavailable() {
+  return isSharedProgressionEnabled() && 'Stored in the profile save while shared progression is enabled.';
+}
+
+/**
+ * Whether the loaded character save uses shared progression. The game treats a missing flag as enabled.
+ * Reads the editor text directly so it's cheap enough to check on every render.
+ */
+function isSharedProgressionEnabled() {
+  if (!editor) return true;
+  return !/^\s*using_shared_progression:\s*false\s*$/m.test(editor.getValue());
+}
 
 let importFilename = 'imported';
 
@@ -605,7 +712,7 @@ window.addEventListener('DOMContentLoaded', function () {
     document.getElementById('userIdInput').value = previousUserId;
   }
 
-  setEditorCollapsed(localStorage.getItem(EDITOR_COLLAPSED_KEY) !== '0');
+  setEditorCollapsed(localStorage.getItem(EDITOR_COLLAPSED_KEY) === '1');
   renderPresets();
 });
 
@@ -680,7 +787,7 @@ function showUsageModal() {
       <li><strong>Export your original save as a backup</strong> before making any changes. Keep these timestamped files in case something goes wrong.</li>
       <li>Edit the save as desired:
         <ul>
-          <li>Use the <strong>Presets</strong> panel for common one-click changes. Hover a preset for details. Switch to <strong>Reset</strong> to undo supported presets.</li>
+          <li>Use the <strong>Presets</strong> panel for common one-click changes. Hover a preset for details. Switch to <strong>Remove</strong> to undo supported presets.</li>
           <li>Edit the YAML directly in the editor for advanced modifications.</li>
         </ul>
       </li>

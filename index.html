@@ -53,7 +53,7 @@
         <button id="exportSavBtn" onclick="encryptSav()" disabled>Export .sav</button>
         <button id="exportYamlBtn" class="secondary" onclick="downloadYaml()" disabled>Export .yaml</button>
         <span class="toolbar-divider"></span>
-        <button id="editorToggleBtn" class="secondary" onclick="toggleEditor()" aria-pressed="false">Show YAML</button>
+        <button id="editorToggleBtn" class="secondary" onclick="toggleEditor()" aria-pressed="true">Hide YAML</button>
       </div>
       <div class="main-content">
         <div id="preset-section" class="section">
@@ -63,8 +63,8 @@
           <div class="section-header preset-header">
             <h2 id="preset-heading">Presets</h2>
             <div class="mode-toggle" role="group" aria-label="Preset mode">
-              <button id="modeApplyBtn" class="mode-btn active" onclick="setPresetMode('apply')" aria-pressed="true">Apply</button>
-              <button id="modeResetBtn" class="mode-btn" onclick="setPresetMode('reset')" aria-pressed="false">Reset</button>
+              <button id="modeApplyBtn" class="mode-btn active" onclick="setPresetMode('apply')" aria-pressed="true">Add</button>
+              <button id="modeResetBtn" class="mode-btn" onclick="setPresetMode('reset')" aria-pressed="false">Remove</button>
             </div>
           </div>
           <div id="preset-cards"></div>

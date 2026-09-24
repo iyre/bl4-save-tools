@@ -159,3 +159,45 @@ function resetActivities(type, scope) {
   const unit = isProfileSave ? 'entries' : 'mission sets';
   return `Reset ${describeActivities(type, scope)} (${count} ${unit}).`;
 }
+
+// Character save missionsets for the activities that gate fast travel points
+const FAST_TRAVEL_MISSIONSETS = [
+  'missionset_zoneactivity_silo',
+  'missionset_zoneactivity_safehouse',
+  'missionset_harmonica_zoneactivity_safehouse',
+];
+
+/**
+ * Completes the safehouse and silo missionsets in a character save. Safehouse markers are only
+ * discovered when shared progression is disabled, since the profile save holds them otherwise.
+ */
+function unlockCharacterFastTravel() {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+
+  data.missions = data.missions || {};
+  data.missions.local_sets = data.missions.local_sets || {};
+  for (const key of FAST_TRAVEL_MISSIONSETS) {
+    data.missions.local_sets[key] = MISSIONSETS[key];
+  }
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+
+  if (!isSharedProgressionEnabled()) discoverSafehouseLocations();
+  return `Unlocked fast travel (${FAST_TRAVEL_MISSIONSETS.length} mission sets).`;
+}
+
+function removeCharacterFastTravel() {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+
+  const sets = data.missions?.local_sets || {};
+  let count = 0;
+  for (const key of FAST_TRAVEL_MISSIONSETS) {
+    if (key in sets) {
+      delete sets[key];
+      count++;
+    }
+  }
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+  return `Removed fast travel (${count} mission sets).`;
+}

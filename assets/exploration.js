@@ -37,7 +37,28 @@ const levelnames = [
 ];
 
 /**
- * Clears the fog of war from all game maps in profile save.
+ * Returns the discovery data for 'pc' (map fog) or 'pg' (discovered locations), creating it if missing.
+ * Profile saves keep it under domains.local as gbx_discovery_*_shared. Character saves keep it at
+ * the root as gbx_discovery_*, which the game only uses when state.using_shared_progression is false.
+ * @param {Object} data - The parsed save file data
+ * @param {'pc'|'pg'} kind
+ * @returns {Object}
+ */
+function getDiscoveryData(data, kind) {
+  if (!isProfileSave) {
+    const key = `gbx_discovery_${kind}`;
+    data[key] = data[key] || {};
+    return data[key];
+  }
+  const key = `gbx_discovery_${kind}_shared`;
+  data.domains = data.domains || {};
+  data.domains.local = data.domains.local || {};
+  data.domains.local[key] = data.domains.local[key] || {};
+  return data.domains.local[key];
+}
+
+/**
+ * Clears the fog of war from all game maps.
  * Updates fog of discovery (FOD) data for all game levels using zlib compression.
  * Also marks all worlds and regions as visited.
  */
@@ -56,7 +77,6 @@ function addMapFog() {
 function setMapFog(foddata) {
   const data = getYamlDataFromEditor();
   if (!data) return;
-  if (!isProfileSave) return;
 
   const commonFields = {
     foddimensionx: 128,
@@ -65,11 +85,7 @@ function setMapFog(foddata) {
     foddata,
   };
 
-  // Ensure gbx_discovery_pc exists
-  data.domains = data.domains || {};
-  data.domains.local = data.domains.local || {};
-  data.domains.local.gbx_discovery_pc_shared = data.domains.local.gbx_discovery_pc_shared || {};
-  let pc = data.domains.local.gbx_discovery_pc_shared;
+  const pc = getDiscoveryData(data, 'pc');
 
   // Update foddatas: add missing levelnames, and refresh foddata on every entry
   pc.foddatas = pc.foddatas || [];
@@ -176,15 +192,12 @@ function visitAllWorlds(data) {
 }
 
 /**
- * Adds locations to the discovered locations list in a profile save.
+ * Adds locations to the discovered locations list.
  * @param {Object} data - The parsed save file data
  * @param {string[]} locationSubstrings - Array of substrings to match against location names
  */
 function addDiscoveredLocations(data, locationSubstrings) {
-  data.domains = data.domains || {};
-  data.domains.local = data.domains.local || {};
-  data.domains.local.gbx_discovery_pg_shared = data.domains.local.gbx_discovery_pg_shared || {};
-  let pg = data.domains.local.gbx_discovery_pg_shared;
+  const pg = getDiscoveryData(data, 'pg');
   let existingBlob = pg.dlblob || '';
   let existing = existingBlob.split(/:\d:/).filter(Boolean);
 
@@ -206,7 +219,6 @@ function addDiscoveredLocations(data, locationSubstrings) {
 function discoverAllLocations() {
   const data = getYamlDataFromEditor();
   if (!data) return;
-  if (!isProfileSave) return;
 
   const locationSubstrings = [''];
   addDiscoveredLocations(data, locationSubstrings);
@@ -218,10 +230,9 @@ function discoverAllLocations() {
 function undiscoverAllLocations() {
   const data = getYamlDataFromEditor();
   if (!data) return;
-  if (!isProfileSave) return;
 
-  const pg = data.domains?.local?.gbx_discovery_pg_shared;
-  if (!pg?.dlblob) return 'No discovered locations found.';
+  const pg = getDiscoveryData(data, 'pg');
+  if (!pg.dlblob) return 'No discovered locations found.';
 
   const known = new Set(LOCATIONS);
   const existing = pg.dlblob.split(/:\d:/).filter(Boolean);
@@ -235,7 +246,6 @@ function undiscoverAllLocations() {
 function discoverSafehouseLocations() {
   const data = getYamlDataFromEditor();
   if (!data) return;
-  if (!isProfileSave) return;
 
   const prefix = 'DLMD_World_P_PoAActor_UAID_';
   const locationSubstrings = SAFEHOUSE_SILO_LOCATIONS.map((id) => prefix + id);
