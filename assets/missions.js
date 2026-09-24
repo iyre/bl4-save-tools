@@ -41,7 +41,8 @@ function mergeMissionsetsWithPrefix(prefix) {
 }
 
 function completeAllMissions() {
-  return completeMissions('all', 'all');
+  completeMissions('all', 'all');
+  completeActivities('all', 'all');
 }
 
 // Missionset keywords that indicate DLC content rather than base game content.
@@ -69,9 +70,13 @@ function getMissionsetKind(key) {
   return null;
 }
 
+/**
+ * kind: 'story' | 'side' | 'activity', or 'all' for story and side (activities are managed separately).
+ */
 function missionsetMatches(key, kind, scope) {
   const setKind = getMissionsetKind(key);
-  if (!setKind || (kind !== 'all' && kind !== setKind)) return false;
+  if (!setKind) return false;
+  if (kind === 'all' ? setKind === 'activity' : kind !== setKind) return false;
   if (scope === 'all') return true;
   return (scope === 'base') === isBaseGameMissionset(key);
 }

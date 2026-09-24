@@ -14,14 +14,17 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Unlock achievements
   - Unlock all specializations
   - Unlock UVHM & post-game activities
-  - Complete story / side / activity missions (base game, DLC, or both)
+  - Complete story / side missions (base game, DLC, or both)
+  - Complete activities by type (crawlers, safehouses, silos, etc.) or all at once
   - Add item serials to backpack
   - Set all items in backpack to character level
 - Apply preset modifications to profile saves (shared between characters)
   - Remove map fog
   - Discover locations
   - Unlock fast travel
-  - Complete collectibles / activities (base game, DLC, or both)
+  - Unlock vault doors & keys
+  - Complete collectibles by type (echo logs, capsules, safes, etc.) or all at once (base game, DLC, or both)
+  - Complete activities by type or all at once (shared progress)
   - Max SDU
   - Unlock vault powers
   - Unlock new game shortcuts
@@ -29,7 +32,7 @@ Web-based tool for modifying Borderlands 4 (PC) save files.
   - Unlock cosmetics
   - Add item serials to bank
   - Set all items in bank to max level
-- Remove mode to undo supported presets (missions, map fog, locations, fast travel, collectibles, activities)
+- Reset mode to undo supported presets (missions, activities, map fog, locations, fast travel, vault doors & powers, collectibles)
 - All DLC content through story pack 2 is included
 
 I don't plan to implement item editing beyond basic preset manipulations.
@@ -45,7 +48,7 @@ I don't plan to implement item editing beyond basic preset manipulations.
 5. **Export your original save as a backup.** Keep these timestamped files in case something goes wrong.
 6. Edit your save as desired - refer to [docs](docs/README.md) for basic info about the structure
    - Apply presets to automatically make common changes that are relatively safe & reliable. These are applied immediately when clicked.
-   - Switch the presets panel to **Remove** to undo supported presets. The panel is outlined in red while remove mode is on.
+   - Switch the presets panel to **Reset** to undo supported presets. The panel is outlined in red while reset mode is on. Hover a preset for details.
    - The YAML editor is hidden by default. Click **Show YAML** in the toolbar to show it.
 7. Download as `.sav`
 8. Rename or delete your original save and replace it with the new one, removing the timestamp.

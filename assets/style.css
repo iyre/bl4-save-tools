@@ -291,14 +291,34 @@ body.app {
   box-shadow: inset 0 0 0 1px #5d7690;
 }
 
-.loaded-save-info {
-  font-size: 0.85rem;
+.save-type-badge {
+  font-size: 0.9rem;
   color: #9aa4ad;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 0.35em 0.8em;
+  border: 1px dashed #3a4046;
+  border-radius: 999px;
+}
+
+.save-type-badge[data-save-type] {
+  font-weight: 600;
+  border-style: solid;
+}
+
+.save-type-badge[data-save-type='profile'] {
+  color: #e2c8ff;
+  background: #2e2340;
+  border-color: #7b5aa6;
+}
+
+.save-type-badge[data-save-type='character'] {
+  color: #b8f0e0;
+  background: #173430;
+  border-color: #3c8f7c;
+}
+
+.toolbar-spacer {
   flex: 1 1 0;
-  min-width: 0;
 }
 
 /* ---------- Main area ---------- */
@@ -351,14 +371,17 @@ body.editor-open #editor-section {
 #preset-cards {
   min-height: 0;
   overflow-y: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-  align-items: start;
-  gap: 1rem;
   padding: 3px;
 }
 
+.preset-columns {
+  column-width: 380px;
+  column-gap: 1rem;
+}
+
 .preset-card {
+  break-inside: avoid;
+  margin-bottom: 1rem;
   background: #1d2125;
   border: 1px solid #2e3338;
   border-radius: 8px;
@@ -394,35 +417,33 @@ body.editor-open #editor-section {
 
 .preset-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 0.6rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
 }
 
+/* Every tile is the same size regardless of title length or mode */
 .preset-btn {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 0.25rem;
-  min-height: 4.6rem;
-  padding: 0.6rem 0.75rem;
-  text-align: left;
-  line-height: 1.25;
+  align-items: center;
+  justify-content: center;
+  height: 2.7rem;
+  padding: 0 0.6rem;
+  text-align: center;
+  line-height: 1.15;
 }
 
 .preset-title {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
-.preset-desc {
-  font-size: 0.8rem;
-  color: #b3bcc5;
-  text-shadow: none;
-}
-
-.preset-btn:disabled .preset-desc {
-  color: #666;
+/* "All" preset on typed cards spans the row */
+.preset-btn-wide {
+  grid-column: 1 / -1;
 }
 
 .preset-applied {
@@ -431,10 +452,31 @@ body.editor-open #editor-section {
   box-shadow: 0 0 0 2px #1bba4b33;
 }
 
-.preset-removed {
+.preset-reset {
   outline: 2px solid #ff9a9d;
   outline-offset: 0;
   box-shadow: 0 0 0 2px #e5484d66;
+}
+
+.types-toggle {
+  background: transparent;
+  color: #b8c2cb;
+  border: 1px solid #3a4046;
+  border-radius: 6px;
+  padding: calc(0.2em + 2px) 0.7em;
+  font-size: 0.8rem;
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+.types-toggle:hover {
+  background: #2c3237;
+}
+
+.types-toggle.active {
+  background: #4a545e;
+  border-color: #4a545e;
+  color: #fff;
 }
 
 .mode-toggle,
@@ -477,22 +519,13 @@ body.editor-open #editor-section {
   color: #fff;
 }
 
-#modeRemoveBtn.active {
+#modeResetBtn.active {
   background: #d13438;
 }
 
-/* ---------- Remove mode ---------- */
+/* ---------- Reset mode ---------- */
 
-.remove-mode-banner {
-  background: #3a1618;
-  border: 1px solid #e5484d;
-  color: #ffb3b5;
-  border-radius: 6px;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.9rem;
-}
-
-body.remove-mode::after {
+body.reset-mode::after {
   content: '';
   position: fixed;
   inset: 0;
@@ -501,29 +534,25 @@ body.remove-mode::after {
   z-index: 1000;
 }
 
-body.remove-mode #preset-section {
+body.reset-mode #preset-section {
   background: #2a2023;
   box-shadow: 0 0 0 3px #e5484d, 0 0 24px rgba(229, 72, 77, 0.35);
 }
 
-body.remove-mode #preset-heading {
+body.reset-mode #preset-heading {
   color: #ff7b7f;
 }
 
-body.remove-mode .preset-card {
+body.reset-mode .preset-card {
   border-color: #5a2a2d;
 }
 
-body.remove-mode .preset-btn:not(:disabled) {
+body.reset-mode .preset-btn:not(:disabled) {
   background: #6b2226;
 }
 
-body.remove-mode .preset-btn:not(:disabled):hover {
+body.reset-mode .preset-btn:not(:disabled):hover {
   background: #8e2c31;
-}
-
-body.remove-mode .preset-btn:not(:disabled) .preset-desc {
-  color: #f0c4c6;
 }
 
 /* ---------- Feedback toasts ---------- */
@@ -556,7 +585,7 @@ body.remove-mode .preset-btn:not(:disabled) .preset-desc {
   border-left-color: #1bba4b;
 }
 
-.toast-remove {
+.toast-reset {
   border-left-color: #e5484d;
 }
 

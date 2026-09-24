@@ -31,6 +31,7 @@
     </div>
     <div class="app-shell">
       <div id="toolbar" class="toolbar">
+        <button class="secondary help-btn" onclick="showUsageModal()" title="How to use this editor">?</button>
         <label class="toolbar-field">
           <span>Save file</span>
           <input type="file" id="fileInput" />
@@ -47,12 +48,12 @@
           <input type="text" id="userIdInput" placeholder="7656119..." />
         </label>
         <button onclick="importFile()">Import</button>
-        <span id="loaded-save-info" class="loaded-save-info">No save loaded</span>
+        <span id="save-type-badge" class="save-type-badge">No save loaded</span>
+        <span class="toolbar-spacer"></span>
         <button id="exportSavBtn" onclick="encryptSav()" disabled>Export .sav</button>
         <button id="exportYamlBtn" class="secondary" onclick="downloadYaml()" disabled>Export .yaml</button>
         <span class="toolbar-divider"></span>
         <button id="editorToggleBtn" class="secondary" onclick="toggleEditor()" aria-pressed="false">Show YAML</button>
-        <button class="secondary help-btn" onclick="showUsageModal()" title="How to use this editor">?</button>
       </div>
       <div class="main-content">
         <div id="preset-section" class="section">
@@ -60,14 +61,11 @@
             <div class="overlay-message">Import a save file first.</div>
           </div>
           <div class="section-header preset-header">
-            <h2 id="preset-heading">Apply Presets</h2>
+            <h2 id="preset-heading">Presets</h2>
             <div class="mode-toggle" role="group" aria-label="Preset mode">
               <button id="modeApplyBtn" class="mode-btn active" onclick="setPresetMode('apply')" aria-pressed="true">Apply</button>
-              <button id="modeRemoveBtn" class="mode-btn" onclick="setPresetMode('remove')" aria-pressed="false">Remove</button>
+              <button id="modeResetBtn" class="mode-btn" onclick="setPresetMode('reset')" aria-pressed="false">Reset</button>
             </div>
-          </div>
-          <div id="remove-mode-banner" class="remove-mode-banner" hidden>
-            <strong>Remove mode is on.</strong> Presets undo their changes. Presets that can't be undone are disabled.
           </div>
           <div id="preset-cards"></div>
         </div>
@@ -95,6 +93,7 @@
     <script src="./assets/unlockables.js"></script>
     <script src="./assets/exploration.js"></script>
     <script src="./assets/missions.js"></script>
+    <script src="./assets/activities.js"></script>
     <script src="./assets/calculators.js"></script>
     <script src="./assets/progression.js"></script>
     <script src="./assets/challenges.js"></script>

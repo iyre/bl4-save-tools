@@ -40,13 +40,19 @@ function capitalize(text) {
 }
 
 /**
- * Preset cards shown in the presets panel. Only cards matching the loaded save type are shown.
+ * Preset cards shown in the presets panel. Only cards matching the loaded save type (or 'any') are shown.
  * Scoped cards show a Base Game / DLC / All switch and build their presets from the chosen scope.
  * Preset shape:
- * - title, desc: tile title and description
+ * - title: tile title
+ * - desc: hover text; worded to fit both modes and every scope
  * - apply: function that edits the YAML; may return a string used as the feedback message
- * - remove: optional { title, desc, apply } that undoes the preset in remove mode
+ * - reset: optional { title, apply } that undoes the preset in reset mode
  * - popup: true when apply opens a modal rather than editing directly
+ * - unavailable: true when the selected scope has no content for it (shown disabled)
+ * - key: scoped cards only; identifies the preset across scopes. 'all' covers every other key
+ *   in the card, so it's shown full width and marks the presets it includes when run
+ * - granular: true for per-type presets, only shown when the card's "By type" toggle is on
+ * Cards with typed: true show the "By type" toggle.
  * @type {Array<Object>}
  */
 const PRESET_CARDS = [
@@ -57,43 +63,43 @@ const PRESET_CARDS = [
     presets: [
       {
         title: `Max Level (${MAX_LEVEL})`,
-        desc: `Sets character level to the maximum (${MAX_LEVEL}).`,
+        desc: `Character level ${MAX_LEVEL}.`,
         apply: () => setCharacterToMaxLevel(),
       },
       {
         title: 'Change Class',
-        desc: 'Changes character class (select from list).',
+        desc: 'Pick a new class from a list.',
         apply: () => showChangeClassPopup(),
         popup: true,
       },
       {
         title: 'Complete Challenges',
-        desc: "Completes all challenges (doesn't grant rewards).",
+        desc: "All challenges. Rewards aren't granted.",
         apply: () => completeAllChallenges(),
       },
       {
         title: 'Complete Achievements',
-        desc: 'Completes all achievements.',
+        desc: 'All achievements.',
         apply: () => completeAllAchievements(),
       },
       {
-        title: 'Unlock All Specializations',
-        desc: 'Unlocks the specialization system and all skills.',
+        title: 'Max Specializations',
+        desc: 'Unlock the specialization system and max all skills.',
         apply: () => unlockAllSpecialization(),
       },
       {
         title: 'Unlock UVHM / Postgame',
-        desc: 'Sets flags to unlock UVH mode and post-game activities.',
+        desc: 'UVH mode and post-game activity flags.',
         apply: () => unlockPostgame(),
       },
       {
-        title: 'Set All Items to Character Level',
-        desc: 'Updates serials for all backpack items to match current character level.',
+        title: 'Items to Character Level',
+        desc: 'Sets every backpack item serial to the current character level.',
         apply: () => updateAllSerialLevels(),
       },
       {
-        title: 'Add Item Serials to Backpack',
-        desc: 'Adds specified item serials to backpack.',
+        title: 'Add Items to Backpack',
+        desc: 'Paste item serials to add.',
         apply: () => showAddItemsPopup(),
         popup: true,
       },
@@ -106,27 +112,41 @@ const PRESET_CARDS = [
     scoped: true,
     presets: (scope) =>
       [
-        ['story', 'Story Missions'],
-        ['side', 'Side Missions'],
-        ['activity', 'Activity Missions'],
-        ['all', 'All Missions'],
-      ].map(([kind, noun]) => {
-        const what = describeMissions(kind, scope);
-        const extra =
-          (kind === 'story' || kind === 'all') && scope !== 'dlc'
-            ? ' Stages the epilogue so specializations unlock.'
-            : '';
-        return {
-          title: `Complete ${noun}`,
-          desc: `Completes ${what}.${extra}`,
-          apply: () => completeMissions(kind, scope),
-          remove: {
-            title: `Remove ${noun}`,
-            desc: `Resets ${what} to not started.`,
-            apply: () => removeMissions(kind, scope),
+        ['all', 'All Missions', 'Story and side missions. Activities are separate.'],
+        ['story', 'Story Missions', 'Main story missions. Completing base game story also stages the epilogue so specializations unlock.'],
+        ['side', 'Side Missions', 'Side, micro, and vault missions.'],
+      ].map(([kind, noun, desc]) => ({
+        key: kind,
+        title: `Complete ${noun}`,
+        desc,
+        apply: () => completeMissions(kind, scope),
+        reset: {
+          title: `Reset ${noun}`,
+          apply: () => removeMissions(kind, scope),
+        },
+      })),
+  },
+  {
+    id: 'activities',
+    title: 'Activities',
+    saveType: 'any',
+    scoped: true,
+    typed: true,
+    presets: (scope) =>
+      [{ key: 'all', label: 'All Activities', desc: 'Every activity type.' }, ...ACTIVITY_TYPES].map(
+        ({ key, label, desc }) => ({
+          key,
+          granular: key !== 'all',
+          title: key === 'all' ? `Complete ${label}` : label,
+          desc: desc || `${label}. Profile saves track these as shared progress toward Echo tokens.`,
+          unavailable: !activityHasContent(key, scope, isProfileSave),
+          apply: () => completeActivities(key, scope),
+          reset: {
+            title: key === 'all' ? `Reset ${label}` : label,
+            apply: () => resetActivities(key, scope),
           },
-        };
-      }),
+        })
+      ),
   },
   {
     id: 'world',
@@ -135,67 +155,63 @@ const PRESET_CARDS = [
     presets: [
       {
         title: 'Remove Map Fog',
-        desc: 'Removes fog of war from all maps.',
+        desc: 'Fog of war on every map.',
         apply: () => clearMapFog(),
-        remove: {
-          title: 'Re-add Map Fog',
-          desc: 'Restores fog of war on all maps.',
+        reset: {
+          title: 'Restore Map Fog',
           apply: () => addMapFog(),
         },
       },
       {
         title: 'Discover Locations',
-        desc: 'Adds all location and collectible markers to the map.',
+        desc: 'Location and collectible markers on the map.',
         apply: () => discoverAllLocations(),
-        remove: {
-          title: 'Un-discover Locations',
-          desc: 'Removes all known location and collectible markers from the map.',
+        reset: {
+          title: 'Reset Locations',
           apply: () => undiscoverAllLocations(),
         },
       },
       {
         title: 'Unlock Fast Travel',
-        desc: 'Completes all safehouse and silo activities, unlocking them as fast travel destinations.',
+        desc: 'Safehouse and silo activities, which gate fast travel points.',
         apply: () => unlockFastTravel(),
-        remove: {
-          title: 'Lock Fast Travel',
-          desc: 'Un-completes all safehouse and silo activities on the profile.',
+        reset: {
+          title: 'Reset Fast Travel',
           apply: () => removeFastTravel(),
+        },
+      },
+      {
+        title: 'Unlock Vault Doors',
+        desc: 'Vault doors, locks, and keys. Vault powers are separate.',
+        apply: () => completeVaultObjects('doors'),
+        reset: {
+          title: 'Reset Vault Doors',
+          apply: () => resetVaultObjects('doors'),
         },
       },
     ],
   },
   {
     id: 'progress',
-    title: 'Collectibles & Activities',
+    title: 'Collectibles',
     saveType: 'profile',
     scoped: true,
-    presets: (scope) => {
-      const collectibles = describeSharedProgress('collectible', scope);
-      const activities = describeSharedProgress('activity', scope);
-      return [
-        {
-          title: 'Unlock Collectibles',
-          desc: `Marks ${collectibles} as found (echo logs, capsules, vault keys, etc.) for all characters.`,
-          apply: () => completeSharedProgress('collectible', scope),
-          remove: {
-            title: 'Remove Collectibles',
-            desc: `Marks ${collectibles} as not found.`,
-            apply: () => removeSharedProgress('collectible', scope),
+    typed: true,
+    presets: (scope) =>
+      [{ key: 'all', label: 'All Collectibles', desc: 'Every collectible type.' }, ...COLLECTIBLE_TYPES].map(
+        ({ key, label, desc }) => ({
+          key,
+          granular: key !== 'all',
+          title: key === 'all' ? `Unlock ${label}` : label,
+          desc: desc || `${label}. Shared by all characters.`,
+          unavailable: key !== 'all' && getSharedProgressSources('collectible', scope, key).length === 0,
+          apply: () => completeSharedProgress('collectible', scope, key),
+          reset: {
+            title: key === 'all' ? `Reset ${label}` : label,
+            apply: () => removeSharedProgress('collectible', scope, key),
           },
-        },
-        {
-          title: 'Complete Activities',
-          desc: `Marks ${activities} complete on the profile, counting toward shared Echo token progress.`,
-          apply: () => completeSharedProgress('activity', scope),
-          remove: {
-            title: 'Remove Activities',
-            desc: `Marks ${activities} as not completed on the profile.`,
-            apply: () => removeSharedProgress('activity', scope),
-          },
-        },
-      ];
-    },
+        })
+      ),
   },
   {
     id: 'unlocks',
@@ -204,37 +220,41 @@ const PRESET_CARDS = [
     presets: [
       {
         title: 'Max SDU',
-        desc: 'Purchases all SDU upgrades, granting additional Echo tokens if needed.',
+        desc: 'Purchases all SDU upgrades, granting Echo tokens if needed.',
         apply: () => setMaxSDU(),
       },
       {
         title: 'Unlock Vault Powers',
-        desc: 'Unlocks all powerups from completing vaults.',
-        apply: () => completeSharedVaultUnlocks(),
+        desc: 'Powerups from completing vaults. Vault doors are separate.',
+        apply: () => completeVaultObjects('powers'),
+        reset: {
+          title: 'Reset Vault Powers',
+          apply: () => resetVaultObjects('powers'),
+        },
       },
       {
         title: 'Unlock New Game Shortcuts',
-        desc: 'Unlocks all new game shortcuts (skip prologue, skip story, specialization system).',
+        desc: 'Skip prologue, skip story, and specialization system options.',
         apply: () => unlockNewGameShortcuts(),
       },
       {
         title: 'Unlock Hover Drives',
-        desc: 'Unlocks all hover drive manufacturers and tiers.',
+        desc: 'All hover drive manufacturers and tiers.',
         apply: () => unlockAllHoverDrives(),
       },
       {
         title: 'Unlock Cosmetics',
-        desc: 'Unlocks (almost) all cosmetic items.',
+        desc: '(Almost) all cosmetic items.',
         apply: () => unlockAllCosmetics(),
       },
       {
-        title: `Set All Bank Items to Max Level (${MAX_LEVEL})`,
-        desc: `Updates serials for all bank items to have max level (${MAX_LEVEL}).`,
+        title: `Bank Items to Level ${MAX_LEVEL}`,
+        desc: `Re-levels every bank item serial to ${MAX_LEVEL}.`,
         apply: () => updateAllSerialLevels(),
       },
       {
-        title: 'Add Item Serials to Bank',
-        desc: 'Adds specified item serials to bank.',
+        title: 'Add Items to Bank',
+        desc: 'Paste item serials to add.',
         apply: () => showAddItemsPopup(),
         popup: true,
       },
@@ -244,10 +264,22 @@ const PRESET_CARDS = [
 
 let presetMode = 'apply';
 let saveLoaded = false;
-// preset id -> 'applied' | 'removed', reset on import
+// preset id -> 'applied' | 'reset', cleared on import.
+// Scoped card ids are `${card.id}:${preset.key}:${scope}` so one run can mark the presets it covers.
 const presetStatus = new Map();
 // card id -> selected content scope for scoped cards
 const cardScopes = {};
+// card ids with the "By type" toggle on, remembered per browser
+const TYPES_EXPANDED_KEY = 'bl4_types_expanded';
+const expandedCards = new Set(loadExpandedCards());
+
+function loadExpandedCards() {
+  try {
+    return JSON.parse(localStorage.getItem(TYPES_EXPANDED_KEY)) || [];
+  } catch {
+    return [];
+  }
+}
 
 function createElement(tag, className, text) {
   const node = document.createElement(tag);
@@ -260,12 +292,15 @@ function createElement(tag, className, text) {
  * Renders preset cards for the loaded save type (all cards before a save is loaded).
  */
 function renderPresets() {
-  const container = document.getElementById('preset-cards');
-  container.innerHTML = '';
+  const scroller = document.getElementById('preset-cards');
+  scroller.innerHTML = '';
+  // Cards flow into balanced columns so short cards don't leave gaps under them
+  const container = createElement('div', 'preset-columns');
+  scroller.appendChild(container);
   const activeSaveType = isProfileSave ? 'profile' : 'character';
 
   for (const card of PRESET_CARDS) {
-    if (saveLoaded && card.saveType !== activeSaveType) continue;
+    if (saveLoaded && card.saveType !== 'any' && card.saveType !== activeSaveType) continue;
 
     const cardEl = createElement('div', 'preset-card');
     const header = createElement('div', 'preset-group-header');
@@ -274,19 +309,66 @@ function renderPresets() {
       header.appendChild(createElement('span', 'preset-card-tag', `${card.saveType} save`));
     }
     const scope = card.scoped ? cardScopes[card.id] || 'all' : null;
+    const expanded = expandedCards.has(card.id);
+    if (card.typed) header.appendChild(createTypesToggle(card.id, expanded));
     if (card.scoped) header.appendChild(createScopeToggle(card.id, scope));
     cardEl.appendChild(header);
 
     const presets = card.scoped ? card.presets(scope) : card.presets;
     const grid = createElement('div', 'preset-grid');
     presets.forEach((preset, i) => {
-      const id = card.scoped ? `${card.id}:${i}:${scope}` : `${card.id}:${i}`;
-      grid.appendChild(createPresetButton(preset, id));
+      if (preset.granular && !expanded) return;
+      const id = card.scoped ? `${card.id}:${preset.key}:${scope}` : `${card.id}:${i}`;
+      const onRun = card.scoped
+        ? (status) => markScopedStatus(card, preset.key, scope, status)
+        : (status) => presetStatus.set(id, status);
+      const btn = createPresetButton(preset, id, onRun);
+      if (preset.key === 'all') btn.classList.add('preset-btn-wide');
+      grid.appendChild(btn);
     });
     cardEl.appendChild(grid);
 
     container.appendChild(cardEl);
   }
+}
+
+/**
+ * Records a scoped preset run. The status also applies to every available preset it covers
+ * ('all' key covers every key, 'all' scope covers base and DLC). Presets that cover this one
+ * without being covered by it now have mixed state, so their status is cleared.
+ */
+function markScopedStatus(card, key, scope, status) {
+  const scopes = scope === 'all' ? CONTENT_SCOPES.map((s) => s.key) : [scope];
+  const covered = new Set();
+  for (const s of scopes) {
+    for (const preset of card.presets(s)) {
+      if (preset.unavailable || (key !== 'all' && preset.key !== key)) continue;
+      covered.add(`${card.id}:${preset.key}:${s}`);
+    }
+  }
+  for (const k of new Set([key, 'all'])) {
+    for (const s of new Set([scope, 'all'])) {
+      const id = `${card.id}:${k}:${s}`;
+      if (!covered.has(id)) presetStatus.delete(id);
+    }
+  }
+  for (const id of covered) presetStatus.set(id, status);
+}
+
+function createTypesToggle(cardId, expanded) {
+  const btn = createElement('button', 'types-toggle', 'By type');
+  btn.classList.toggle('active', expanded);
+  btn.setAttribute('aria-pressed', String(expanded));
+  btn.title = expanded ? 'Hide per-type presets' : 'Show per-type presets';
+  btn.onclick = () => {
+    if (expanded) expandedCards.delete(cardId);
+    else expandedCards.add(cardId);
+    try {
+      localStorage.setItem(TYPES_EXPANDED_KEY, JSON.stringify([...expandedCards]));
+    } catch {}
+    renderPresets();
+  };
+  return btn;
 }
 
 function createScopeToggle(cardId, selected) {
@@ -307,31 +389,31 @@ function createScopeToggle(cardId, selected) {
 }
 
 /**
- * Creates a tile button (title + description) for a preset in the current mode.
+ * Creates a fixed-size tile for a preset in the current mode. The description is hover text.
  */
-function createPresetButton(preset, id) {
-  const removing = presetMode === 'remove';
-  const action = removing ? preset.remove : preset;
+function createPresetButton(preset, id, onRun) {
+  const resetting = presetMode === 'reset';
+  const action = resetting ? preset.reset : preset;
 
   const btn = createElement('button', 'secondary preset-btn');
   btn.appendChild(createElement('span', 'preset-title', action ? action.title : preset.title));
-  btn.appendChild(
-    createElement('span', 'preset-desc', action ? action.desc : "Can't be undone.")
-  );
+  btn.title = preset.desc;
+  if (preset.unavailable) btn.title += '\nNo content in the selected scope.';
+  else if (!action) btn.title += "\nCan't be reset.";
 
   const status = presetStatus.get(id);
-  if (status) btn.classList.add(status === 'applied' ? 'preset-applied' : 'preset-removed');
+  if (status) btn.classList.add(status === 'applied' ? 'preset-applied' : 'preset-reset');
 
-  if (!action) {
+  if (!action || preset.unavailable) {
     btn.disabled = true;
     return btn;
   }
 
-  btn.onclick = () => runPreset(id, action, removing);
+  btn.onclick = () => runPreset(action, resetting, onRun);
   return btn;
 }
 
-function runPreset(id, action, removing) {
+function runPreset(action, resetting, onRun) {
   if (action.popup) {
     action.apply();
     return;
@@ -353,20 +435,17 @@ function runPreset(id, action, removing) {
     showToast(`${message} No changes were needed.`, 'info');
     return;
   }
-  showToast(message, removing ? 'remove' : 'apply');
-  presetStatus.set(id, removing ? 'removed' : 'applied');
+  showToast(message, resetting ? 'reset' : 'apply');
+  onRun(resetting ? 'reset' : 'applied');
   renderPresets();
 }
 
 function setPresetMode(mode) {
   presetMode = mode;
-  const removing = mode === 'remove';
-  document.body.classList.toggle('remove-mode', removing);
-  document.getElementById('preset-heading').textContent = removing ? 'Remove Presets' : 'Apply Presets';
-  document.getElementById('remove-mode-banner').hidden = !removing;
+  document.body.classList.toggle('reset-mode', mode === 'reset');
   for (const [btnId, btnMode] of [
     ['modeApplyBtn', 'apply'],
-    ['modeRemoveBtn', 'remove'],
+    ['modeResetBtn', 'reset'],
   ]) {
     const btn = document.getElementById(btnId);
     btn.classList.toggle('active', btnMode === mode);
@@ -390,7 +469,7 @@ function toggleEditor() {
 }
 
 /**
- * Shows a short-lived notification. kind: 'apply' | 'remove' | 'info' | 'error'
+ * Shows a short-lived notification. kind: 'apply' | 'reset' | 'info' | 'error'
  */
 function showToast(message, kind = 'info') {
   const area = document.getElementById('toast-area');
@@ -458,8 +537,9 @@ async function importFile() {
   editor.setValue(yamlText);
   saveLoaded = true;
   presetStatus.clear();
-  document.getElementById('loaded-save-info').textContent =
-    `Loaded ${file.name} (${isProfileSave ? 'profile' : 'character'} save)`;
+  const badge = document.getElementById('save-type-badge');
+  badge.textContent = isProfileSave ? 'Loaded profile (shared) save' : 'Loaded character save';
+  badge.dataset.saveType = isProfileSave ? 'profile' : 'character';
   setPresetMode('apply');
   enableSections();
 }
@@ -600,7 +680,7 @@ function showUsageModal() {
       <li><strong>Export your original save as a backup</strong> before making any changes. Keep these timestamped files in case something goes wrong.</li>
       <li>Edit the save as desired:
         <ul>
-          <li>Use the <strong>Apply Presets</strong> panel for common one-click changes.</li>
+          <li>Use the <strong>Presets</strong> panel for common one-click changes. Hover a preset for details. Switch to <strong>Reset</strong> to undo supported presets.</li>
           <li>Edit the YAML directly in the editor for advanced modifications.</li>
         </ul>
       </li>

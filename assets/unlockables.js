@@ -82,44 +82,144 @@ const SHARED_PROGRESS_SOURCES = {
   },
 };
 
-function getSharedProgressSources(kind, scope) {
+/**
+ * Collectible types shown as separate presets.
+ * - profile: [unlockables key, entry prefix] pairs in the profile save.
+ *   Keys starting with "sharedprogress_" are DLC content; everything else is base game.
+ */
+const COLLECTIBLE_TYPES = [
+  {
+    key: 'echolog',
+    label: 'Echo Logs',
+    profile: [
+      ['echo_log_challenges', ''],
+      ['sharedprogress_cello', 'SharedProgress_Cello.collectible_echolog'],
+      ['sharedprogress_cowbell', 'SharedProgress_Cowbell.collectible_echolog'],
+      ['sharedprogress_harmonica', 'SharedProgress_Harmonica.collectible_echolog'],
+      ['sharedprogress_tuba', 'SharedProgress_Tuba.collectible_echolog'],
+      ['sharedprogress_viola', 'SharedProgress_Viola.collectible_echolog'],
+    ],
+  },
+  {
+    key: 'vaultsymbol',
+    label: 'Vault Symbols',
+    profile: [
+      ['echo_upgrade_challenges', 'echo_upgrade_challenges.collect_vaultsymbols'],
+      ['sharedprogress_cowbell', 'SharedProgress_Cowbell.collectible_vaultsymbols'],
+    ],
+  },
+  {
+    key: 'cache',
+    label: 'Caches',
+    profile: [
+      ['echo_upgrade_challenges', 'echo_upgrade_challenges.collect_caches'],
+      ['sharedprogress_cowbell', 'SharedProgress_Cowbell.collectible_dahlcaches'],
+    ],
+  },
+  {
+    key: 'capsule',
+    label: 'Capsules',
+    profile: [['echo_upgrade_challenges', 'echo_upgrade_challenges.collect_capsules']],
+  },
+  {
+    key: 'evocarium',
+    label: 'Evocariums',
+    profile: [['echo_upgrade_challenges', 'echo_upgrade_challenges.collect_evocariums']],
+  },
+  {
+    key: 'speaker',
+    label: 'Propaganda Speakers',
+    profile: [['echo_upgrade_challenges', 'echo_upgrade_challenges.collect_propagandaspeakers']],
+  },
+  {
+    key: 'safe',
+    label: 'Safes',
+    profile: [
+      ['echo_upgrade_challenges', 'echo_upgrade_challenges.collect_safes'],
+      ['sharedprogress_harmonica', 'SharedProgress_Harmonica.collectible_islandsafe'],
+    ],
+  },
+  {
+    key: 'shrine',
+    label: 'Shrines',
+    profile: [['echo_upgrade_challenges', 'echo_upgrade_challenges.collect_shrines']],
+  },
+  {
+    key: 'recordplayer',
+    label: 'Record Players',
+    profile: [['sharedprogress_cowbell', 'SharedProgress_Cowbell.collectible_recordplayer']],
+  },
+  {
+    key: 'treasurehunt',
+    label: 'Treasure Hunts',
+    profile: [['sharedprogress_harmonica', 'SharedProgress_Harmonica.collectible_treasurehunt']],
+  },
+  {
+    key: 'tediore',
+    label: 'Tediore Collectibles',
+    profile: [['sharedprogress_harmonica', 'SharedProgress_Harmonica.collectible_tediore']],
+  },
+];
+
+function inScope(isBase, scope) {
+  return scope === 'all' || (scope === 'base') === isBase;
+}
+
+function isBaseProfileSource([key]) {
+  return !key.startsWith('sharedprogress_');
+}
+
+function getSharedProgressType(kind, type) {
+  return (kind === 'collectible' ? COLLECTIBLE_TYPES : ACTIVITY_TYPES).find((t) => t.key === type);
+}
+
+/**
+ * Returns [unlockables key, prefix] sources for kind ('collectible' | 'activity'),
+ * scope ('base' | 'dlc' | 'all'), and type ('all' or a key from the kind's type list).
+ */
+function getSharedProgressSources(kind, scope, type = 'all') {
+  if (type !== 'all') {
+    const { profile } = getSharedProgressType(kind, type);
+    return profile.filter((source) => inScope(isBaseProfileSource(source), scope));
+  }
   const sources = SHARED_PROGRESS_SOURCES[kind];
   return scope === 'all' ? [...sources.base, ...sources.dlc] : sources[scope];
 }
 
-function describeSharedProgress(kind, scope) {
-  const noun = kind === 'collectible' ? 'collectibles' : 'activities';
+function describeSharedProgress(kind, scope, type = 'all') {
+  let noun = kind === 'collectible' ? 'collectibles' : 'activities';
+  if (type !== 'all') noun = getSharedProgressType(kind, type).label.toLowerCase();
   return scope === 'all' ? `all ${noun}` : `${CONTENT_SCOPE_LABELS[scope]} ${noun}`;
 }
 
 /**
- * Completes shared (profile) collectibles or activities for the given scope ('base' | 'dlc' | 'all').
+ * Completes shared (profile) collectibles or activities for the given scope and type.
  */
-function completeSharedProgress(kind, scope) {
+function completeSharedProgress(kind, scope, type = 'all') {
   const data = getYamlDataFromEditor();
   if (!data) return;
   if (!hasProfileUnlockables(data)) return;
 
   let count = 0;
-  for (const [key, prefix] of getSharedProgressSources(kind, scope)) {
+  for (const [key, prefix] of getSharedProgressSources(kind, scope, type)) {
     count += mergeUnlockableEntries(data, key, prefix);
   }
   editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
   updateEchoPoints();
-  return `Completed ${describeSharedProgress(kind, scope)} (${count} new entries).`;
+  return `Completed ${describeSharedProgress(kind, scope, type)} (${count} new entries).`;
 }
 
-function removeSharedProgress(kind, scope) {
+function removeSharedProgress(kind, scope, type = 'all') {
   const data = getYamlDataFromEditor();
   if (!data) return;
   if (!hasProfileUnlockables(data)) return;
 
   let count = 0;
-  for (const [key, prefix] of getSharedProgressSources(kind, scope)) {
+  for (const [key, prefix] of getSharedProgressSources(kind, scope, type)) {
     count += removeUnlockableEntries(data, key, prefix);
   }
   editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
-  return `Removed ${describeSharedProgress(kind, scope)} (${count} entries).`;
+  return `Reset ${describeSharedProgress(kind, scope, type)} (${count} entries).`;
 }
 
 /**
@@ -210,19 +310,43 @@ function unlockNewGameShortcuts() {
   console.info('All new game shortcuts unlocked!');
 }
 
+// vault_object_challenges entry prefixes, split into vault doors (with their keys and locks) and powers
+const VAULT_OBJECT_PREFIXES = {
+  doors: [
+    'vault_object_challenges.collect_vaultkey',
+    'vault_object_challenges.unlock_vaultdoor',
+    'vault_object_challenges.unlock_vaultlock',
+  ],
+  powers: ['vault_object_challenges.collect_vaultpower'],
+};
+
 /**
- * Completes all shared vault unlocks in a profile save.
+ * Completes shared vault object entries in a profile save. kind: 'doors' | 'powers'
  */
-function completeSharedVaultUnlocks() {
+function completeVaultObjects(kind) {
   const data = getYamlDataFromEditor();
   if (!data) return;
   if (!hasProfileUnlockables(data)) return;
 
-  mergeUnlockableEntries(data, 'vault_object_challenges');
+  let count = 0;
+  for (const prefix of VAULT_OBJECT_PREFIXES[kind]) {
+    count += mergeUnlockableEntries(data, 'vault_object_challenges', prefix);
+  }
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+  return `Unlocked vault ${kind} (${count} new entries).`;
+}
 
-  const newYaml = jsyaml.dump(data, { lineWidth: -1, noRefs: true });
-  editor.setValue(newYaml);
-  console.info('All vault unlocks completed!');
+function resetVaultObjects(kind) {
+  const data = getYamlDataFromEditor();
+  if (!data) return;
+  if (!hasProfileUnlockables(data)) return;
+
+  let count = 0;
+  for (const prefix of VAULT_OBJECT_PREFIXES[kind]) {
+    count += removeUnlockableEntries(data, 'vault_object_challenges', prefix);
+  }
+  editor.setValue(jsyaml.dump(data, { lineWidth: -1, noRefs: true }));
+  return `Reset vault ${kind} (${count} entries).`;
 }
 
 function unlockFastTravel() {
